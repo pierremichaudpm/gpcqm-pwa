@@ -735,7 +735,7 @@ a:hover {
 .riders-tile {
     background: 
         linear-gradient(135deg, rgba(31, 110, 114, 0.7), rgba(31, 110, 114, 0.6)),
-        url('../images/Fond_liste.jpg?v=1') center/cover no-repeat;
+        url('../images/fond_liste.jpg?v=1') center/cover no-repeat;
     border: none !important;
     border-radius: var(--radius-xl);
     padding: var(--spacing-md);
@@ -751,7 +751,7 @@ a:hover {
     box-shadow: var(--shadow-lg);
     background: 
         linear-gradient(135deg, rgba(31, 110, 114, 0.75), rgba(31, 110, 114, 0.65)),
-        url('../images/Fond_liste.jpg?v=1') center/cover no-repeat;
+        url('../images/fond_liste.jpg?v=1') center/cover no-repeat;
 }
 
 .riders-tile-content {

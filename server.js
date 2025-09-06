@@ -12,25 +12,50 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+// Basic auth for /cms
+const BASIC_USER = process.env.CMS_USER || 'admin';
+const BASIC_PASS = process.env.CMS_PASS || 'Axelle20';
+function basicAuth(req, res, next) {
+    const header = req.headers.authorization || '';
+    const [scheme, encoded] = header.split(' ');
+    if (scheme !== 'Basic' || !encoded) {
+        res.set('WWW-Authenticate', 'Basic realm="CMS"');
+        return res.status(401).send('Authentication required');
+    }
+    const [user, pass] = Buffer.from(encoded, 'base64').toString().split(':');
+    if (user === BASIC_USER && pass === BASIC_PASS) return next();
+    res.set('WWW-Authenticate', 'Basic realm="CMS"');
+    return res.status(401).send('Invalid credentials');
+}
 
-// Security middleware
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "https://www.googletagmanager.com", "https://www.google-analytics.com", "https://snapwidget.com"],
-            imgSrc: ["'self'", "data:", "https:", "http:"],
-            connectSrc: ["'self'", "https://api.openweathermap.org", "https://graph.instagram.com", "https://www.google-analytics.com"],
-            fontSrc: ["'self'", "https://fonts.gstatic.com"],
-            objectSrc: ["'none'"],
-            mediaSrc: ["'self'", "https://player.vimeo.com", "https://vimeo.com"],
-            frameSrc: ["'self'", "https://player.vimeo.com", "https://www.youtube.com", "https://www.google.com", "https://www.google.ca", "https://snapwidget.com"],
-            childSrc: ["'self'", "https://player.vimeo.com", "https://www.youtube.com", "https://www.google.com", "https://www.google.ca", "https://snapwidget.com"],
-        },
-    },
-    crossOriginEmbedderPolicy: false,
-}));
+// Security middleware (disable helmet CSP to manage it manually per-route)
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
+// Default CSP for the app (stricter)
+function setDefaultCspHeaders(res) {
+    res.setHeader('Content-Security-Policy', [
+        "default-src 'self'",
+        "img-src 'self' data: https: http:",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src 'self' https://fonts.gstatic.com",
+        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://snapwidget.com",
+        "connect-src 'self' https://api.openweathermap.org https://graph.instagram.com https://www.google-analytics.com",
+        "frame-src 'self' https://player.vimeo.com https://www.youtube.com https://www.google.com https://www.google.ca https://snapwidget.com",
+        "child-src 'self' https://player.vimeo.com https://www.youtube.com https://www.google.com https://www.google.ca https://snapwidget.com",
+        "object-src 'none'",
+        "media-src 'self' https://player.vimeo.com https://vimeo.com",
+        "script-src-attr 'unsafe-inline'"
+    ].join('; '));
+}
+
+// Apply CSP per request
+app.use((req, res, next) => {
+    if (req.path.startsWith('/cms')) {
+        setCmsCspHeaders(res);
+    } else {
+        setDefaultCspHeaders(res);
+    }
+    next();
+});
 
 // Enable CORS
 app.use(cors());
@@ -64,7 +89,7 @@ const setCache = (req, res, next) => {
                    req.path.match(/\.(css|js)$/i) ? '1d' : '1h';
 
     if (req.method === 'GET') {
-        if (isDev) {
+        if (isDev || req.path.startsWith('/cms/')) {
             // In development, disable caching for quicker feedback
             res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
             res.set('Pragma', 'no-cache');
@@ -76,7 +101,16 @@ const setCache = (req, res, next) => {
     next();
 };
 
-// Serve static files with caching
+// IMPORTANT: Apply Basic Auth for /cms routes BEFORE serving static files
+app.use((req, res, next) => {
+    // Check if the request is for /cms or any subpath
+    if (req.path.startsWith('/cms')) {
+        return basicAuth(req, res, next);
+    }
+    next();
+});
+
+// Serve static files with caching (AFTER auth check)
 app.use(setCache);
 app.use(express.static(path.join(__dirname), {
     etag: true,
@@ -86,6 +120,9 @@ app.use(express.static(path.join(__dirname), {
             res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         }
         if (path.endsWith('sw.js')) {
+            res.setHeader('Cache-Control', 'no-cache');
+        }
+        if (path.endsWith('riders.json')) {
             res.setHeader('Cache-Control', 'no-cache');
         }
     }
@@ -341,11 +378,37 @@ app.post('/api/riders-json', async (req, res) => {
     }
 });
 
-// Serve CMS UI
+// CMS routes are handled below after CSP setup
+
+// Relaxed CSP for CMS (allows inline handlers used in cms.html/js)
+function setCmsCspHeaders(res) {
+    try { res.removeHeader('Content-Security-Policy'); } catch (_) {}
+    res.setHeader('Content-Security-Policy', [
+        "default-src 'self'",
+        "img-src 'self' data: https: http:",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src 'self' https://fonts.gstatic.com",
+        "script-src 'self' 'unsafe-inline'",
+        "script-src-attr 'unsafe-inline'"
+    ].join('; '));
+}
+
+// Serve CMS HTML with proper CSP headers
 app.get('/cms', (req, res) => {
+    setCmsCspHeaders(res);
     res.sendFile(path.join(__dirname, 'cms.html'));
 });
-app.use('/cms', express.static(path.join(__dirname, 'cms')));
+
+app.get('/cms/', (req, res) => {
+    setCmsCspHeaders(res);
+    res.sendFile(path.join(__dirname, 'cms.html'));
+});
+
+// Serve CMS static files with relaxed CSP headers
+app.use('/cms', (req, res, next) => {
+    setCmsCspHeaders(res);
+    express.static(path.join(__dirname, 'cms'))(req, res, next);
+});
 
 // Weather proxy endpoint (to hide API key)
 app.get('/api/weather/current', async (req, res) => {

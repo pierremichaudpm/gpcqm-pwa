@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPCM CMS - Gestion des Équipes et Coureurs</title>
-    <link rel="stylesheet" href="cms/cms-styles.css">
+    <link rel="stylesheet" href="/cms/cms-styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -16,16 +16,10 @@
                 <p>Gestion des Équipes et Coureurs</p>
             </div>
             <div class="header-actions">
-                <button class="btn btn-success" onclick="saveAllData()">
+                <button class="btn btn-success" id="saveBtn">
                     💾 Sauvegarder
                 </button>
-                <button class="btn btn-secondary" onclick="exportData()">
-                    📥 Exporter JSON
-                </button>
-                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">
-                    📤 Importer JSON
-                </button>
-                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                <!-- Boutons export/import retirés -->
             </div>
         </header>
 
@@ -35,7 +29,7 @@
             <aside class="cms-sidebar">
                 <div class="sidebar-header">
                     <h2>Équipes</h2>
-                    <button class="btn btn-primary btn-sm" onclick="addNewTeam()">
+                    <button class="btn btn-primary btn-sm" id="addTeamBtn">
                         ➕ Ajouter une équipe
                     </button>
                 </div>
@@ -66,7 +60,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Ajouter une nouvelle équipe</h2>
-                    <button class="modal-close" onclick="closeModal('addTeamModal')">×</button>
+                    <button class="modal-close" id="addTeamCloseBtn">×</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -83,8 +77,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="closeModal('addTeamModal')">Annuler</button>
-                    <button class="btn btn-primary" onclick="confirmAddTeam()">Ajouter l'équipe</button>
+                    <button class="btn btn-secondary" id="addTeamCancelBtn">Annuler</button>
+                    <button class="btn btn-primary" id="addTeamConfirmBtn">Ajouter l'équipe</button>
                 </div>
             </div>
         </div>
@@ -94,7 +88,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Ajouter un coureur</h2>
-                    <button class="modal-close" onclick="closeModal('addRiderModal')">×</button>
+                    <button class="modal-close" id="addRiderCloseBtn">×</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -111,8 +105,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="closeModal('addRiderModal')">Annuler</button>
-                    <button class="btn btn-primary" onclick="confirmAddRider()">Ajouter le coureur</button>
+                    <button class="btn btn-secondary" id="addRiderCancelBtn">Annuler</button>
+                    <button class="btn btn-primary" id="addRiderConfirmBtn">Ajouter le coureur</button>
                 </div>
             </div>
         </div>
@@ -122,7 +116,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Changer le maillot de l'équipe</h2>
-                    <button class="modal-close" onclick="closeModal('jerseyModal')">×</button>
+                    <button class="modal-close" id="jerseyCloseBtn">×</button>
                 </div>
                 <div class="modal-body">
                     <div class="jersey-preview">
@@ -130,7 +124,7 @@
                     </div>
                     <div class="form-group">
                         <label>Sélectionner une nouvelle image</label>
-                        <input type="file" id="jerseyFile" accept="image/*" onchange="previewJersey(event)">
+                        <input type="file" id="jerseyFile" accept="image/*">
                     </div>
                     <div class="form-group">
                         <label>Ou entrer l'URL de l'image</label>
@@ -142,9 +136,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="closeModal('jerseyModal')">Annuler</button>
-                    <button class="btn btn-danger" onclick="removeJersey()">Supprimer le maillot</button>
-                    <button class="btn btn-primary" onclick="confirmJerseyChange()">Appliquer</button>
+                    <button class="btn btn-secondary" id="jerseyCancelBtn">Annuler</button>
+                    <button class="btn btn-danger" id="jerseyRemoveBtn">Supprimer le maillot</button>
+                    <button class="btn btn-primary" id="jerseyConfirmBtn">Appliquer</button>
                 </div>
             </div>
         </div>
@@ -154,19 +148,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>Sélectionner un drapeau</h2>
-                    <button class="modal-close" onclick="closeModal('flagModal')">×</button>
+                    <button class="modal-close" id="flagCloseBtn">×</button>
                 </div>
                 <div class="modal-body">
                     <div class="flag-search">
-                        <input type="text" id="flagSearch" placeholder="Rechercher un pays..." onkeyup="filterFlags()">
+                        <input type="text" id="flagSearch" placeholder="Rechercher un pays...">
                     </div>
                     <div class="flags-grid" id="flagsGrid">
                         <!-- Flags will be loaded here -->
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" onclick="closeModal('flagModal')">Annuler</button>
-                    <button class="btn btn-danger" onclick="removeFlag()">Supprimer le drapeau</button>
+                    <button class="btn btn-secondary" id="flagCancelBtn">Annuler</button>
+                    <button class="btn btn-danger" id="flagRemoveBtn">Supprimer le drapeau</button>
                 </div>
             </div>
         </div>
@@ -175,6 +169,16 @@
     <!-- Toast Notifications -->
     <div id="toastContainer" class="toast-container"></div>
 
-    <script src="cms/cms-app.js"></script>
+    <script src="/cms/cms-app.js?v=20250906"></script>
 </body>
+<script>
+// Désactiver le Service Worker sur la page CMS pour éviter les interférences de cache/CSP
+try {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs){
+            regs.forEach(function(reg){ try { reg.unregister(); } catch(_){} });
+        });
+    }
+} catch(_){}
+</script>
 </html>

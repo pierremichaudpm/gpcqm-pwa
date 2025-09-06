@@ -60,6 +60,46 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     setupEventListeners();
     updateQuickStats();
+    // Wire up buttons to avoid inline handlers (CSP safe)
+    const saveBtn = document.getElementById('saveBtn');
+    const addTeamBtn = document.getElementById('addTeamBtn');
+    if (saveBtn) saveBtn.addEventListener('click', saveAllData, { passive: true });
+    if (addTeamBtn) addTeamBtn.addEventListener('click', addNewTeam, { passive: true });
+
+    // Modal buttons
+    const addTeamCloseBtn = document.getElementById('addTeamCloseBtn');
+    const addTeamCancelBtn = document.getElementById('addTeamCancelBtn');
+    const addTeamConfirmBtn = document.getElementById('addTeamConfirmBtn');
+    if (addTeamCloseBtn) addTeamCloseBtn.addEventListener('click', () => closeModal('addTeamModal'), { passive: true });
+    if (addTeamCancelBtn) addTeamCancelBtn.addEventListener('click', () => closeModal('addTeamModal'), { passive: true });
+    if (addTeamConfirmBtn) addTeamConfirmBtn.addEventListener('click', confirmAddTeam, { passive: true });
+
+    const addRiderCloseBtn = document.getElementById('addRiderCloseBtn');
+    const addRiderCancelBtn = document.getElementById('addRiderCancelBtn');
+    const addRiderConfirmBtn = document.getElementById('addRiderConfirmBtn');
+    if (addRiderCloseBtn) addRiderCloseBtn.addEventListener('click', () => closeModal('addRiderModal'), { passive: true });
+    if (addRiderCancelBtn) addRiderCancelBtn.addEventListener('click', () => closeModal('addRiderModal'), { passive: true });
+    if (addRiderConfirmBtn) addRiderConfirmBtn.addEventListener('click', confirmAddRider, { passive: true });
+
+    const jerseyCloseBtn = document.getElementById('jerseyCloseBtn');
+    const jerseyCancelBtn = document.getElementById('jerseyCancelBtn');
+    const jerseyRemoveBtn = document.getElementById('jerseyRemoveBtn');
+    const jerseyConfirmBtn = document.getElementById('jerseyConfirmBtn');
+    const jerseyFile = document.getElementById('jerseyFile');
+    if (jerseyCloseBtn) jerseyCloseBtn.addEventListener('click', () => closeModal('jerseyModal'), { passive: true });
+    if (jerseyCancelBtn) jerseyCancelBtn.addEventListener('click', () => closeModal('jerseyModal'), { passive: true });
+    if (jerseyRemoveBtn) jerseyRemoveBtn.addEventListener('click', removeJersey, { passive: true });
+    if (jerseyConfirmBtn) jerseyConfirmBtn.addEventListener('click', confirmJerseyChange, { passive: true });
+    if (jerseyFile) jerseyFile.addEventListener('change', previewJerseyFile);
+
+    const flagCloseBtn = document.getElementById('flagCloseBtn');
+    const flagCancelBtn = document.getElementById('flagCancelBtn');
+    const flagRemoveBtn = document.getElementById('flagRemoveBtn');
+    const flagSearch = document.getElementById('flagSearch');
+    if (flagCloseBtn) flagCloseBtn.addEventListener('click', () => closeModal('flagModal'), { passive: true });
+    if (flagCancelBtn) flagCancelBtn.addEventListener('click', () => closeModal('flagModal'), { passive: true });
+    if (flagRemoveBtn) flagRemoveBtn.addEventListener('click', removeFlag, { passive: true });
+    if (flagSearch) flagSearch.addEventListener('keyup', filterFlags);
 });
 
 // Configuration des écouteurs d'événements
@@ -276,12 +316,13 @@ function renderTeamsList() {
         return;
     }
     
+    const safePath = (p) => (p && p.startsWith('/') ? p : (p ? '/' + p : ''));
     teamsList.innerHTML = teamsData.map(team => `
         <div class="team-item ${team.id === currentTeamId ? 'active' : ''}" 
-             onclick="selectTeam(${team.id})">
+             data-team-id="${team.id}">
             <div class="team-jersey">
                 ${team.jerseyPath ? 
-                    `<img src="/${team.jerseyPath}" alt="Maillot" style="width: 40px; height: 40px; object-fit: contain;">` : 
+                    `<img src="${safePath(team.jerseyPath)}" alt="Maillot" style="width: 40px; height: 40px; object-fit: contain;">` : 
                     '👕'
                 }
             </div>
@@ -291,6 +332,14 @@ function renderTeamsList() {
             </div>
         </div>
     `).join('');
+
+    // Bind clicks (CSP safe)
+    teamsList.querySelectorAll('.team-item').forEach(el => {
+        el.addEventListener('click', () => {
+            const id = parseInt(el.getAttribute('data-team-id'), 10);
+            if (!Number.isNaN(id)) selectTeam(id);
+        }, { passive: true });
+    });
 }
 
 // Sélectionner une équipe
@@ -310,20 +359,21 @@ function selectTeam(teamId) {
 // Afficher l'éditeur d'équipe
 function renderTeamEditor(team) {
     const editor = document.getElementById('teamEditor');
+    const safePath = (p) => (p && p.startsWith('/') ? p : (p ? '/' + p : ''));
     
     editor.innerHTML = `
         <div class="editor-header">
             <div class="editor-title">
                 <span class="team-jersey-large">
                     ${team.jerseyPath ? 
-                        `<img src="/${team.jerseyPath}" alt="Maillot" style="width: 60px; height: 60px; object-fit: contain;">` : 
+                        `<img src="${safePath(team.jerseyPath)}" alt="Maillot" style="width: 60px; height: 60px; object-fit: contain;">` : 
                         '👕'
                     }
                 </span>
                 <h2>${team.displayName || team.name}</h2>
             </div>
             <div class="editor-actions">
-                <button class="btn btn-danger btn-sm" onclick="deleteTeam(${team.id})">
+                <button class="btn btn-danger btn-sm" id="deleteTeamBtn">
                     🗑️ Supprimer l'équipe
                 </button>
             </div>
@@ -334,27 +384,22 @@ function renderTeamEditor(team) {
             <div class="form-row">
                 <div class="form-group">
                     <label>Nom de l'équipe</label>
-                    <input type="text" value="${team.name}" 
-                           onchange="updateTeamField(${team.id}, 'name', this.value)">
+                    <input type="text" value="${team.name}" id="teamNameInput">
                 </div>
                 <div class="form-group">
                     <label>Nom d'affichage</label>
-                    <input type="text" value="${team.displayName || ''}" 
-                           onchange="updateTeamField(${team.id}, 'displayName', this.value)">
+                    <input type="text" value="${team.displayName || ''}" id="teamDisplayInput">
                 </div>
                 <div class="form-group">
                     <label>Maillot de l'équipe</label>
                     <div style="display: flex; gap: 0.5rem; align-items: center;">
                         <input type="text" value="${team.jerseyPath || ''}" 
                                placeholder="Ex: listeengages-package/listeengages/images/jerseys/team.png"
-                               id="teamJersey${team.id}" style="flex: 1;"
-                               onchange="updateTeamField(${team.id}, 'jerseyPath', this.value)">
-                        <button class="btn btn-secondary btn-sm" 
-                                onclick="previewJersey(${team.id})">
+                               id="teamJerseyInput" style="flex: 1;">
+                        <button class="btn btn-secondary btn-sm" id="previewJerseyBtn">
                             👁️ Aperçu
                         </button>
-                        <button class="btn btn-primary btn-sm" 
-                                onclick="uploadJersey(${team.id})">
+                        <button class="btn btn-primary btn-sm" id="uploadJerseyBtn">
                             📤 Upload
                         </button>
                     </div>
@@ -365,8 +410,7 @@ function renderTeamEditor(team) {
         <div class="form-section riders-section">
             <div class="riders-header">
                 <h3>🚴 Coureurs (${team.riders ? team.riders.length : 0}/7)</h3>
-                <button class="btn btn-primary btn-sm" 
-                        onclick="openAddRiderModal(${team.id})"
+                <button class="btn btn-primary btn-sm" id="addRiderBtn"
                         ${team.riders && team.riders.length >= 7 ? 'disabled' : ''}>
                     ➕ Ajouter un coureur
                 </button>
@@ -378,22 +422,16 @@ function renderTeamEditor(team) {
                             <div class="rider-number">
                                 <input type="number" value="${rider.number || ''}" 
                                        style="background: none; border: none; color: white; width: 100%; text-align: center;"
-                                       onchange="updateRiderField(${team.id}, ${index}, 'number', this.value)">
+                                       data-action="riderNumber" data-index="${index}">
                             </div>
                             <div class="rider-info">
-                                <input type="text" class="rider-name-input" 
-                                       value="${rider.name}"
-                                       onchange="updateRiderField(${team.id}, ${index}, 'name', this.value)">
-                                <div class="rider-flag" 
-                                     onclick="openFlagPicker('rider', ${team.id}, ${index})"
-                                     title="Cliquer pour changer le drapeau">
+                                <input type="text" class="rider-name-input" value="${rider.name}" data-action="riderName" data-index="${index}">
+                                <div class="rider-flag" data-action="riderFlag" data-index="${index}" title="Cliquer pour changer le drapeau">
                                     ${rider.country || '🏳️'}
                                 </div>
                             </div>
                             <div class="rider-actions">
-                                <button class="btn btn-danger btn-icon btn-sm" 
-                                        onclick="deleteRider(${team.id}, ${index})"
-                                        title="Supprimer le coureur">
+                                <button class="btn btn-danger btn-icon btn-sm" data-action="deleteRider" data-index="${index}" title="Supprimer le coureur">
                                     🗑️
                                 </button>
                             </div>
@@ -404,6 +442,39 @@ function renderTeamEditor(team) {
             </div>
         </div>
     `;
+
+    // Bind editor events (CSP safe)
+    const nameInput = editor.querySelector('#teamNameInput');
+    const displayInput = editor.querySelector('#teamDisplayInput');
+    const jerseyInput = editor.querySelector('#teamJerseyInput');
+    const delBtn = editor.querySelector('#deleteTeamBtn');
+    const prevBtn = editor.querySelector('#previewJerseyBtn');
+    const uploadBtn = editor.querySelector('#uploadJerseyBtn');
+    const addRiderBtn = editor.querySelector('#addRiderBtn');
+    if (nameInput) nameInput.addEventListener('change', e => updateTeamField(team.id, 'name', e.target.value));
+    if (displayInput) displayInput.addEventListener('change', e => updateTeamField(team.id, 'displayName', e.target.value));
+    if (jerseyInput) jerseyInput.addEventListener('change', e => updateTeamField(team.id, 'jerseyPath', e.target.value));
+    if (delBtn) delBtn.addEventListener('click', () => deleteTeam(team.id), { passive: true });
+    if (prevBtn) prevBtn.addEventListener('click', () => previewJersey(team.id), { passive: true });
+    if (uploadBtn) uploadBtn.addEventListener('click', () => uploadJersey(team.id), { passive: true });
+    if (addRiderBtn) addRiderBtn.addEventListener('click', () => openAddRiderModal(team.id), { passive: true });
+
+    editor.querySelectorAll('[data-action="riderNumber"]').forEach(inp => {
+        const idx = parseInt(inp.getAttribute('data-index'), 10);
+        inp.addEventListener('change', e => updateRiderField(team.id, idx, 'number', e.target.value));
+    });
+    editor.querySelectorAll('[data-action="riderName"]').forEach(inp => {
+        const idx = parseInt(inp.getAttribute('data-index'), 10);
+        inp.addEventListener('change', e => updateRiderField(team.id, idx, 'name', e.target.value));
+    });
+    editor.querySelectorAll('[data-action="riderFlag"]').forEach(btn => {
+        const idx = parseInt(btn.getAttribute('data-index'), 10);
+        btn.addEventListener('click', () => openFlagPicker('rider', team.id, idx), { passive: true });
+    });
+    editor.querySelectorAll('[data-action="deleteRider"]').forEach(btn => {
+        const idx = parseInt(btn.getAttribute('data-index'), 10);
+        btn.addEventListener('click', () => deleteRider(team.id, idx), { passive: true });
+    });
 }
 
 // Mettre à jour un champ de l'équipe
@@ -428,7 +499,8 @@ function previewJersey(teamId) {
     }
     
     // Ouvrir une nouvelle fenêtre avec l'image
-    window.open('/' + team.jerseyPath, '_blank', 'width=500,height=500');
+    const path = team.jerseyPath.startsWith('/') ? team.jerseyPath : '/' + team.jerseyPath;
+    window.open(path, '_blank', 'width=500,height=500');
 }
 
 // Upload du maillot
@@ -589,12 +661,31 @@ function openFlagPicker(type, teamId, riderIndex = null) {
     const modal = document.getElementById('flagModal');
     const grid = document.getElementById('flagsGrid');
     
-    // Générer la grille de drapeaux
+    // Générer la grille de drapeaux (sans inline handlers)
     grid.innerHTML = Object.entries(countryFlags).map(([country, flag]) => `
-        <div class="flag-option" onclick="selectFlag('${flag}')" title="${country}">
+        <div class="flag-option" data-flag="${flag}" data-country="${country}" title="${country}" role="button" tabindex="0">
             ${flag}
         </div>
     `).join('');
+    
+    // Délégation d'événements pour sélectionner un drapeau
+    if (!grid.dataset.bound) {
+        grid.addEventListener('click', (e) => {
+            const el = e.target.closest('.flag-option');
+            if (!el) return;
+            const flag = el.getAttribute('data-flag');
+            if (flag) selectFlag(flag);
+        });
+        grid.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            const el = e.target.closest('.flag-option');
+            if (!el) return;
+            e.preventDefault();
+            const flag = el.getAttribute('data-flag');
+            if (flag) selectFlag(flag);
+        });
+        grid.dataset.bound = 'true';
+    }
     
     modal.style.display = 'flex';
 }
@@ -651,14 +742,11 @@ function removeFlag() {
 function filterFlags() {
     const search = document.getElementById('flagSearch').value.toLowerCase();
     const grid = document.getElementById('flagsGrid');
-    
-    grid.innerHTML = Object.entries(countryFlags)
-        .filter(([country]) => country.toLowerCase().includes(search))
-        .map(([country, flag]) => `
-            <div class="flag-option" onclick="selectFlag('${flag}')" title="${country}">
-                ${flag}
-            </div>
-        `).join('');
+    if (!grid) return;
+    grid.querySelectorAll('.flag-option').forEach(el => {
+        const country = (el.getAttribute('data-country') || '').toLowerCase();
+        el.style.display = country.includes(search) ? '' : 'none';
+    });
 }
 
 // Ouvrir le modal de maillot
@@ -681,7 +769,7 @@ function openJerseyModal(teamId) {
 }
 
 // Aperçu du maillot
-function previewJersey(event) {
+function previewJerseyFile(event) {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
         const reader = new FileReader();
@@ -702,17 +790,30 @@ async function confirmJerseyChange() {
     const urlInput = document.getElementById('jerseyUrl').value.trim();
     
     if (fileInput.files.length > 0) {
-        // Gérer le fichier uploadé
+        // Uploader le fichier au serveur pour obtenir un chemin stable
         const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            team.jerseyPath = e.target.result;
-            markAsUnsaved();
-            renderTeamEditor(team);
-            closeModal('jerseyModal');
-            showToast('Maillot mis à jour', 'success');
-        };
-        reader.readAsDataURL(file);
+        const formData = new FormData();
+        formData.append('jersey', file);
+        formData.append('teamId', String(currentTeamId));
+        try {
+            const resp = await fetch('/api/upload-jersey', { method: 'POST', body: formData });
+            if (resp.ok) {
+                const result = await resp.json();
+                if (result && result.path) {
+                    team.jerseyPath = result.path;
+                    markAsUnsaved();
+                    renderTeamEditor(team);
+                    closeModal('jerseyModal');
+                    showToast('Maillot uploadé', 'success');
+                } else {
+                    showToast('Upload échoué', 'error');
+                }
+            } else {
+                showToast('Upload échoué', 'error');
+            }
+        } catch(_) {
+            showToast('Upload échoué', 'error');
+        }
     } else if (urlInput) {
         // Utiliser l'URL fournie
         team.jerseyPath = urlInput;
@@ -807,44 +908,10 @@ async function saveToRidersJson() {
 }
 
 // Exporter les données
-function exportData() {
-    const dataStr = JSON.stringify(teamsData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = `gpcm_teams_${new Date().toISOString().split('T')[0]}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-    
-    showToast('Données exportées', 'success');
-}
+// exportData retiré
 
 // Importer les données
-function importData(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const imported = JSON.parse(e.target.result);
-            if (Array.isArray(imported)) {
-                teamsData = imported;
-                markAsUnsaved();
-                renderTeamsList();
-                updateQuickStats();
-                showToast('Données importées avec succès', 'success');
-            } else {
-                showToast('Format de fichier invalide', 'error');
-            }
-        } catch (error) {
-            showToast('Erreur lors de l\'importation', 'error');
-        }
-    };
-    reader.readAsText(file);
-}
+// importData retiré
 
 // Mettre à jour les statistiques rapides
 function updateQuickStats() {

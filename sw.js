@@ -103,6 +103,11 @@ self.addEventListener('fetch', (event) => {
         return;
     }
     
+    // Never interfere with CMS assets/routes
+    if (url.pathname.startsWith('/cms')) {
+        return;
+    }
+    
     // Handle API requests differently (network first)
     if (url.pathname.includes('/api/') || 
         url.hostname.includes('api.') ||
@@ -125,11 +130,12 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Cache riders.js data responses (teams/coureurs) for offline usage
-    if (url.pathname === '/riders.json' || url.pathname.endsWith('/listeengages-package/listeengages/js/riders.js')) {
-        event.respondWith(staleWhileRevalidate(request));
+    // Riders data: prefer fresh network for immediate CMS reflection
+    if (url.pathname === '/riders.json') {
+        event.respondWith(networkFirstStrategy(request));
         return;
     }
+    // Riders UI script can still use network-first (handled below for .js)
     
     // HTML navigations: network-first to avoid stale pages
     if (request.mode === 'navigate' || url.pathname === '/' || url.pathname.endsWith('.html')) {

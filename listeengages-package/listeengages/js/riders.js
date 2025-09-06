@@ -1,17 +1,17 @@
 // === GPCQM 2025 - Riders Modal Management ===
-// Généré automatiquement par le CMS - 2025-09-06T15:20:45.371Z
+// Généré automatiquement par le CMS - 2025-09-06T18:40:00.163Z
 
 // Données officielles des équipes et coureurs GPCQM 2025
 const ridersData = {
     teams: [
     {
         "id": 1,
-        "name": "UAE Team Emirates",
-        "displayName": "UAE TEAM EMIRATES XRG",
+        "name": "UAE Team Emirate",
+        "displayName": "UAE TEAM EMIRATES",
         "riders": [
             {
                 "number": 11,
-                "name": "Tadej POGACAR",
+                "name": "Tadej ",
                 "country": "🇸🇮"
             },
             {
@@ -969,9 +969,33 @@ const ridersData = {
                 "country": "🇨🇦"
             }
         ]
+    },
+    {
+        "id": 1757183835303,
+        "name": "test",
+        "displayName": "test",
+        "riders": []
     }
 ]
 };
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
 
 // Le reste du code JavaScript reste inchangé...
 
@@ -1078,8 +1102,15 @@ function getJerseyPath(teamName, displayName) {
 
 // Initialize the riders modal
 function initializeRidersModal() {
-    loadTeamsView();
-    updateRidersStats();
+    // Essayer de charger les dernières données sauvegardées par le CMS
+    tryFetchLatestRidersData().then(() => {
+        loadTeamsView();
+        updateRidersStats();
+    }).catch(() => {
+        // En cas d'échec, utiliser les données embarquées
+        loadTeamsView();
+        updateRidersStats();
+    });
 }
 
 // Open modal
@@ -1092,6 +1123,12 @@ function openRidersModal() {
     if (!modal.dataset.initialized) {
         initializeRidersModal();
         modal.dataset.initialized = 'true';
+    } else {
+        // Always refresh latest data and stats when reopening
+        tryFetchLatestRidersData().finally(() => {
+            loadTeamsView();
+            updateRidersStats();
+        });
     }
 }
 
@@ -1627,10 +1664,78 @@ document.addEventListener('DOMContentLoaded', function() {
         const modal = document.getElementById('ridersModal');
         const accordion = document.getElementById('teamsAccordion');
         if (modal && accordion) {
-            // Build content and bind once
-            loadTeamsView();
-            updateRidersStats();
+            // Charger les dernières données (riders.json) puis construire la vue
+            tryFetchLatestRidersData().finally(() => {
+                loadTeamsView();
+                updateRidersStats();
+            });
             modal.dataset.initialized = 'true';
         }
+        // Rafraîchir les totaux quand on revient sur l’onglet/fenêtre
+        const refresh = () => {
+            tryFetchLatestRidersData().finally(() => {
+                loadTeamsView();
+                updateRidersStats();
+            });
+        };
+        window.addEventListener('focus', refresh);
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
     } catch (_) {}
 });
+
+// =============================
+// Chargement dynamique riders.json
+// =============================
+
+function countryCodeToFlag(code) {
+    if (!code || typeof code !== 'string') return code;
+    // Déjà un drapeau
+    if (/\p{Emoji}/u.test(code) || code.length > 3) return code;
+    const map = {
+        FRA:'🇫🇷', USA:'🇺🇸', GBR:'🇬🇧', GER:'🇩🇪', DEU:'🇩🇪',
+        ITA:'🇮🇹', ESP:'🇪🇸', BEL:'🇧🇪', NED:'🇳🇱', NLD:'🇳🇱',
+        AUS:'🇦🇺', CAN:'🇨🇦', NOR:'🇳🇴', DEN:'🇩🇰', DNK:'🇩🇰',
+        SUI:'🇨🇭', CHE:'🇨🇭', AUT:'🇦🇹', POL:'🇵🇱', POR:'🇵🇹', PRT:'🇵🇹',
+        CZE:'🇨🇿', SVK:'🇸🇰', SLO:'🇸🇮', SVN:'🇸🇮', HUN:'🇭🇺', ROU:'🇷🇴',
+        RUS:'🇷🇺', UKR:'🇺🇦', SWE:'🇸🇪', FIN:'🇫🇮', EST:'🇪🇪', LAT:'🇱🇻', LTU:'🇱🇹',
+        IRL:'🇮🇪', LUX:'🇱🇺', COL:'🇨🇴', ARG:'🇦🇷', BRA:'🇧🇷', MEX:'🇲🇽',
+        JPN:'🇯🇵', KOR:'🇰🇷', CHN:'🇨🇳', NZL:'🇳🇿', RSA:'🇿🇦', UAE:'🇦🇪',
+        KAZ:'🇰🇿', ISR:'🇮🇱', ECU:'🇪🇨', ERI:'🇪🇷', CRO:'🇭🇷', HRV:'🇭🇷',
+        BHR:'🇧🇭', BIH:'🇧🇦'
+    };
+    return map[code.toUpperCase()] || code;
+}
+
+function normalizeRidersJson(data) {
+    try {
+        const teams = Array.isArray(data && data.teams) ? data.teams : [];
+        teams.forEach(team => {
+            team.riders = Array.isArray(team.riders) ? team.riders.map(r => ({
+                number: r.number || '',
+                name: r.name || '',
+                country: countryCodeToFlag(r.country || '')
+            })) : [];
+        });
+        return { teams };
+    } catch(_) {
+        return { teams: [] };
+    }
+}
+
+async function tryFetchLatestRidersData() {
+    try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 1500);
+        const cacheBuster = Date.now();
+        const resp = await fetch(`/riders.json?t=${cacheBuster}`, { signal: controller.signal, cache: 'no-cache' });
+        clearTimeout(timeout);
+        if (!resp.ok) return;
+        const json = await resp.json();
+        const normalized = normalizeRidersJson(json);
+        if (normalized.teams && normalized.teams.length) {
+            ridersData.teams = normalized.teams;
+        }
+    } catch(_) {
+        // silencieux: on garde les données embarquées
+    }
+}

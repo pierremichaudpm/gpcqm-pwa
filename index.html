@@ -47,11 +47,46 @@
     <!-- Critical CSS First - Mobile Optimized -->
     <link rel="stylesheet" href="css/style.css?v=10.1">
     <link rel="stylesheet" href="css/responsive.css?v=3.5">
-    <link rel="stylesheet" href="css/overrides.css?v=4.4">
+    <link rel="stylesheet" href="css/overrides.css?v=4.5">
     <link rel="stylesheet" href="listeengages-package/listeengages/css/riders-styles.css?v=3.3">
     
     <!-- Optimized Font Loading for Mobile -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=latin" rel="stylesheet">
+    <style>
+        /* FORCE MOBILE FIX - INLINE POUR ÉCRASER TOUT */
+        @media (max-width: 768px) {
+            #riders .riders-tile {
+                height: 156px !important;  /* Augmenté de 20% : 130px + 26px = 156px */
+                min-height: 156px !important;
+                border-radius: 20px !important;
+            }
+            #riders .riders-tile-content {
+                height: 156px !important;
+                min-height: 156px !important;
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            #riders h3[data-lang="ridersListTitle"] {
+                font-size: 1.5rem !important;  /* Légèrement augmenté pour la nouvelle hauteur */
+                white-space: nowrap !important;
+                margin: 0 !important;
+                padding: 0 10px !important;
+                font-weight: 700 !important;
+                color: white !important;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
+            }
+        }
+        
+        /* Ajustement pour très petits écrans */
+        @media (max-width: 380px) {
+            #riders h3[data-lang="ridersListTitle"] {
+                font-size: 1.3rem !important;  /* Ajusté proportionnellement */
+                letter-spacing: -0.2px !important;
+            }
+        }
+    </style>
     <style>
         /* Font fallbacks for mobile performance */
         body {
@@ -238,11 +273,8 @@
             <h2 data-lang="ridersList">Liste des Partants</h2>
             <div class="riders-tile-container">
                 <button class="riders-tile riders-card" aria-haspopup="dialog" aria-controls="ridersModal" type="button">
-                    <div class="riders-tile-content">
-                        <div class="jersey-icon" aria-hidden="true"></div>
-                        <div class="riders-tile-text">
-                            <h3 data-lang="ridersListTitle">Découvrez les coureurs</h3>
-                        </div>
+                    <div class="riders-tile-content riders-tile-centered">
+                        <h3 data-lang="ridersListTitle">Découvrez les coureurs</h3>
                     </div>
                 </button>
             </div>

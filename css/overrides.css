@@ -115,53 +115,131 @@
 /* Instagram placé entre Concours (gris) et Village des Fans → mettre blanc */
 .instagram-section { background: var(--gray-100) !important; }
 
-/* Adjust jersey image and title spacing */
-#riders .jersey-icon {
-    padding: var(--spacing-sm);
-    padding-top: calc(var(--spacing-sm) + var(--spacing-lg));
-    width: calc(126px * 1.2) !important;
-    height: calc(126px * 1.2) !important;
-    background: none !important;
+/* === TUILE "DÉCOUVREZ LES COUREURS" - CENTRAGE COMPLET === */
+
+/* === Centrage complet du texte dans la tuile des coureurs === */
+#riders .riders-tile-centered {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    gap: 0 !important;
 }
 
-@media (max-width: 768px) {
-    #riders .jersey-icon {
-        width: calc(105px * 1.2) !important;
-        height: calc(105px * 1.2) !important;
-        background: none !important;
-    }
+#riders .riders-tile-centered h3 {
+    margin: 0 !important;
+    padding: 0 20px !important;  /* Ajout de padding horizontal pour éviter que le texte touche les bords */
+    color: var(--white) !important;
+    font-size: 1.9rem !important;  /* Ajusté pour la nouvelle hauteur */
+    font-weight: 700 !important;
+    text-align: center !important;
+    text-shadow: 0 3px 6px rgba(0,0,0,0.5) !important;  /* Ombre plus prononcée */
+    line-height: 1.3 !important;
 }
 
-/* Reduce top spacing of the external CTA by 30% */
-.riders-list-btn {
-    margin-top: calc(var(--spacing-lg) * 0.7) !important;
+/* Supprimer tous les éléments de jersey/icon */
+#riders .jersey-icon,
+#riders .riders-tile-text {
+    display: none !important;
 }
 
-#riders .riders-tile-text h3 {
-    margin-bottom: var(--spacing-sm);
-}
-
-/* Center text in the riders tile and preserve height */
+/* Ajustement de la tuile principale */
 #riders .riders-tile {
-    min-height: 180px;
+    width: 100% !important;
+    max-width: 720px !important;
+    min-height: 220px !important;  /* Réduit de 250px à 220px (environ -10% supplémentaire) */
+    height: 220px !important;  /* Forcer la hauteur fixe */
+    border-radius: 30px !important;  /* Arrondi plus marqué comme les autres tuiles */
+    padding: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
 
 #riders .riders-tile-content {
-    justify-content: center;
+    min-height: 220px !important;  /* Correspondre à la hauteur de la tuile */
+    height: 220px !important;  /* Forcer la hauteur fixe */
 }
 
-#riders .riders-tile-text {
-    text-align: center;
-}
-
+/* MOBILE - SOLUTION FINALE AVEC TOUS LES CONFLITS ÉCRASÉS */
 @media (max-width: 768px) {
+    /* Tuile principale - hauteur réduite de 30% */
     #riders .riders-tile {
-        min-height: 150px;
+        max-width: 100% !important;
+        min-height: 65px !important;  /* Réduit de 90px à 65px (-30%) */
+        height: 65px !important;
+        border-radius: 15px !important;
+        padding: 0 !important;
+    }
+    
+    /* Conteneur - FORCER absolument en ligne */
+    #riders .riders-tile-content,
+    #riders .riders-tile-content.riders-tile-centered {
+        min-height: 65px !important;
+        height: 65px !important;
+        display: flex !important;
+        flex-direction: row !important;  /* TOUJOURS en ligne */
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* H3 - Texte FORCÉ sur une ligne */
+    #riders .riders-tile-centered h3,
+    #riders .riders-tile h3,
+    #riders h3[data-lang="ridersListTitle"] {
+        font-size: 0.9rem !important;  /* Petite taille pour tenir */
+        padding: 0 8px !important;
+        margin: 0 !important;
+        white-space: nowrap !important;  /* JAMAIS de retour ligne */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        letter-spacing: -0.3px !important;  /* Lettres serrées */
+        line-height: 1 !important;
+        display: inline-block !important;
+        width: auto !important;
+        max-width: 100% !important;
+    }
+    
+    /* ÉCRASER les styles de style.css qui cassent tout */
+    #riders .riders-tile-text {
+        display: none !important;
+    }
+    
+    #riders .jersey-icon {
+        display: none !important;
     }
 }
 
-/* Hide jersey icon from layout so text can be centered */
-#riders .jersey-icon { display: none !important; }
+/* Écrans moyens (450-768px) - un peu plus de place */
+@media (min-width: 450px) and (max-width: 768px) {
+    #riders .riders-tile-centered h3,
+    #riders h3[data-lang="ridersListTitle"] {
+        font-size: 1rem !important;  /* Un peu plus grand */
+        letter-spacing: -0.2px !important;
+    }
+}
+
+/* Petits écrans (350-450px) */
+@media (min-width: 350px) and (max-width: 450px) {
+    #riders .riders-tile-centered h3,
+    #riders h3[data-lang="ridersListTitle"] {
+        font-size: 0.85rem !important;
+        letter-spacing: -0.4px !important;
+    }
+}
+
+/* Très petits écrans (< 350px) */
+@media (max-width: 350px) {
+    #riders .riders-tile-centered h3,
+    #riders h3[data-lang="ridersListTitle"] {
+        font-size: 0.75rem !important;  /* Très petit */
+        letter-spacing: -0.5px !important;
+    }
+}
 
 /* === Hero CTAs: always side-by-side on mobile === */
 @media (max-width: 768px) {
