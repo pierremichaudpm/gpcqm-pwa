@@ -1249,8 +1249,8 @@ function loadTeamsView() {
     container.innerHTML = html;
     teamsView.style.display = 'block';
     
-    // Apply jersey backgrounds
-    applyJerseyBackgrounds();
+    // Apply jersey backgrounds (guard against runtime errors)
+    try { applyJerseyBackgrounds(); } catch(_) {}
 
     // Ensure jersey <img> has a resilient fallback if custom path 404s
     try {
@@ -1296,6 +1296,9 @@ function updateRidersStats() {
         if (teamsEl) teamsEl.textContent = String(teamCount);
     } catch(_) {}
 }
+
+// Ensure teamStyles exists to prevent runtime errors in applyJerseyBackgrounds
+const teamStyles = (typeof window !== 'undefined' && window.teamStyles) ? window.teamStyles : {};
 
 // Apply jersey backgrounds to expanded teams
 function applyJerseyBackgrounds() {
@@ -1768,6 +1771,13 @@ async function tryFetchLatestRidersData() {
         const json = await resp.json();
         const normalized = normalizeRidersJson(json);
         if (normalized.teams && normalized.teams.length) {
+            // Preserve jerseyPath from server when available
+            normalized.teams.forEach(team => {
+                const serverTeam = (json.teams || []).find(t => String(t.id) === String(team.id));
+                if (serverTeam && serverTeam.jerseyPath) {
+                    team.jerseyPath = serverTeam.jerseyPath;
+                }
+            });
             ridersData.teams = normalized.teams;
         }
     } catch(_) {
