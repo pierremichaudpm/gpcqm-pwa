@@ -443,6 +443,49 @@ app.get('/metrics', (req, res) => {
     });
 });
 
+// SEO: Robots and Sitemap (dynamic based on request host)
+function getBaseUrl(req) {
+    const proto = (req.headers['x-forwarded-proto'] || req.protocol || 'https');
+    const host = (req.headers['x-forwarded-host'] || req.get('host'));
+    return `${proto}://${host}`;
+}
+
+app.get('/robots.txt', (req, res) => {
+    try {
+        const baseUrl = getBaseUrl(req);
+        const lines = [
+            'User-agent: *',
+            'Allow: /',
+            'Disallow: /cms',
+            'Disallow: /api',
+            `Sitemap: ${baseUrl}/sitemap.xml`
+        ];
+        res.type('text/plain').send(lines.join('\n'));
+    } catch (e) {
+        res.type('text/plain').send('User-agent: *\nAllow: /');
+    }
+});
+
+app.get('/sitemap.xml', (req, res) => {
+    try {
+        const baseUrl = getBaseUrl(req);
+        const urls = [
+            '/',
+            '/offline.html'
+        ];
+        const now = new Date().toISOString();
+        const body = `<?xml version="1.0" encoding="UTF-8"?>\n` +
+            `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` +
+            urls.map(u => (
+                `\n  <url>\n    <loc>${baseUrl}${u}</loc>\n    <changefreq>daily</changefreq>\n    <priority>${u === '/' ? '1.0' : '0.5'}</priority>\n    <lastmod>${now}</lastmod>\n  </url>`
+            )).join('') +
+            `\n</urlset>`;
+        res.type('application/xml').send(body);
+    } catch (e) {
+        res.status(500).type('text/plain').send('sitemap unavailable');
+    }
+});
+
 // Handle 404
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'offline.html'));

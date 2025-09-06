@@ -16,6 +16,19 @@
     
     <title>Grand Prix Cycliste de Montréal 2025</title>
     
+    <!-- SEO -->
+    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="googlebot" content="index,follow">
+    <meta property="og:title" content="Grand Prix Cycliste de Montréal 2025">
+    <meta property="og:description" content="Parcours interactif, météo en temps réel, liste des partants UCI WorldTour.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_CA">
+    <meta property="og:image" content="/images/gpcmq-30-1030x687.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Grand Prix Cycliste de Montréal 2025">
+    <meta name="twitter:description" content="Parcours interactif, météo, liste des partants.">
+    <meta name="twitter:image" content="/images/gpcmq-30-1030x687.jpg">
+    
     <!-- Manifest -->
     <link rel="manifest" href="manifest.json?v=3.3">
     
@@ -88,6 +101,11 @@
     </script>
 </head>
 <body>
+    <noscript>
+        <div class="no-js" style="background:#FFF3CD;color:#664D03;padding:12px;text-align:center;">
+            Pour une expérience complète, activez JavaScript dans votre navigateur.
+        </div>
+    </noscript>
     <!-- Loading Screen -->
     <div id="loader" class="loader">
         <div class="loader-spinner"></div>
@@ -204,7 +222,7 @@
         <div class="container">
             <a href="https://rafalsports.com/collections/gpcqm" target="_blank" rel="noopener" class="shop-bigbox-link">
                 <div class="shop-bigbox">
-                    <img id="shopBigboxImage" src="images/Bannieres web - boutique_boutique-BigBox-FR_QC.png" alt="Boutique GPCQM" class="shop-bigbox-image" loading="lazy" decoding="async" />
+                    <img id="shopBigboxImage" src="images/bannieres web - boutique_boutique-bigbox-fr_qc.png" alt="Boutique GPCQM" class="shop-bigbox-image" loading="lazy" decoding="async" />
                 </div>
             </a>
             <a href="https://rafalsports.com/collections/gpcqm" target="_blank" rel="noopener" class="shop-bigbox-btn" data-lang="shopCta">Découvrez</a>
@@ -378,7 +396,7 @@
         <div class="modal-content">
             <button class="modal-close" onclick="closeWatchModal()" aria-label="Fermer">×</button>
             <div class="modal-body">
-                <img id="watchModalImage" src="images/Meilleurs_Endroits_MTL_FR.png" alt="Meilleures zones spectateurs" class="modal-image" loading="lazy" decoding="async" onerror="this.style.display='none'"/>
+                <img id="watchModalImage" src="images/meilleurs_endroits_mtl_fr.png" alt="Meilleures zones spectateurs" class="modal-image" loading="lazy" decoding="async" onerror="this.style.display='none'"/>
             </div>
         </div>
     </div>
@@ -670,7 +688,7 @@
                 <div class="contest-card-edika-container">
                     <a href="https://gpcqm.ca/reglements-concours/" target="_blank" rel="noopener" class="edika-bigbox-link">
                         <div class="edika-bigbox">
-                            <img id="edikaBigboxImage" src="images/ConcoursEdika__300x250-FR.png" alt="Concours Edika" class="edika-bigbox-image" loading="lazy" decoding="async" />
+                            <img id="edikaBigboxImage" src="images/concoursedika__300x250-fr.png" alt="Concours Edika" class="edika-bigbox-image" loading="lazy" decoding="async" />
                         </div>
                     </a>
                     <a href="https://gpcqm.ca/reglements-concours/" class="edika-bigbox-btn" target="_blank" rel="noopener" data-lang="participate">Participer</a>
@@ -678,7 +696,7 @@
                 <div class="contest-card-edika-container">
                     <a href="https://gpcqm.ca/reglements-concours/" target="_blank" rel="noopener" class="edika-bigbox-link">
                         <div class="edika-bigbox">
-                            <img id="ekoiBigboxImage" src="images/concours_ekoi_FR.jpg" alt="Concours EKOI" class="edika-bigbox-image" loading="lazy" decoding="async" />
+                            <img id="ekoiBigboxImage" src="images/concours_ekoi_fr.jpg" alt="Concours EKOI" class="edika-bigbox-image" loading="lazy" decoding="async" />
                         </div>
                     </a>
                     <a href="https://gpcqm.ca/reglements-concours/" class="edika-bigbox-btn" target="_blank" rel="noopener" data-lang="participate">Participer</a>
@@ -696,7 +714,7 @@
                 <div class="contest-card-edika-container">
                     <a href="https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3" target="_blank" rel="noopener" class="edika-bigbox-link">
                         <div class="edika-bigbox">
-                            <img id="auctionBigboxImage" src="images/encanFR.jpg" alt="Encan silencieux" class="edika-bigbox-image" loading="lazy" decoding="async" />
+                            <img id="auctionBigboxImage" src="images/encanfr.jpg" alt="Encan silencieux" class="edika-bigbox-image" loading="lazy" decoding="async" />
                         </div>
                     </a>
                     <a href="https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3" class="edika-bigbox-btn" target="_blank" rel="noopener" data-lang="bidNow">Miser</a>
@@ -1035,12 +1053,12 @@
     </div>
 
     <!-- Scripts -->
-    <script src="js/app.js?v=4.9"></script>
-    <script src="listeengages-package/listeengages/js/riders.js?v=3.1"></script>
-    <script src="js/countdown.js?v=3.0"></script>
+    <script src="js/app.js?v=4.9" defer></script>
+    <script src="listeengages-package/listeengages/js/riders.js?v=3.1" defer></script>
+    <script src="js/countdown.js?v=3.0" defer></script>
     
-    <script src="js/weather.js?v=3.4"></script>
-    <script src="js/instagram.js?v=3.0"></script>
-    <script src="js/pwa.js?v=3.0"></script>
+    <script src="js/weather.js?v=3.4" defer></script>
+    <script src="js/instagram.js?v=3.0" defer></script>
+    <script src="js/pwa.js?v=3.0" defer></script>
 </body>
 </html>

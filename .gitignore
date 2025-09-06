@@ -1,1 +1,14 @@
-node_modules/n.envn*.logn.DS_Storen/tmp/ncoverage/n.npm/n.cache/n.Spotlight-V100n.Trashesn*.localn*.pidn
+node_modules/
+.env
+.env.*
+*.log
+server.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+.cache/

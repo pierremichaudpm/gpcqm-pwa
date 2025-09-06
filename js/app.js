@@ -613,7 +613,7 @@ function openMapModal() {
         const img = document.getElementById('mapModalImage');
         if (img) {
             const frMap = 'images/225318gpcmtlparcours.png';
-            const enMap = 'images/225318gpcmtlparcours_EN.png';
+            const enMap = 'images/225318gpcmtlparcours_en.png';
             const desired = currentLanguage === 'en' ? enMap : frMap;
             if (img.getAttribute('src') !== desired) {
                 img.setAttribute('src', desired);
@@ -700,7 +700,7 @@ function openWatchModal() {
     if (!m) return;
     const img = document.getElementById('watchModalImage');
     if (img) {
-        const desiredSrc = currentLanguage === 'en' ? 'images/Meilleurs_Endroits_MTL_EN.png' : 'images/Meilleurs_Endroits_MTL_FR.png';
+        const desiredSrc = currentLanguage === 'en' ? 'images/meilleurs_endroits_mtl_en.png' : 'images/meilleurs_endroits_mtl_fr.png';
         if (img.getAttribute('src') !== desiredSrc) {
             img.setAttribute('src', desiredSrc);
         }
@@ -946,8 +946,8 @@ function updateLanguage() {
     // Update shop bigbox image per language with safe fallback
     const shopImg = document.getElementById('shopBigboxImage');
     if (shopImg) {
-        const frSrc = 'images/Bannieres web - boutique_boutique-BigBox-FR_QC.png';
-        const enSrc = 'images/Bannieres web - boutique_boutique-BigBox-EN_QC.png';
+        const frSrc = 'images/bannieres web - boutique_boutique-bigbox-fr_qc.png';
+        const enSrc = 'images/bannieres web - boutique_boutique-bigbox-en_qc.png';
         const desired = currentLanguage === 'en' ? enSrc : frSrc;
         if (shopImg.getAttribute('src') !== desired) {
             shopImg.setAttribute('src', desired);
@@ -977,8 +977,8 @@ function updateLanguage() {
     // Update EKOI contest bigbox image per language with safe fallback
     const ekoiImg = document.getElementById('ekoiBigboxImage');
     if (ekoiImg) {
-        const frEkoiSrc = 'images/concours_ekoi_FR.jpg';
-        const enEkoiSrc = 'images/concours_ekoi_EN.jpg';
+        const frEkoiSrc = 'images/concours_ekoi_fr.jpg';
+        const enEkoiSrc = 'images/concours_ekoi_en.jpg';
         const desiredEkoi = currentLanguage === 'en' ? enEkoiSrc : frEkoiSrc;
         if (ekoiImg.getAttribute('src') !== desiredEkoi) {
             ekoiImg.setAttribute('src', desiredEkoi);
@@ -997,8 +997,8 @@ function updateLanguage() {
     // Update Silent Auction bigbox image per language with safe fallback
     const auctionImg = document.getElementById('auctionBigboxImage');
     if (auctionImg) {
-        const frAuctionSrc = 'images/encanFR.jpg';
-        const enAuctionSrc = 'images/encanFR.jpg'; // same asset unless EN provided later
+        const frAuctionSrc = 'images/encanfr.jpg';
+        const enAuctionSrc = 'images/encanfr.jpg'; // same asset unless EN provided later
         const desiredAuction = currentLanguage === 'en' ? enAuctionSrc : frAuctionSrc;
         if (auctionImg.getAttribute('src') !== desiredAuction) {
             auctionImg.setAttribute('src', desiredAuction);
@@ -1017,8 +1017,8 @@ function updateLanguage() {
     // Update Edika contest bigbox image per language with safe fallback
     const edikaImg = document.getElementById('edikaBigboxImage');
     if (edikaImg) {
-        const frEdikaSrc = 'images/ConcoursEdika__300x250-FR.png';
-        const enEdikaSrc = 'images/ConcoursEdika__300x250-EN.png';
+        const frEdikaSrc = 'images/concoursedika__300x250-fr.png';
+        const enEdikaSrc = 'images/concoursedika__300x250-en.png';
         const desiredEdika = currentLanguage === 'en' ? enEdikaSrc : frEdikaSrc;
         if (edikaImg.getAttribute('src') !== desiredEdika) {
             edikaImg.setAttribute('src', desiredEdika);
