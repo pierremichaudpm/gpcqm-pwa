@@ -1258,6 +1258,13 @@ function loadTeamsView() {
             if (!img || img.dataset.fallbackBound === 'true') return;
             const bg = card.querySelector('.team-jersey-bg');
             const teamName = (bg && bg.getAttribute('data-team')) || (card.querySelector('.team-name')?.textContent) || '';
+            // Si l'image est déjà chargée et que ce n'est pas le placeholder, supprimer le bg tout de suite
+            try {
+                const srcNow = img.getAttribute('src') || '';
+                if (bg && srcNow.indexOf('jersey-placeholder.svg') === -1 && img.complete && img.naturalWidth > 0) {
+                    bg.style.backgroundImage = 'none';
+                }
+            } catch(_) {}
             // Quand l'image réelle est chargée, retirer le placeholder de fond pour éviter l'effet de "double" maillot
             img.addEventListener('load', function onLoad() {
                 try {
