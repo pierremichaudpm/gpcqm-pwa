@@ -40,7 +40,7 @@ function setDefaultCspHeaders(res) {
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src 'self' https://fonts.gstatic.com",
         "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://snapwidget.com",
-        "connect-src 'self' https://api.openweathermap.org https://graph.instagram.com https://www.google-analytics.com",
+        "connect-src 'self' https://api.openweathermap.org https://api.weather.gc.ca https://graph.instagram.com https://www.google-analytics.com",
         "frame-src 'self' https://player.vimeo.com https://www.youtube.com https://www.google.com https://www.google.ca https://snapwidget.com",
         "child-src 'self' https://player.vimeo.com https://www.youtube.com https://www.google.com https://www.google.ca https://snapwidget.com",
         "object-src 'none'",
@@ -139,9 +139,10 @@ app.use((req, res, next) => {
 // CMS Data Helpers & Endpoints
 // =============================
 
-// Paths (persistant on Railway volume)
-const CMS_JERSEYS_DIR = process.env.CMS_JERSEYS_DIR || (process.env.RAILWAY_ENVIRONMENT ? '/data/jerseys' : path.join(__dirname, 'images', 'jerseys'));
-const DATA_BASE_DIR = process.env.RAILWAY_ENVIRONMENT ? '/data/_data' : path.join(__dirname, 'cms');
+// Paths (persistant sur volume Railway si dispo)
+const IS_RAILWAY = Boolean(process.env.RAILWAY_STATIC_URL || process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_ENVIRONMENT_NAME || process.env.RAILWAY_PROJECT_ID);
+const CMS_JERSEYS_DIR = process.env.CMS_JERSEYS_DIR || (IS_RAILWAY ? '/data/jerseys' : path.join(__dirname, 'images', 'jerseys'));
+const DATA_BASE_DIR = IS_RAILWAY ? '/data/_data' : path.join(__dirname, 'cms');
 const TEAMS_DATA_FILE = path.join(DATA_BASE_DIR, 'teams-data.json');
 const TEAMS_COMPLETE_FILE = path.join(__dirname, 'cms', 'teams-complete.json');
 const RIDERS_JSON_FILE = path.join(DATA_BASE_DIR, 'riders.json');
@@ -149,18 +150,29 @@ const RIDERS_JS_FILE = path.join(__dirname, 'listeengages-package', 'listeengage
 
 // Serve persistent jerseys directory with graceful placeholder fallback
 const PLACEHOLDER_JERSEY_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'images', 'jerseys', 'jersey-placeholder.svg');
+const REPO_JERSEYS_DIR = path.join(__dirname, 'images', 'jerseys');
 
 app.get('/images/jerseys/:file', async (req, res) => {
+    const filename = req.params.file || '';
     try {
-        const requestedFile = path.join(CMS_JERSEYS_DIR, req.params.file || '');
+        const requestedFile = path.join(CMS_JERSEYS_DIR, filename);
         await fs.stat(requestedFile);
+        res.setHeader('Cache-Control', 'no-cache');
         return res.sendFile(requestedFile);
     } catch (_) {
+        // Fallback to repo-shipped jerseys if not present on volume
         try {
+            const repoFile = path.join(REPO_JERSEYS_DIR, filename);
+            await fs.stat(repoFile);
             res.setHeader('Cache-Control', 'no-cache');
-            return res.sendFile(PLACEHOLDER_JERSEY_FILE);
-        } catch (e) {
-            return res.status(404).end();
+            return res.sendFile(repoFile);
+        } catch (__) {
+            try {
+                res.setHeader('Cache-Control', 'no-cache');
+                return res.sendFile(PLACEHOLDER_JERSEY_FILE);
+            } catch (e) {
+                return res.status(404).end();
+            }
         }
     }
 });
@@ -428,6 +440,23 @@ app.post('/api/riders-json', async (req, res) => {
     }
 });
 
+// Expose riders.json depuis le volume pour le front
+app.get('/riders.json', async (req, res) => {
+    try {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        const raw = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
+        res.type('application/json').send(raw);
+    } catch (e) {
+        // fallback sur le fichier embarqué si le volume est vide
+        try {
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            return res.sendFile(path.join(__dirname, 'riders.json'));
+        } catch (_) {
+            return res.status(404).json({ error: 'riders_json_not_found' });
+        }
+    }
+});
+
 // CMS routes are handled below after CSP setup
 
 // Relaxed CSP for CMS (allows inline handlers used in cms.html/js)
@@ -472,10 +501,20 @@ app.get('/api/weather/current', async (req, res) => {
         const lang = (req.query.lang || 'fr');
 
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&appid=${apiKey}`;
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 5000);
-        const r = await fetch(url, { signal: controller.signal });
-        clearTimeout(timer);
+        let r;
+        try {
+            if (typeof AbortController !== 'undefined') {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), 5000);
+                r = await fetch(url, { signal: controller.signal });
+                clearTimeout(timer);
+            } else {
+                r = await fetch(url);
+            }
+        } catch (e) {
+            console.error('OWM current fetch error:', e);
+            return res.status(502).json({ error: 'owm_current_fetch_error' });
+        }
         if (!r.ok) {
             const text = await r.text().catch(() => '');
             console.error('OWM current failed:', r.status, text);
@@ -486,6 +525,44 @@ app.get('/api/weather/current', async (req, res) => {
     } catch (error) {
         console.error('Weather API error:', error);
         return res.status(500).json({ error: 'weather_current_failed' });
+    }
+});
+
+// Weather hourly forecast proxy (One Call 3.0 puis 2.5)
+app.get('/api/weather/forecast', async (req, res) => {
+    try {
+        const apiKey = process.env.OPENWEATHER_API_KEY;
+        if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
+
+        const lat = parseFloat(req.query.lat) || 45.5019;
+        const lon = parseFloat(req.query.lon) || -73.5674;
+        const units = (req.query.units || 'metric');
+        const lang = (req.query.lang || 'fr');
+
+        const build = (base) => `${base}/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily,alerts,current&units=${units}&lang=${lang}&appid=${apiKey}`;
+        const url30 = `https://api.openweathermap.org/data/3.0`;
+        const url25 = `https://api.openweathermap.org/data/2.5`;
+
+        async function fetchOnce(url) {
+            try {
+                const r = await fetch(url);
+                if (!r.ok) throw new Error('bad_status_' + r.status);
+                return await r.json();
+            } catch (e) { throw e; }
+        }
+
+        let data;
+        try {
+            data = await fetchOnce(build(url30));
+        } catch (_) {
+            data = await fetchOnce(build(url25));
+        }
+        const hourly = Array.isArray(data.hourly) ? data.hourly.slice(0, 6) : [];
+        const simplified = hourly.map(h => ({ dt: h.dt, main: { temp: h.temp, feels_like: h.feels_like }, weather: h.weather || [] }));
+        return res.json({ hourly: simplified, timezone_offset: data.timezone_offset || 0 });
+    } catch (error) {
+        console.error('Weather forecast error:', error);
+        return res.status(500).json({ error: 'weather_forecast_failed' });
     }
 });
 
