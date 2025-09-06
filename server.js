@@ -89,7 +89,7 @@ const setCache = (req, res, next) => {
                    req.path.match(/\.(css|js)$/i) ? '1d' : '1h';
 
     if (req.method === 'GET') {
-        if (isDev || req.path.startsWith('/cms/')) {
+        if (isDev || req.path.startsWith('/cms')) {
             // In development, disable caching for quicker feedback
             res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
             res.set('Pragma', 'no-cache');
@@ -112,21 +112,26 @@ app.use((req, res, next) => {
 
 // Serve static files with caching (AFTER auth check)
 app.use(setCache);
-app.use(express.static(path.join(__dirname), {
-    etag: true,
-    lastModified: true,
-    setHeaders: (res, path) => {
-        if (path.endsWith('.html')) {
-            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+app.use((req, res, next) => {
+    // Skip global static handling for CMS paths to avoid directory redirect caching
+    if (req.path.startsWith('/cms')) return next();
+    return express.static(path.join(__dirname), {
+        etag: true,
+        lastModified: true,
+        redirect: false,
+        setHeaders: (res, filePath) => {
+            if (filePath.endsWith('.html')) {
+                res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            }
+            if (filePath.endsWith('sw.js')) {
+                res.setHeader('Cache-Control', 'no-cache');
+            }
+            if (filePath.endsWith('riders.json')) {
+                res.setHeader('Cache-Control', 'no-cache');
+            }
         }
-        if (path.endsWith('sw.js')) {
-            res.setHeader('Cache-Control', 'no-cache');
-        }
-        if (path.endsWith('riders.json')) {
-            res.setHeader('Cache-Control', 'no-cache');
-        }
-    }
-}));
+    })(req, res, next);
+});
 
 // =============================
 // CMS Data Helpers & Endpoints

@@ -1,9 +1,9 @@
 // === GPCQM 2025 - Service Worker - Mobile Optimized ===
 
-const CACHE_NAME = 'gpcqm-v3.3';
-const RUNTIME_CACHE = 'gpcqm-runtime-v3.3';
-const IMAGE_CACHE = 'gpcqm-images-v3.3';
-const API_CACHE = 'gpcqm-api-v3.3';
+const CACHE_NAME = 'gpcqm-v3.4';
+const RUNTIME_CACHE = 'gpcqm-runtime-v3.4';
+const IMAGE_CACHE = 'gpcqm-images-v3.4';
+const API_CACHE = 'gpcqm-api-v3.4';
 
 // Mobile-specific configurations
 const MOBILE_CACHE_CONFIG = {
