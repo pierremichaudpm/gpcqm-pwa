@@ -1325,88 +1325,14 @@ const teamStyles = (typeof window !== 'undefined' && window.teamStyles) ? window
 
 // Apply jersey backgrounds to expanded teams
 function applyJerseyBackgrounds() {
-    document.querySelectorAll('.team-jersey-bg').forEach(bg => {
-        const teamName = bg.dataset.team;
-        const style = teamStyles[teamName] || { color: '#6BA053', bg: '#ffffff' };
-
-        // Set a visible placeholder immediately
-        const placeholder = 'images/jerseys/jersey-placeholder.svg';
-        const altPlaceholder = 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
-        tryLoadImageInOrder([placeholder, altPlaceholder], function(path){
-            bg.style.backgroundImage = `url(${path})`;
-            bg.style.backgroundSize = '80%';
-            bg.style.backgroundPosition = 'center';
-            bg.style.backgroundRepeat = 'no-repeat';
-            bg.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-        });
-
-        // Build candidate paths in priority order
-        const slug = slugifyTeamName(teamName);
-        const overrideSlug = jerseySlugOverrides[teamName];
-        const explicit = style && style.jersey ? [style.jersey] : [];
-        const candidates = [];
-
-        // 1) Explicit mapping
-        explicit.forEach(file => {
-            candidates.push(`images/jerseys/${file}`);
-            candidates.push(`listeengages-package/listeengages/images/jerseys/${file}`);
-        });
-
-        // 2) Derived from team name
-        const slugCandidates = [];
-        if (overrideSlug) {
-            slugCandidates.push(overrideSlug);
-            // Try lowercase variant too (for files like EF.png)
-            if (overrideSlug.toLowerCase() !== overrideSlug) {
-                slugCandidates.push(overrideSlug.toLowerCase());
-            }
-        }
-        slugCandidates.push(slug);
-        // Build path candidates for each slug candidate
-        slugCandidates.forEach(base => {
-            ['png', 'svg', 'webp'].forEach(ext => {
-                candidates.push(`images/jerseys/${base}.${ext}`);
-                candidates.push(`listeengages-package/listeengages/images/jerseys/${base}.${ext}`);
-            });
-        });
-
-        tryLoadImageInOrder(candidates, function(path) {
-            bg.style.backgroundImage = `url(${path})`;
-            bg.style.backgroundSize = '80%';
-            bg.style.backgroundPosition = 'center';
-            bg.style.backgroundRepeat = 'no-repeat';
-            bg.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-            bg.setAttribute('data-jersey-path', path);
-        }, function() {
-            // Fallback: SVG jersey with team colors
-            const teamId = teamName.replace(/[^a-zA-Z0-9]/g, '');
-            const svgJersey = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
-                    <defs>
-                        <linearGradient id="grad${teamId}" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:${style.bg};stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:${style.bg};stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:${style.color};stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:${style.color};stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M50 60 L50 40 Q50 20 70 20 L80 20 L85 10 L115 10 L120 20 L130 20 Q150 20 150 40 L150 60 L180 80 L180 120 L160 100 L160 180 Q160 200 150 200 L50 200 Q40 200 40 180 L40 100 L20 120 L20 80 L50 60 Z" 
-                          fill="url(#grad${teamId})" 
-                          stroke="#444" 
-                          stroke-width="1.5"/>
-                    <text x="100" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="${style.bg === '#FFFFFF' ? '#333' : '#FFF'}">
-                        ${teamName.split(' ')[0].substring(0, 3).toUpperCase()}
-                    </text>
-                </svg>
-            `;
-            const encodedSvg = encodeURIComponent(svgJersey);
-            bg.style.backgroundImage = `url("data:image/svg+xml,${encodedSvg}")`;
-            bg.style.backgroundSize = '70%';
-            bg.style.backgroundPosition = 'center';
-            bg.style.backgroundRepeat = 'no-repeat';
-            bg.setAttribute('data-jersey-path', 'inline-svg');
-        });
+    const bgs = document.querySelectorAll('.team-jersey-bg');
+    bgs.forEach(bg => {
+        try {
+            bg.style.backgroundImage = 'none';
+            bg.style.display = 'none';
+        } catch(_) {}
     });
+    return; // Désactiver les backgrounds pour éviter tout mélange d'images
 }
 
 function slugifyTeamName(name) {
