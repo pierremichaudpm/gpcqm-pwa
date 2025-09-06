@@ -614,12 +614,14 @@ function openMapModal() {
         if (img) {
             const frMap = 'images/225318gpcmtlparcours.png';
             const enMap = 'images/225318gpcmtlparcours_en.png';
-            const desired = currentLanguage === 'en' ? enMap : frMap;
+            const base = currentLanguage === 'en' ? enMap : frMap;
+            const desired = `${base}?t=${Date.now()}`;
             if (img.getAttribute('src') !== desired) {
                 img.setAttribute('src', desired);
             }
             img.onerror = function() {
-                const alt = desired === frMap ? enMap : frMap;
+                const altBase = base === frMap ? enMap : frMap;
+                const alt = `${altBase}?t=${Date.now()}`;
                 if (img.getAttribute('src') !== alt) img.setAttribute('src', alt);
             };
             img.style.display = '';
@@ -700,11 +702,21 @@ function openWatchModal() {
     if (!m) return;
     const img = document.getElementById('watchModalImage');
     if (img) {
-        const desiredSrc = currentLanguage === 'en' ? 'images/meilleurs_endroits_mtl_en.png' : 'images/meilleurs_endroits_mtl_fr.png';
+        const frBase = 'images/meilleurs_endroits_mtl_fr.png';
+        const enBase = 'images/meilleurs_endroits_mtl_en.png';
+        const base = currentLanguage === 'en' ? enBase : frBase;
+        const desiredSrc = `${base}?t=${Date.now()}`;
         if (img.getAttribute('src') !== desiredSrc) {
             img.setAttribute('src', desiredSrc);
         }
         img.style.display = '';
+        img.onerror = function() {
+            const altBase = base === frBase ? enBase : frBase;
+            const altSrc = `${altBase}?t=${Date.now()}`;
+            if (img.getAttribute('src') !== altSrc) {
+                img.setAttribute('src', altSrc);
+            }
+        };
     }
     m.classList.remove('hidden');
     const closeBtn = m.querySelector('.modal-close');
