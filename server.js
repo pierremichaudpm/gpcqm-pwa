@@ -168,6 +168,21 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
+// Utility: append cache-buster to asset URL (prevents stale jersey images)
+function appendCacheBusterToUrl(url) {
+    try {
+        if (!url || typeof url !== 'string') return url;
+        const now = Date.now();
+        // Replace existing t= param, otherwise append
+        if (url.includes('t=')) {
+            return url.replace(/([?&])t=\d+/g, `$1t=${now}`);
+        }
+        return url + (url.includes('?') ? `&t=${now}` : `?t=${now}`);
+    } catch (_) {
+        return url;
+    }
+}
+
 // Convert flags <-> codes (minimal maps to cover known cases)
 function convertCountryCodeToFlag(code) {
     if (!code || typeof code !== 'string') return '';
@@ -276,6 +291,7 @@ const ridersData = {
         id: team.id,
         name: team.name,
         displayName: team.displayName,
+        jerseyPath: team.jerseyPath || '',
         riders: team.riders || []
     })), null, 4)}
 };
@@ -299,10 +315,16 @@ const ridersData = {
 }
 
 async function saveTeamsData(teams) {
+    // Ensure jersey paths include a cache-buster to avoid stale caches in clients
+    const teamsWithBusters = Array.isArray(teams) ? teams.map(team => ({
+        ...team,
+        jerseyPath: team && team.jerseyPath ? appendCacheBusterToUrl(team.jerseyPath) : team?.jerseyPath
+    })) : teams;
+
     await fs.mkdir(path.dirname(TEAMS_DATA_FILE), { recursive: true });
-    await fs.writeFile(TEAMS_DATA_FILE, JSON.stringify(teams, null, 2));
-    await updateRidersJson(teams);
-    await updateRidersJs(teams);
+    await fs.writeFile(TEAMS_DATA_FILE, JSON.stringify(teamsWithBusters, null, 2));
+    await updateRidersJson(teamsWithBusters);
+    await updateRidersJs(teamsWithBusters);
 }
 
 // CMS API routes
@@ -367,7 +389,8 @@ app.post('/api/upload-jersey', upload.single('jersey'), async (req, res) => {
             return res.status(400).json({ error: 'Aucun fichier uploadé' });
         }
         const jerseyPath = `/images/jerseys/${req.file.filename}`;
-        res.json({ success: true, path: jerseyPath });
+        // Return cache-busted path to force clients to fetch the fresh asset
+        res.json({ success: true, path: appendCacheBusterToUrl(jerseyPath) });
     } catch (error) {
         res.status(500).json({ error: "Erreur lors de l'upload du maillot" });
     }
