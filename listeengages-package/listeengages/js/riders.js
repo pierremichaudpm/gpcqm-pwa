@@ -1252,6 +1252,26 @@ function loadTeamsView() {
     // Apply jersey backgrounds
     applyJerseyBackgrounds();
 
+    // Ensure jersey <img> has a resilient fallback if custom path 404s
+    try {
+        const cards = container.querySelectorAll('.team-card');
+        cards.forEach(card => {
+            const img = card.querySelector('.team-jersey-img');
+            if (!img || img.dataset.fallbackBound === 'true') return;
+            const bg = card.querySelector('.team-jersey-bg');
+            const teamName = (bg && bg.getAttribute('data-team')) || (card.querySelector('.team-name')?.textContent) || '';
+            img.addEventListener('error', function onErr() {
+                try {
+                    const fallback = getJerseyPath(teamName, teamName) || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
+                    if (img.getAttribute('src') !== fallback) {
+                        img.setAttribute('src', fallback);
+                    }
+                } catch(_) {}
+            }, { once: true });
+            img.dataset.fallbackBound = 'true';
+        });
+    } catch(_) {}
+
     // Ensure clicks on team headers toggle expansion (event delegation + direct bind)
     bindTeamsAccordionDelegation();
     bindTeamHeaders();
