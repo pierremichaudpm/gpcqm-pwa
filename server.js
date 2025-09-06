@@ -8,6 +8,8 @@ const path = require('path');
 const rateLimit = require('express-rate-limit');
 const fs = require('fs').promises;
 const multer = require('multer');
+// Ensure fetch is available on Node < 18
+const fetch = global.fetch || ((...args) => import('node-fetch').then(({ default: f }) => f(...args)));
 require('dotenv').config();
 
 const app = express();
@@ -137,11 +139,12 @@ app.use((req, res, next) => {
 // CMS Data Helpers & Endpoints
 // =============================
 
-// Paths
+// Paths (persistant on Railway volume)
 const CMS_JERSEYS_DIR = process.env.CMS_JERSEYS_DIR || (process.env.RAILWAY_ENVIRONMENT ? '/data/jerseys' : path.join(__dirname, 'images', 'jerseys'));
-const TEAMS_DATA_FILE = path.join(__dirname, 'cms', 'teams-data.json');
+const DATA_BASE_DIR = process.env.RAILWAY_ENVIRONMENT ? '/data/_data' : path.join(__dirname, 'cms');
+const TEAMS_DATA_FILE = path.join(DATA_BASE_DIR, 'teams-data.json');
 const TEAMS_COMPLETE_FILE = path.join(__dirname, 'cms', 'teams-complete.json');
-const RIDERS_JSON_FILE = path.join(__dirname, 'riders.json');
+const RIDERS_JSON_FILE = path.join(DATA_BASE_DIR, 'riders.json');
 const RIDERS_JS_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'js', 'riders.js');
 
 // Serve persistent jerseys directory with graceful placeholder fallback
@@ -240,6 +243,7 @@ function convertFlagToCountryCode(flag) {
 
 async function readTeamsData() {
     try {
+        await fs.mkdir(path.dirname(TEAMS_DATA_FILE), { recursive: true }).catch(()=>{});
         const data = await fs.readFile(TEAMS_DATA_FILE, 'utf8');
         return JSON.parse(data);
     } catch (error) {
