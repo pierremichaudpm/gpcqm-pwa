@@ -91,6 +91,12 @@ const setCache = (req, res, next) => {
                    req.path.match(/\.(css|js)$/i) ? '1d' : '1h';
 
     if (req.method === 'GET') {
+        if (req.path.startsWith('/api/')) {
+            res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+            res.set('Pragma', 'no-cache');
+            res.set('Expires', '0');
+            return next();
+        }
         if (isDev || req.path.startsWith('/cms')) {
             // In development, disable caching for quicker feedback
             res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -181,9 +187,9 @@ function getLocalJerseyPath(teamName, displayName) {
         [/canada|équipe nationale/, 'canada.png']
     ];
     for (const [re, file] of pair) {
-        if (re.test(name)) return base + file;
+        if (re.test(name)) return appendCacheBusterToUrl(base + file);
     }
-    return base + 'jersey-placeholder.svg';
+    return appendCacheBusterToUrl(base + 'jersey-placeholder.svg');
 }
 
 app.get('/images/jerseys/:file', async (req, res) => {
@@ -529,6 +535,7 @@ app.use('/cms', (req, res, next) => {
 // Weather proxy endpoints (hide API key and centralize calls)
 app.get('/api/weather/current', async (req, res) => {
     try {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         const apiKey = process.env.OPENWEATHER_API_KEY;
         if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
 
@@ -568,6 +575,7 @@ app.get('/api/weather/current', async (req, res) => {
 // Weather hourly forecast proxy (One Call 3.0 puis 2.5)
 app.get('/api/weather/forecast', async (req, res) => {
     try {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         const apiKey = process.env.OPENWEATHER_API_KEY;
         if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
 
