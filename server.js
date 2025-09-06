@@ -271,6 +271,7 @@ async function updateRidersJson(teams) {
             id: team.id,
             name: team.name,
             displayName: team.displayName,
+            jerseyPath: team.jerseyPath || '',
             riders: (team.riders || []).map(r => ({
                 number: r.number,
                 name: r.name,
