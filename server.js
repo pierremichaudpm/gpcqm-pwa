@@ -144,7 +144,24 @@ const TEAMS_COMPLETE_FILE = path.join(__dirname, 'cms', 'teams-complete.json');
 const RIDERS_JSON_FILE = path.join(__dirname, 'riders.json');
 const RIDERS_JS_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'js', 'riders.js');
 
-// Serve persistent jerseys directory
+// Serve persistent jerseys directory with graceful placeholder fallback
+const PLACEHOLDER_JERSEY_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'images', 'jerseys', 'jersey-placeholder.svg');
+
+app.get('/images/jerseys/:file', async (req, res) => {
+    try {
+        const requestedFile = path.join(CMS_JERSEYS_DIR, req.params.file || '');
+        await fs.stat(requestedFile);
+        return res.sendFile(requestedFile);
+    } catch (_) {
+        try {
+            res.setHeader('Cache-Control', 'no-cache');
+            return res.sendFile(PLACEHOLDER_JERSEY_FILE);
+        } catch (e) {
+            return res.status(404).end();
+        }
+    }
+});
+
 app.use('/images/jerseys', express.static(CMS_JERSEYS_DIR));
 
 // Multer storage for jersey uploads
@@ -439,33 +456,32 @@ app.use('/cms', (req, res, next) => {
     express.static(path.join(__dirname, 'cms'))(req, res, next);
 });
 
-// Weather proxy endpoint (to hide API key)
+// Weather proxy endpoints (hide API key and centralize calls)
 app.get('/api/weather/current', async (req, res) => {
     try {
         const apiKey = process.env.OPENWEATHER_API_KEY;
-        if (!apiKey) {
-            return res.status(503).json({ error: 'Weather service not configured' });
+        if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
+
+        const lat = parseFloat(req.query.lat) || 45.5019; // Montréal
+        const lon = parseFloat(req.query.lon) || -73.5674;
+        const units = (req.query.units || 'metric');
+        const lang = (req.query.lang || 'fr');
+
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&appid=${apiKey}`;
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 5000);
+        const r = await fetch(url, { signal: controller.signal });
+        clearTimeout(timer);
+        if (!r.ok) {
+            const text = await r.text().catch(() => '');
+            console.error('OWM current failed:', r.status, text);
+            return res.status(r.status).json({ error: 'owm_current_failed' });
         }
-        
-        // Implementation would fetch from OpenWeatherMap API
-        // For now, return mock data
-        res.json({
-            main: {
-                temp: 18,
-                feels_like: 17,
-                humidity: 65
-            },
-            weather: [{
-                description: 'Partly cloudy',
-                icon: '02d'
-            }],
-            wind: {
-                speed: 3.5
-            }
-        });
+        const json = await r.json();
+        return res.json(json);
     } catch (error) {
         console.error('Weather API error:', error);
-        res.status(500).json({ error: 'Failed to fetch weather data' });
+        return res.status(500).json({ error: 'weather_current_failed' });
     }
 });
 
