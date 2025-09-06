@@ -1288,12 +1288,7 @@ function loadTeamsView() {
     bindTeamsAccordionDelegation();
     bindTeamHeaders();
 
-    // Ouverture par défaut de la première équipe pour valider l'interaction
-    try {
-        if ((!expandedTeams || expandedTeams.size === 0) && sortedTeams.length > 0) {
-            toggleTeam(sortedTeams[0].id);
-        }
-    } catch(_) {}
+    // Ne pas ouvrir d'équipe par défaut
 }
 
 function updateRidersStats() {
