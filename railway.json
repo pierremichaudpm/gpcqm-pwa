@@ -14,7 +14,7 @@
   },
   "environments": {
     "production": {
-      "PORT": 3000,
+      "PORT": "${{PORT}}",
       "NODE_ENV": "production",
       "CMS_JERSEYS_DIR": "/data/jerseys"
     }
