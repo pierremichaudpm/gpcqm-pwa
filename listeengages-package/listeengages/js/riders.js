@@ -1269,6 +1269,20 @@ function loadTeamsView() {
                 } catch(_) {}
             }, { once: true });
             img.dataset.fallbackBound = 'true';
+
+            // Also bind fallback for the small jersey icon in the header
+            const iconImg = card.querySelector('.team-jersey-icon img');
+            if (iconImg && iconImg.dataset.fallbackBound !== 'true') {
+                iconImg.addEventListener('error', function onIconErr() {
+                    try {
+                        const iconFallback = getJerseyPath(teamName, teamName) || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
+                        if (iconImg.getAttribute('src') !== iconFallback) {
+                            iconImg.setAttribute('src', iconFallback);
+                        }
+                    } catch(_) {}
+                }, { once: true });
+                iconImg.dataset.fallbackBound = 'true';
+            }
         });
     } catch(_) {}
 
