@@ -488,11 +488,28 @@ app.get('/riders.json', async (req, res) => {
             const raw = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
             data = JSON.parse(raw);
         }
+
+        async function preferCmsOrLocal(team) {
+            try {
+                const rawPath = (team && team.jerseyPath) || '';
+                const m = rawPath.match(/^\/?images\/jerseys\/([^?&#]+)/i);
+                if (m && m[1]) {
+                    const filename = m[1];
+                    try {
+                        await fs.stat(path.join(CMS_JERSEYS_DIR, filename));
+                        return appendCacheBusterToUrl(`/images/jerseys/${filename}`);
+                    } catch (_) { /* fall back */ }
+                }
+            } catch (_) { /* ignore */ }
+            return getLocalJerseyPath(team.name, team.displayName);
+        }
+
         if (data && Array.isArray(data.teams)) {
-            data.teams = data.teams.map(team => ({
+            const mapped = await Promise.all(data.teams.map(async (team) => ({
                 ...team,
-                jerseyPath: getLocalJerseyPath(team.name, team.displayName)
-            }));
+                jerseyPath: await preferCmsOrLocal(team)
+            })));
+            data.teams = mapped;
         }
         return res.type('application/json').send(JSON.stringify(data));
     } catch (e) {
