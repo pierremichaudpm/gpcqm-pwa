@@ -151,6 +151,40 @@ const RIDERS_JS_FILE = path.join(__dirname, 'listeengages-package', 'listeengage
 // Serve persistent jerseys directory with graceful placeholder fallback
 const PLACEHOLDER_JERSEY_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'images', 'jerseys', 'jersey-placeholder.svg');
 const REPO_JERSEYS_DIR = path.join(__dirname, 'images', 'jerseys');
+const PACKAGE_JERSEYS_DIR = path.join(__dirname, 'listeengages-package', 'listeengages', 'images', 'jerseys');
+
+function getLocalJerseyPath(teamName, displayName) {
+    const name = String(displayName || teamName || '').toLowerCase();
+    const base = '/listeengages-package/listeengages/images/jerseys/';
+    const pair = [
+        [/uae|emirates/, 'emirates.png'],
+        [/lidl|trek/, 'lidltrek.png'],
+        [/visma|lease a bike/, 'visma.png'],
+        [/ineos/, 'ineos.png'],
+        [/soudal|quick/, 'soudal.png'],
+        [/decathlon|ag2r/, 'decathlon.png'],
+        [/red\s*bull|bora/, 'redbullbora.png'],
+        [/alpecin/, 'alpecin.png'],
+        [/groupama|fdj/, 'groupama.png'],
+        [/ef|education/, 'ef.png'],
+        [/bahrain/, 'bahrain.png'],
+        [/movistar/, 'movistar.png'],
+        [/jayco/, 'jayco.png'],
+        [/arkea|arkéa/, 'arkea.png'],
+        [/picnic|postnl|dsm/, 'picnic.png'],
+        [/intermarche|intermarché|wanty/, 'intermarchewanty.png'],
+        [/cofidis/, 'cofidis.png'],
+        [/astana/, 'astana.png'],
+        [/israel|premier\s*tech|ipt/, 'palestine.png'],
+        [/uno\s*-?x|uno\sx/, 'uno.png'],
+        [/tudor/, 'tudor.png'],
+        [/canada|équipe nationale/, 'canada.png']
+    ];
+    for (const [re, file] of pair) {
+        if (re.test(name)) return base + file;
+    }
+    return base + 'jersey-placeholder.svg';
+}
 
 app.get('/images/jerseys/:file', async (req, res) => {
     const filename = req.params.file || '';
@@ -438,18 +472,25 @@ app.post('/api/riders-json', async (req, res) => {
 
 // Expose riders.json depuis le volume pour le front
 app.get('/riders.json', async (req, res) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     try {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        const raw = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
-        res.type('application/json').send(raw);
-    } catch (e) {
-        // fallback sur le fichier embarqué si le volume est vide
+        let data;
         try {
-            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-            return res.sendFile(path.join(__dirname, 'riders.json'));
+            const raw = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
+            data = JSON.parse(raw);
         } catch (_) {
-            return res.status(404).json({ error: 'riders_json_not_found' });
+            const raw = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
+            data = JSON.parse(raw);
         }
+        if (data && Array.isArray(data.teams)) {
+            data.teams = data.teams.map(team => ({
+                ...team,
+                jerseyPath: getLocalJerseyPath(team.name, team.displayName)
+            }));
+        }
+        return res.type('application/json').send(JSON.stringify(data));
+    } catch (e) {
+        return res.status(404).json({ error: 'riders_json_not_found' });
     }
 });
 
