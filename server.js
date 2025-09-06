@@ -160,19 +160,15 @@ app.get('/images/jerseys/:file', async (req, res) => {
         res.setHeader('Cache-Control', 'no-cache');
         return res.sendFile(requestedFile);
     } catch (_) {
-        // Fallback to repo-shipped jerseys if not present on volume
+        // Si absent du volume, on tente le dossier du repo
         try {
             const repoFile = path.join(REPO_JERSEYS_DIR, filename);
             await fs.stat(repoFile);
             res.setHeader('Cache-Control', 'no-cache');
             return res.sendFile(repoFile);
         } catch (__) {
-            try {
-                res.setHeader('Cache-Control', 'no-cache');
-                return res.sendFile(PLACEHOLDER_JERSEY_FILE);
-            } catch (e) {
-                return res.status(404).end();
-            }
+            // Important: renvoyer 404 pour déclencher le fallback client (maillot local)
+            return res.status(404).end();
         }
     }
 });
