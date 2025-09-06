@@ -57,8 +57,8 @@ class WeatherWidget {
     }
 
     async fetchCurrentWeather() {
-        // Utiliser lat/lon pour être cohérent avec OneCall
-        const url = `${this.apiBase}/weather?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&appid=${this.apiKey}`;
+        // Passe par le proxy serveur pour éviter l'exposition de la clé et fiabiliser les quotas
+        const url = `/api/weather/current?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}`;
         const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) {
             const text = await res.text().catch(() => '');
