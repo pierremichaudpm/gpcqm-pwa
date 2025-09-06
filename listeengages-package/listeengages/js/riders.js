@@ -1210,18 +1210,16 @@ function loadTeamsView() {
     sortedTeams.forEach(team => {
         const isExpanded = expandedTeams.has(team.id);
         
-        // Obtenir le chemin du maillot ou utiliser un maillot par défaut
-        const jerseyPath = team.jerseyPath || getJerseyPath(team.name, team.displayName);
+        // Obtenir le chemin du maillot, plus un fallback local déterministe
+        const fallbackPath = getJerseyPath(team.name, team.displayName) || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
+        const jerseyPath = team.jerseyPath || fallbackPath;
         
         html += `
             <div class="team-card ${isExpanded ? 'expanded' : ''}" data-team-id="${team.id}">
                 <div class="team-header" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}">
                     <div class="team-info">
                         <span class="team-jersey-icon">
-                            ${jerseyPath ? 
-                                `<img src="${jerseyPath}" alt="Maillot ${team.name}" style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;">` : 
-                                '👕'
-                            }
+                            <img src="${jerseyPath}" alt="Maillot ${team.name}" style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;" onerror="this.onerror=null; this.src='${fallbackPath}'">
                         </span>
                         <span class="team-name">${team.displayName || team.name}</span>
                     </div>
@@ -1230,7 +1228,7 @@ function loadTeamsView() {
                 <div class="team-riders">
                     <div class="team-jersey-display">
                         <div class="team-jersey-bg" data-team="${team.name}"></div>
-                        <img class="team-jersey-img" alt="Maillot ${team.name}" src="${(jerseyPath || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg')}">
+                        <img class="team-jersey-img" alt="Maillot ${team.name}" src="${jerseyPath}" onerror="this.onerror=null; this.src='${fallbackPath}'">
                     </div>
                     <div class="riders-grid">
                         ${team.riders.map(rider => `
