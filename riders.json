@@ -1,0 +1,970 @@
+{
+  "teams": [
+    {
+      "id": 1,
+      "name": "UAE Team Emirates",
+      "displayName": "UAE TEAM EMIRATES XRG",
+      "riders": [
+        {
+          "number": 11,
+          "name": "Tadej POGACAR",
+          "country": "SLO"
+        },
+        {
+          "number": 12,
+          "name": "Brandon MCNULTY",
+          "country": "USA"
+        },
+        {
+          "number": 13,
+          "name": "Jhonatan NARVAEZ",
+          "country": "ECU"
+        },
+        {
+          "number": 14,
+          "name": "Nils POLITT",
+          "country": "GER"
+        },
+        {
+          "number": 15,
+          "name": "Pavel SIVAKOV",
+          "country": "FRA"
+        },
+        {
+          "number": 16,
+          "name": "Tim WELLENS",
+          "country": "BEL"
+        },
+        {
+          "number": 17,
+          "name": "Adam YATES",
+          "country": "GBR"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Lotto Dstny",
+      "displayName": "LOTTO",
+      "riders": [
+        {
+          "number": 181,
+          "name": "DE LIE, Arnaud",
+          "country": "BEL"
+        },
+        {
+          "number": 182,
+          "name": "BERCKMOES, Jenno",
+          "country": "BEL"
+        },
+        {
+          "number": 183,
+          "name": "DRIZNERS, Jarrad",
+          "country": "AUS"
+        },
+        {
+          "number": 184,
+          "name": "GRIGNARD, Sébastien",
+          "country": "BEL"
+        },
+        {
+          "number": 185,
+          "name": "THOMPSON, Reuben",
+          "country": "NZL"
+        },
+        {
+          "number": 186,
+          "name": "CURRIE, Logan",
+          "country": "NZL"
+        },
+        {
+          "number": 187,
+          "name": "VANDENABEELE, Henri",
+          "country": "BEL"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Team Visma | Lease a Bike",
+      "displayName": "TEAM VISMA | LEASE A BIKE",
+      "riders": [
+        {
+          "number": 21,
+          "name": "VAN AERT, Wout",
+          "country": "BEL"
+        },
+        {
+          "number": 22,
+          "name": "BENOOT, Tiesj",
+          "country": "BEL"
+        },
+        {
+          "number": 23,
+          "name": "LAPORTE, Christophe",
+          "country": "FRA"
+        },
+        {
+          "number": 24,
+          "name": "NORDHAGEN, Jorgen",
+          "country": "NOR"
+        },
+        {
+          "number": 25,
+          "name": "VALTER, Attila",
+          "country": "HUN"
+        },
+        {
+          "number": 26,
+          "name": "YATES, Simon",
+          "country": "GBR"
+        },
+        {
+          "number": 27,
+          "name": "KRUIJSWIJK, Steven",
+          "country": "NED"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "INEOS Grenadiers",
+      "displayName": "INEOS GRENADIERS",
+      "riders": [
+        {
+          "number": 51,
+          "name": "LAURANCE, Axel",
+          "country": "FRA"
+        },
+        {
+          "number": 52,
+          "name": "AUGUST, Andrew Jacob",
+          "country": "USA"
+        },
+        {
+          "number": 53,
+          "name": "HAMILTON, Lucas",
+          "country": "AUS"
+        },
+        {
+          "number": 54,
+          "name": "LEONARD, Michael",
+          "country": "CAN"
+        },
+        {
+          "number": 55,
+          "name": "HANSEN, Peter Øxenberg",
+          "country": "DEN"
+        },
+        {
+          "number": 56,
+          "name": "PUCCIO, Salvatore",
+          "country": "ITA"
+        },
+        {
+          "number": 57,
+          "name": "SCHMIDT, Artem",
+          "country": "USA"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Soudal Quick-Step",
+      "displayName": "SOUDAL QUICK-STEP",
+      "riders": [
+        {
+          "number": 41,
+          "name": "CATTANEO, Mattia",
+          "country": "ITA"
+        },
+        {
+          "number": 42,
+          "name": "EENKHOORN, Pascal",
+          "country": "NED"
+        },
+        {
+          "number": 43,
+          "name": "GELDERS, Gil",
+          "country": "BEL"
+        },
+        {
+          "number": 44,
+          "name": "HUBY, Antoine",
+          "country": "FRA"
+        },
+        {
+          "number": 45,
+          "name": "PARET-PEINTRE, Valentin",
+          "country": "FRA"
+        },
+        {
+          "number": 46,
+          "name": "LAMPERTI, Lucianno",
+          "country": "USA"
+        },
+        {
+          "number": 47,
+          "name": "SERRY, Pieter",
+          "country": "BEL"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Lidl-Trek",
+      "displayName": "LIDL-TREK",
+      "riders": [
+        {
+          "number": 31,
+          "name": "SIMMONS, Quinn",
+          "country": "USA"
+        },
+        {
+          "number": 32,
+          "name": "LOPEZ PEREZ, Juan Pedro",
+          "country": "ESP"
+        },
+        {
+          "number": 33,
+          "name": "MOSCA, Jacopo",
+          "country": "ITA"
+        },
+        {
+          "number": 34,
+          "name": "NYS, Thibau",
+          "country": "BEL"
+        },
+        {
+          "number": 35,
+          "name": "OOMEN, Sam",
+          "country": "NED"
+        },
+        {
+          "number": 36,
+          "name": "JENSEN, Mattias",
+          "country": "DEN"
+        },
+        {
+          "number": 37,
+          "name": "VERGAERDE, Otto",
+          "country": "BEL"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Decathlon AG2R La Mondiale Team",
+      "displayName": "DECATHLON AG2R LA MONDIALE TEAM",
+      "riders": [
+        {
+          "number": 101,
+          "name": "GODON, Dorian",
+          "country": "FRA"
+        },
+        {
+          "number": 102,
+          "name": "BERTHET, Clément",
+          "country": "FRA"
+        },
+        {
+          "number": 103,
+          "name": "DEWULF, Stan",
+          "country": "BEL"
+        },
+        {
+          "number": 104,
+          "name": "LAFAY, Victor",
+          "country": "FRA"
+        },
+        {
+          "number": 105,
+          "name": "LAPEIRA, Paul",
+          "country": "FRA"
+        },
+        {
+          "number": 106,
+          "name": "TRONCHON, Bastien",
+          "country": "FRA"
+        },
+        {
+          "number": 107,
+          "name": "GAUTHERAT, Pierre",
+          "country": "FRA"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Red Bull - BORA - hansgrohe",
+      "displayName": "RED BULL - BORA – HANSGROHE",
+      "riders": [
+        {
+          "number": 61,
+          "name": "VAN GILS, Maxim",
+          "country": "BEL"
+        },
+        {
+          "number": 62,
+          "name": "ADRIA OLIVERAS, Roger",
+          "country": "ESP"
+        },
+        {
+          "number": 63,
+          "name": "KOCH, Jonas",
+          "country": "GER"
+        },
+        {
+          "number": 64,
+          "name": "LIPOWITZ, Florian",
+          "country": "GER"
+        },
+        {
+          "number": 65,
+          "name": "PALZER, Anton",
+          "country": "GER"
+        },
+        {
+          "number": 66,
+          "name": "PITHIE, Laurence",
+          "country": "NZL"
+        },
+        {
+          "number": 67,
+          "name": "TRATNIK, Jan",
+          "country": "SLO"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Alpecin-Deceuninck",
+      "displayName": "ALPECIN-DECEUNINCK",
+      "riders": [
+        {
+          "number": 71,
+          "name": "HERMANS, Quinten",
+          "country": "BEL"
+        },
+        {
+          "number": 72,
+          "name": "BOVEN, Lars",
+          "country": "NED"
+        },
+        {
+          "number": 73,
+          "name": "GHYS, Robbe",
+          "country": "BEL"
+        },
+        {
+          "number": 74,
+          "name": "VERMEERSCH, Gianni",
+          "country": "BEL"
+        },
+        {
+          "number": 75,
+          "name": "MEURISSE, Xandro",
+          "country": "BEL"
+        },
+        {
+          "number": 76,
+          "name": "VAN TRICHT, Stan",
+          "country": "BEL"
+        },
+        {
+          "number": 77,
+          "name": "VAN DEN BOSSCHE, Fabio",
+          "country": "BEL"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Groupama-FDJ",
+      "displayName": "GROUPAMA-FDJ",
+      "riders": [
+        {
+          "number": 81,
+          "name": "MADOUAS, Valentin",
+          "country": "FRA"
+        },
+        {
+          "number": 82,
+          "name": "ASKEY, Lewis",
+          "country": "GBR"
+        },
+        {
+          "number": 83,
+          "name": "DAVY, Clement",
+          "country": "FRA"
+        },
+        {
+          "number": 84,
+          "name": "GENIETS, Kevin",
+          "country": "LUX"
+        },
+        {
+          "number": 85,
+          "name": "JACOBS, Johan",
+          "country": "SUI"
+        },
+        {
+          "number": 86,
+          "name": "PACHER, Quentin",
+          "country": "FRA"
+        },
+        {
+          "number": 87,
+          "name": "ROCHAS, Remy",
+          "country": "FRA"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "EF Education - EasyPost",
+      "displayName": "EF EDUCATION - EASYPOST",
+      "riders": [
+        {
+          "number": 101,
+          "name": "Tejay VAN GARDEREN",
+          "country": "USA"
+        },
+        {
+          "number": 102,
+          "name": "Ben HEALY",
+          "country": "IRL"
+        },
+        {
+          "number": 103,
+          "name": "Mikkel HONORÉ",
+          "country": "DEN"
+        },
+        {
+          "number": 104,
+          "name": "Lukas NERURKAR",
+          "country": "GBR"
+        },
+        {
+          "number": 105,
+          "name": "Nelson QUINN",
+          "country": "USA"
+        },
+        {
+          "number": 106,
+          "name": "Stefan DE BOD",
+          "country": "RSA"
+        },
+        {
+          "number": 107,
+          "name": "Michael VALGREN",
+          "country": "DEN"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Bahrain Victorious",
+      "displayName": "BAHRAIN VICTORIOUS",
+      "riders": [
+        {
+          "number": 91,
+          "name": "BILBAO LOPEZ DE ARMENTIA, Pello",
+          "country": "ESP"
+        },
+        {
+          "number": 92,
+          "name": "MARTINEZ, Lenny",
+          "country": "FRA"
+        },
+        {
+          "number": 93,
+          "name": "MIHOLJEVIC, Fran",
+          "country": "CRO"
+        },
+        {
+          "number": 94,
+          "name": "MOHORIC, Matej",
+          "country": "SLO"
+        },
+        {
+          "number": 95,
+          "name": "ARNDT, Nikias",
+          "country": "GER"
+        },
+        {
+          "number": 96,
+          "name": "EULALIO, Afonso",
+          "country": "POR"
+        },
+        {
+          "number": 97,
+          "name": "ZAMBANINI, Edoardo",
+          "country": "ITA"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Movistar Team",
+      "displayName": "MOVISTAR TEAM",
+      "riders": [
+        {
+          "number": 121,
+          "name": "RUBIO, Einer Augusto",
+          "country": "COL"
+        },
+        {
+          "number": 122,
+          "name": "BARRENETXEA, Jon",
+          "country": "ESP"
+        },
+        {
+          "number": 123,
+          "name": "BARTA, William",
+          "country": "USA"
+        },
+        {
+          "number": 124,
+          "name": "FORMOLO, Davide",
+          "country": "ITA"
+        },
+        {
+          "number": 125,
+          "name": "GUERREIRO, Ruben Antonio",
+          "country": "POR"
+        },
+        {
+          "number": 126,
+          "name": "MUHLBERGER, Gregor",
+          "country": "AUT"
+        },
+        {
+          "number": 127,
+          "name": "TESFAZIÓN OCBIT, Natnael",
+          "country": "ERI"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Team Jayco AlUla",
+      "displayName": "TEAM JAYCO ALULA",
+      "riders": [
+        {
+          "number": 1,
+          "name": "Michael MATTHEWS",
+          "country": "AUS"
+        },
+        {
+          "number": 2,
+          "name": "Luke DURBRIDGE",
+          "country": "AUS"
+        },
+        {
+          "number": 3,
+          "name": "Asbjørn HELLEMOSE",
+          "country": "DEN"
+        },
+        {
+          "number": 4,
+          "name": "Michael HEPBURN",
+          "country": "AUS"
+        },
+        {
+          "number": 5,
+          "name": "Mauro SCHMID",
+          "country": "SUI"
+        },
+        {
+          "number": 6,
+          "name": "DONALDSON, Robert Edward",
+          "country": "GBR"
+        },
+        {
+          "number": 7,
+          "name": "Filippo ZANA",
+          "country": "ITA"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Arkéa-B&B Hotels",
+      "displayName": "ARKEA-B&B HOTELS",
+      "riders": [
+        {
+          "number": 171,
+          "name": "COSTIOU, Ewen",
+          "country": "FRA"
+        },
+        {
+          "number": 172,
+          "name": "DELAPLACE, Anthony",
+          "country": "FRA"
+        },
+        {
+          "number": 173,
+          "name": "HUYS, Laurens",
+          "country": "BEL"
+        },
+        {
+          "number": 174,
+          "name": "LE BERRE, Mathis",
+          "country": "FRA"
+        },
+        {
+          "number": 175,
+          "name": "SVESTAD-BARDSENG, Embret",
+          "country": "NOR"
+        },
+        {
+          "number": 176,
+          "name": "GRONDIN, Donavan",
+          "country": "FRA"
+        },
+        {
+          "number": 177,
+          "name": "RIES, Michel",
+          "country": "LUX"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Team DSM-Firmenich PostNL",
+      "displayName": "TEAM PICNIC POSTNL",
+      "riders": [
+        {
+          "number": 141,
+          "name": "ONLEY, Oscar",
+          "country": "GBR"
+        },
+        {
+          "number": 142,
+          "name": "ANDRESEN, Tobias Lund",
+          "country": "DEN"
+        },
+        {
+          "number": 143,
+          "name": "BARGUIL, Warren",
+          "country": "FRA"
+        },
+        {
+          "number": 144,
+          "name": "VAN DEN BROEK, Frank",
+          "country": "NED"
+        },
+        {
+          "number": 145,
+          "name": "COMBAUD, Romain",
+          "country": "FRA"
+        },
+        {
+          "number": 146,
+          "name": "DHONDT, Robbe",
+          "country": "BEL"
+        },
+        {
+          "number": 147,
+          "name": "NABERMAN, Tim",
+          "country": "NED"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Intermarché - Wanty",
+      "displayName": "INTERMARCHÉ - WANTY",
+      "riders": [
+        {
+          "number": 151,
+          "name": "GIRMAY, Biniam",
+          "country": "ERI"
+        },
+        {
+          "number": 152,
+          "name": "BARRÉ, Louis",
+          "country": "FRA"
+        },
+        {
+          "number": 153,
+          "name": "BRAET, Vito",
+          "country": "BEL"
+        },
+        {
+          "number": 154,
+          "name": "KAMP, Alexander",
+          "country": "DEN"
+        },
+        {
+          "number": 155,
+          "name": "PAQUOT, Tom",
+          "country": "BEL"
+        },
+        {
+          "number": 156,
+          "name": "RUTSCH, Jonas",
+          "country": "GER"
+        },
+        {
+          "number": 157,
+          "name": "VAN SINTMAARTENSDIJK, Roel",
+          "country": "NED"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Cofidis",
+      "displayName": "COFIDIS",
+      "riders": [
+        {
+          "number": 161,
+          "name": "ARANBURU, Alex",
+          "country": "ESP"
+        },
+        {
+          "number": 162,
+          "name": "DEBEAUMARCHE, Nicolas",
+          "country": "FRA"
+        },
+        {
+          "number": 163,
+          "name": "IZAGUIRRE, Ion",
+          "country": "ESP"
+        },
+        {
+          "number": 164,
+          "name": "MAISONOBE, Sam",
+          "country": "FRA"
+        },
+        {
+          "number": 165,
+          "name": "PEREZ, Anthony",
+          "country": "FRA"
+        },
+        {
+          "number": 166,
+          "name": "ROBEET, Ludovic",
+          "country": "BEL"
+        },
+        {
+          "number": 167,
+          "name": "TOUZE, Damien",
+          "country": "FRA"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Astana Qazaqstan Team",
+      "displayName": "XDS ASTANA TEAM",
+      "riders": [
+        {
+          "number": 131,
+          "name": "BETTIOL, Alberto",
+          "country": "ITA"
+        },
+        {
+          "number": 132,
+          "name": "CHARMIG, Anthon",
+          "country": "DEN"
+        },
+        {
+          "number": 133,
+          "name": "GATE, Aaron Murray",
+          "country": "NZL"
+        },
+        {
+          "number": 134,
+          "name": "MULUEBERHAN SOLOMON, Henok",
+          "country": "ERI"
+        },
+        {
+          "number": 135,
+          "name": "KANTER, Max",
+          "country": "GER"
+        },
+        {
+          "number": 136,
+          "name": "VELASCO, Simone",
+          "country": "ITA"
+        },
+        {
+          "number": 137,
+          "name": "SCHELLING, Ide",
+          "country": "NED"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Israel - Premier Tech",
+      "displayName": "IPT",
+      "riders": [
+        {
+          "number": 191,
+          "name": "STRONG, Corbin",
+          "country": "NZL"
+        },
+        {
+          "number": 192,
+          "name": "BLACKMORE, Joseph Peter",
+          "country": "GBR"
+        },
+        {
+          "number": 193,
+          "name": "BOIVIN, Guillaume",
+          "country": "CAN"
+        },
+        {
+          "number": 194,
+          "name": "CLARKE, Simon",
+          "country": "AUS"
+        },
+        {
+          "number": 195,
+          "name": "HOULE, Hugo",
+          "country": "CAN"
+        },
+        {
+          "number": 196,
+          "name": "NEILANDS, Krists",
+          "country": "LAT"
+        },
+        {
+          "number": 197,
+          "name": "SHEEHAN, Riley",
+          "country": "USA"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Uno-X Mobility",
+      "displayName": "UNO-X MOBILITY",
+      "riders": [
+        {
+          "number": 201,
+          "name": "JOHANNESSEN, Tobias Halland",
+          "country": "NOR"
+        },
+        {
+          "number": 202,
+          "name": "JOHANNESSEN, Anders Halland",
+          "country": "NOR"
+        },
+        {
+          "number": 203,
+          "name": "ABRAHAMSEN, Jonas",
+          "country": "NOR"
+        },
+        {
+          "number": 204,
+          "name": "DVERSNES, Fredrik",
+          "country": "NOR"
+        },
+        {
+          "number": 205,
+          "name": "LEVY, William Blume",
+          "country": "DEN"
+        },
+        {
+          "number": 206,
+          "name": "LØLAND, Sakarias",
+          "country": "NOR"
+        },
+        {
+          "number": 207,
+          "name": "SKAARSETH, Anders",
+          "country": "NOR"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Tudor Pro Cycling Team",
+      "displayName": "TUDOR PRO CYCLING TEAM",
+      "riders": [
+        {
+          "number": 211,
+          "name": "ALAPHILIPPE, Julian",
+          "country": "FRA"
+        },
+        {
+          "number": 212,
+          "name": "ERIKSSON, Jacob",
+          "country": "SWE"
+        },
+        {
+          "number": 213,
+          "name": "ERIKSSON, Lucas",
+          "country": "SWE"
+        },
+        {
+          "number": 214,
+          "name": "MAYRHOFER, Marius",
+          "country": "GER"
+        },
+        {
+          "number": 215,
+          "name": "WARBASSE, Lawrence",
+          "country": "USA"
+        },
+        {
+          "number": 216,
+          "name": "WEISS, Fabian",
+          "country": "SUI"
+        },
+        {
+          "number": 217,
+          "name": "WILKSCH, Hannes",
+          "country": "GER"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "name": "Équipe Canada",
+      "displayName": "ÉQUIPE NATIONALE CANADA",
+      "riders": [
+        {
+          "number": 221,
+          "name": "JACOB, Philippe",
+          "country": "CAN"
+        },
+        {
+          "number": 222,
+          "name": "GAUTHIER, Jérôme",
+          "country": "CAN"
+        },
+        {
+          "number": 223,
+          "name": "MATTERN, Carson",
+          "country": "CAN"
+        },
+        {
+          "number": 224,
+          "name": "COUTURE, Samuel",
+          "country": "CAN"
+        },
+        {
+          "number": 225,
+          "name": "COWAN, Quentin",
+          "country": "CAN"
+        },
+        {
+          "number": 226,
+          "name": "BOUCHARD, Félix",
+          "country": "CAN"
+        },
+        {
+          "number": 227,
+          "name": "HAMEL, Félix",
+          "country": "CAN"
+        }
+      ]
+    }
+  ]
+}

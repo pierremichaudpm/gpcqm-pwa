@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPCM CMS - Gestion des Équipes et Coureurs</title>
+    <link rel="stylesheet" href="cms/cms-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cms-container">
+        <!-- Header -->
+        <header class="cms-header">
+            <div class="header-content">
+                <h1>🚴 GPCM CMS</h1>
+                <p>Gestion des Équipes et Coureurs</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-success" onclick="saveAllData()">
+                    💾 Sauvegarder
+                </button>
+                <button class="btn btn-secondary" onclick="exportData()">
+                    📥 Exporter JSON
+                </button>
+                <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">
+                    📤 Importer JSON
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="cms-main">
+            <!-- Sidebar -->
+            <aside class="cms-sidebar">
+                <div class="sidebar-header">
+                    <h2>Équipes</h2>
+                    <button class="btn btn-primary btn-sm" onclick="addNewTeam()">
+                        ➕ Ajouter une équipe
+                    </button>
+                </div>
+                <div class="teams-list" id="teamsList">
+                    <!-- Teams will be loaded here -->
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="cms-content">
+                <div id="welcomeMessage" class="welcome-message">
+                    <h2>Bienvenue dans le CMS GPCM</h2>
+                    <p>Sélectionnez une équipe dans la liste de gauche pour commencer à éditer.</p>
+                    <div class="quick-stats" id="quickStats">
+                        <!-- Stats will be loaded here -->
+                    </div>
+                </div>
+
+                <div id="teamEditor" class="team-editor" style="display: none;">
+                    <!-- Team editor will be loaded here -->
+                </div>
+            </main>
+        </div>
+
+        <!-- Modals -->
+        <!-- Add Team Modal -->
+        <div id="addTeamModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Ajouter une nouvelle équipe</h2>
+                    <button class="modal-close" onclick="closeModal('addTeamModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nom de l'équipe *</label>
+                        <input type="text" id="newTeamName" placeholder="Ex: UAE Team Emirates">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom d'affichage</label>
+                        <input type="text" id="newTeamDisplayName" placeholder="Ex: UAE TEAM EMIRATES XRG">
+                    </div>
+                    <div class="form-group">
+                        <label>Drapeau du pays (emoji ou vide)</label>
+                        <input type="text" id="newTeamCountry" placeholder="Ex: 🇦🇪" maxlength="4">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('addTeamModal')">Annuler</button>
+                    <button class="btn btn-primary" onclick="confirmAddTeam()">Ajouter l'équipe</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Rider Modal -->
+        <div id="addRiderModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Ajouter un coureur</h2>
+                    <button class="modal-close" onclick="closeModal('addRiderModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Numéro de dossard</label>
+                        <input type="number" id="newRiderNumber" placeholder="Ex: 11" min="1" max="999">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom du coureur *</label>
+                        <input type="text" id="newRiderName" placeholder="Ex: Tadej POGACAR">
+                    </div>
+                    <div class="form-group">
+                        <label>Drapeau du pays (emoji ou vide)</label>
+                        <input type="text" id="newRiderCountry" placeholder="Ex: 🇸🇮" maxlength="4">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('addRiderModal')">Annuler</button>
+                    <button class="btn btn-primary" onclick="confirmAddRider()">Ajouter le coureur</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jersey Upload Modal -->
+        <div id="jerseyModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Changer le maillot de l'équipe</h2>
+                    <button class="modal-close" onclick="closeModal('jerseyModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="jersey-preview">
+                        <img id="currentJersey" src="" alt="Maillot actuel">
+                    </div>
+                    <div class="form-group">
+                        <label>Sélectionner une nouvelle image</label>
+                        <input type="file" id="jerseyFile" accept="image/*" onchange="previewJersey(event)">
+                    </div>
+                    <div class="form-group">
+                        <label>Ou entrer l'URL de l'image</label>
+                        <input type="text" id="jerseyUrl" placeholder="https://example.com/jersey.png">
+                    </div>
+                    <div id="jerseyPreview" class="jersey-preview-new" style="display: none;">
+                        <p>Aperçu:</p>
+                        <img id="newJerseyPreview" src="" alt="Nouveau maillot">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('jerseyModal')">Annuler</button>
+                    <button class="btn btn-danger" onclick="removeJersey()">Supprimer le maillot</button>
+                    <button class="btn btn-primary" onclick="confirmJerseyChange()">Appliquer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flag Picker Modal -->
+        <div id="flagModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Sélectionner un drapeau</h2>
+                    <button class="modal-close" onclick="closeModal('flagModal')">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="flag-search">
+                        <input type="text" id="flagSearch" placeholder="Rechercher un pays..." onkeyup="filterFlags()">
+                    </div>
+                    <div class="flags-grid" id="flagsGrid">
+                        <!-- Flags will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('flagModal')">Annuler</button>
+                    <button class="btn btn-danger" onclick="removeFlag()">Supprimer le drapeau</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="cms/cms-app.js"></script>
+</body>
+</html>

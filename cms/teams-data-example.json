@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "name": "UAE Team Emirates",
+    "displayName": "UAE TEAM EMIRATES XRG",
+    "country": "🇦🇪",
+    "jerseyPath": "",
+    "riders": [
+      {
+        "number": 11,
+        "name": "Tadej POGACAR",
+        "country": "🇸🇮"
+      },
+      {
+        "number": 12,
+        "name": "Brandon MCNULTY",
+        "country": "🇺🇸"
+      },
+      {
+        "number": 13,
+        "name": "Jhonatan NARVAEZ",
+        "country": "🇪🇨"
+      },
+      {
+        "number": 14,
+        "name": "Nils POLITT",
+        "country": "🇩🇪"
+      },
+      {
+        "number": 15,
+        "name": "Pavel SIVAKOV",
+        "country": "🇫🇷"
+      },
+      {
+        "number": 16,
+        "name": "Tim WELLENS",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 17,
+        "name": "Adam YATES",
+        "country": "🇬🇧"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Team Visma | Lease a Bike",
+    "displayName": "TEAM VISMA | LEASE A BIKE",
+    "country": "🇳🇱",
+    "jerseyPath": "",
+    "riders": [
+      {
+        "number": 21,
+        "name": "Wout VAN AERT",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 22,
+        "name": "Tiesj BENOOT",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 23,
+        "name": "Christophe LAPORTE",
+        "country": "🇫🇷"
+      },
+      {
+        "number": 24,
+        "name": "Jorgen NORDHAGEN",
+        "country": "🇳🇴"
+      },
+      {
+        "number": 25,
+        "name": "Attila VALTER",
+        "country": "🇭🇺"
+      },
+      {
+        "number": 26,
+        "name": "Simon YATES",
+        "country": "🇬🇧"
+      },
+      {
+        "number": 27,
+        "name": "Steven KRUIJSWIJK",
+        "country": "🇳🇱"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Équipe Canada",
+    "displayName": "ÉQUIPE NATIONALE CANADA",
+    "country": "🇨🇦",
+    "jerseyPath": "",
+    "riders": [
+      {
+        "number": 221,
+        "name": "Philippe JACOB",
+        "country": "🇨🇦"
+      },
+      {
+        "number": 222,
+        "name": "Jérôme GAUTHIER",
+        "country": "🇨🇦"
+      },
+      {
+        "number": 223,
+        "name": "Carson MATTERN",
+        "country": "🇨🇦"
+      },
+      {
+        "number": 224,
+        "name": "Samuel COUTURE",
+        "country": "🇨🇦"
+      },
+      {
+        "number": 225,
+        "name": "Quentin COWAN",
+        "country": "🇨🇦"
+      },
+      {
+        "number": 226,
+        "name": "Félix BOUCHARD",
+        "country": "🇨🇦"
+      },
+      {
+        "number": 227,
+        "name": "Félix HAMEL",
+        "country": "🇨🇦"
+      }
+    ]
+  }
+]
