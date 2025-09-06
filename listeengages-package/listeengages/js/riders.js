@@ -1,5 +1,5 @@
 // === GPCQM 2025 - Riders Modal Management ===
-// Généré automatiquement par le CMS - 2025-09-06T18:40:00.163Z
+// Généré automatiquement par le CMS - 2025-09-06T20:56:51.177Z
 
 // Données officielles des équipes et coureurs GPCQM 2025
 const ridersData = {
@@ -7,11 +7,11 @@ const ridersData = {
     {
         "id": 1,
         "name": "UAE Team Emirate",
-        "displayName": "UAE TEAM EMIRATES",
+        "displayName": "UAE TEAM EMIRATES XRG",
         "riders": [
             {
                 "number": 11,
-                "name": "Tadej ",
+                "name": "Tadej Pogacar",
                 "country": "🇸🇮"
             },
             {
@@ -804,7 +804,7 @@ const ridersData = {
     },
     {
         "id": 20,
-        "name": "Israel - Premier Tech",
+        "name": "IPT",
         "displayName": "IPT",
         "riders": [
             {
@@ -971,13 +971,28 @@ const ridersData = {
         ]
     },
     {
-        "id": 1757183835303,
+        "id": 1757192133535,
         "name": "test",
-        "displayName": "test",
-        "riders": []
+        "displayName": "TEST",
+        "riders": [
+            {
+                "number": 99,
+                "name": "Michauds",
+                "country": "🇧🇯"
+            }
+        ]
     }
 ]
 };
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
 
 // Le reste du code JavaScript reste inchangé...
 
@@ -1200,7 +1215,7 @@ function loadTeamsView() {
         
         html += `
             <div class="team-card ${isExpanded ? 'expanded' : ''}" data-team-id="${team.id}">
-                <div class="team-header" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}" onclick="try{toggleTeam(${team.id})}catch(e){}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();try{toggleTeam(${team.id})}catch(e){}}">
+                <div class="team-header" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}">
                     <div class="team-info">
                         <span class="team-jersey-icon">
                             ${jerseyPath ? 
