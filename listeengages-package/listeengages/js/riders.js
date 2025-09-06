@@ -1258,6 +1258,15 @@ function loadTeamsView() {
             if (!img || img.dataset.fallbackBound === 'true') return;
             const bg = card.querySelector('.team-jersey-bg');
             const teamName = (bg && bg.getAttribute('data-team')) || (card.querySelector('.team-name')?.textContent) || '';
+            // Quand l'image réelle est chargée, retirer le placeholder de fond pour éviter l'effet de "double" maillot
+            img.addEventListener('load', function onLoad() {
+                try {
+                    const src = img.getAttribute('src') || '';
+                    if (bg && !src.includes('jersey-placeholder.svg')) {
+                        bg.style.backgroundImage = 'none';
+                    }
+                } catch(_) {}
+            }, { once: true });
             img.addEventListener('error', function onErr() {
                 try {
                     const fallback = getJerseyPath(teamName, teamName) || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
