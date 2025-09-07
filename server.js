@@ -779,6 +779,11 @@ app.use((err, req, res, next) => {
 
 // Initialize volume data on Railway before starting server
 async function initializeVolumeIfNeeded() {
+    console.log('    Checking volume initialization...');
+    console.log('    IS_RAILWAY:', IS_RAILWAY);
+    console.log('    TEAMS_DATA_FILE:', TEAMS_DATA_FILE);
+    console.log('    RIDERS_JSON_FILE:', RIDERS_JSON_FILE);
+    
     if (IS_RAILWAY) {
         try {
             let needsInit = false;
@@ -800,6 +805,21 @@ async function initializeVolumeIfNeeded() {
                 needsInit = true;
             }
             
+            // Vérifier aussi riders.json
+            if (!needsInit) {
+                try {
+                    const ridersData = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
+                    const ridersParsed = JSON.parse(ridersData);
+                    if (!ridersParsed.teams || ridersParsed.teams.length < 20) {
+                        console.log(`    Riders.json incomplete (${ridersParsed.teams?.length || 0} teams), reinitializing...`);
+                        needsInit = true;
+                    }
+                } catch {
+                    console.log('    Riders.json missing or invalid, reinitializing...');
+                    needsInit = true;
+                }
+            }
+            
             if (needsInit) {
                 // Copier les données initiales depuis le repo vers le volume
                 console.log('    Copying repository data to volume...');
@@ -807,12 +827,20 @@ async function initializeVolumeIfNeeded() {
                 await fs.mkdir(CMS_JERSEYS_DIR, { recursive: true });
                 
                 // Copier teams-data.json
+                console.log('    Reading source teams-data.json...');
                 const sourceTeams = await fs.readFile(path.join(__dirname, 'cms', 'teams-data.json'), 'utf8');
+                const teamsObj = JSON.parse(sourceTeams);
+                console.log(`    Source has ${Array.isArray(teamsObj) ? teamsObj.length : 0} teams`);
                 await fs.writeFile(TEAMS_DATA_FILE, sourceTeams);
+                console.log('    Teams data written to volume');
                 
                 // Copier riders.json
+                console.log('    Reading source riders.json...');
                 const sourceRiders = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
+                const ridersObj = JSON.parse(sourceRiders);
+                console.log(`    Source has ${ridersObj.teams?.length || 0} teams`);
                 await fs.writeFile(RIDERS_JSON_FILE, sourceRiders);
+                console.log('    Riders data written to volume');
                 
                 console.log('    Volume initialized with fresh data');
             }

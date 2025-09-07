@@ -1,6 +1,9 @@
 // === GPCQM 2025 - Riders Modal Management ===
 // Généré automatiquement par le CMS - 2025-09-06T15:20:45.371Z
 
+// FIX: Define teamStyles that was missing and causing errors
+const teamStyles = {};
+
 // Données officielles des équipes et coureurs GPCQM 2025
 const ridersData = {
     teams: [
@@ -1229,7 +1232,8 @@ function updateRidersStats() {
 function applyJerseyBackgrounds() {
     document.querySelectorAll('.team-jersey-bg').forEach(bg => {
         const teamName = bg.dataset.team;
-        const style = teamStyles[teamName] || { color: '#6BA053', bg: '#ffffff' };
+        // FIX: teamStyles might not be defined, use default
+        const style = (typeof teamStyles !== 'undefined' && teamStyles[teamName]) || { color: '#6BA053', bg: '#ffffff' };
 
         // Set a visible placeholder immediately
         const placeholder = 'images/jerseys/jersey-placeholder.svg';

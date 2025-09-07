@@ -454,6 +454,19 @@ function initializeApp() {
         initHeroButtons();
         initSmoothScroll();
         initModalBindings();
+        
+        // Ensure RidersModal is ready after a delay
+        setTimeout(() => {
+            if (!window.RidersModal) {
+                console.warn('RidersModal not loaded, checking status...');
+                const existingScript = document.querySelector('script[src*="riders.js"]');
+                if (existingScript) {
+                    console.log('riders.js exists but RidersModal not initialized');
+                }
+            } else {
+                console.log('RidersModal is ready');
+            }
+        }, 2000);
     });
     
     // Network status
@@ -595,12 +608,29 @@ window.addEventListener('load', () => {
 
 // Riders modal controls
 function openRidersModal() {
+    console.log('openRidersModal called');
+    console.log('RidersModal exists?', !!window.RidersModal);
+    
     if (window.RidersModal && typeof window.RidersModal.open === 'function') {
+        console.log('Using RidersModal.open()');
         window.RidersModal.open();
     } else {
+        console.log('Fallback: opening modal directly');
         const m = document.getElementById('ridersModal');
-        if (!m) return;
+        if (!m) {
+            console.error('Modal element not found!');
+            return;
+        }
         m.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        
+        // Try to initialize the modal content if RidersModal is not ready
+        setTimeout(() => {
+            if (window.RidersModal && typeof window.RidersModal.init === 'function') {
+                console.log('Late initialization of RidersModal');
+                window.RidersModal.init();
+            }
+        }, 100);
     }
 }
 
