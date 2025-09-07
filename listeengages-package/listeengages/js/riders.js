@@ -1232,7 +1232,8 @@ function updateRidersStats() {
 function applyJerseyBackgrounds() {
     document.querySelectorAll('.team-jersey-bg').forEach(bg => {
         const teamName = bg.dataset.team;
-        const style = teamStyles[teamName] || { color: '#6BA053', bg: '#ffffff' };
+        // FIX: teamStyles might not be defined, use default
+        const style = (typeof teamStyles !== 'undefined' && teamStyles[teamName]) || { color: '#6BA053', bg: '#ffffff' };
 
         // Set a visible placeholder immediately
         const placeholder = 'images/jerseys/jersey-placeholder.svg';
