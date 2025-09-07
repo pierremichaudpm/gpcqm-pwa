@@ -767,6 +767,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: url('../listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg') center/contain no-repeat;
 }
 
 .jersey-icon img {
@@ -1651,17 +1652,6 @@ a:hover {
 .contest-section {
     padding: var(--spacing-2xl) 0;
     background: var(--white);
-}
-
-.auction-section {
-    padding: var(--spacing-2xl) 0;
-    background: var(--gray-100);
-}
-
-.auction-section h2 {
-    text-align: center;
-    color: var(--deep-blue);
-    margin-bottom: var(--spacing-xl);
 }
 
 .contest-section h2 {

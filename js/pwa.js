@@ -19,8 +19,13 @@ const PWA_CONFIG = {
 // Service Worker Registration
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        // En dev on garde le SW pour tester la PWA (indispensable sur mobile)
-        registerServiceWorker();
+        // Désactiver le SW en local pour éviter les problèmes de cache pendant le dev
+        if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+            caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+        } else {
+            registerServiceWorker();
+        }
     });
 }
 
@@ -304,10 +309,10 @@ function shareApp() {
     const currentLang = localStorage.getItem('language') || 'fr';
     
     const shareData = {
-        title: 'Grand Prix Cycliste de Montréal 2025',
+        title: 'Grand Prix Cycliste de Québec 2025',
         text: currentLang === 'fr' ? 
-            'Suivez le Grand Prix Cycliste de Montréal le 14 septembre 2025!' :
-            'Follow the Montreal Cycling Grand Prix on September 14, 2025!',
+            'Suivez le Grand Prix Cycliste de Québec le 12 septembre 2025!' :
+            'Follow the Québec City Cycling Grand Prix on September 12, 2025!',
         url: window.location.href
     };
     

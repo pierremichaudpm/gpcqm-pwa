@@ -73,13 +73,37 @@
             <div class="riders-modal-footer">
                 <p class="riders-info" data-lang="ridersInfo">
                     <span class="info-icon">ℹ️</span>
-                    Données officielles UCI World Tour 2025
+                    Données officielles UCI WorldTour 2025
                 </p>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
+    <script>
+        // Charger les données depuis riders.json
+        let ridersData = { teams: [] };
+        
+        async function loadRidersData() {
+            try {
+                const response = await fetch('/riders.json');
+                if (response.ok) {
+                    ridersData = await response.json();
+                    console.log('Données chargées:', ridersData.teams.length, 'équipes');
+                    // Réinitialiser l'affichage
+                    if (typeof renderRidersModal === 'function') {
+                        renderRidersModal();
+                    }
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                // Utiliser les données par défaut
+            }
+        }
+        
+        // Charger au démarrage
+        document.addEventListener('DOMContentLoaded', loadRidersData);
+    </script>
     <script src="js/riders.js"></script>
     
     <!-- Initialize on page load -->

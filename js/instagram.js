@@ -125,8 +125,8 @@ function displayDemoPosts() {
         {
             media_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
             caption: currentLang === 'fr' ? 
-                '🚴‍♂️ Les équipes arrivent à Montréal! Prêts pour le Grand Prix! #GPCQM2025' :
-                '🚴‍♂️ Teams arriving in Montreal! Ready for the Grand Prix! #GPCQM2025',
+                '🚴‍♂️ Les équipes arrivent à Québec! Prêts pour le Grand Prix! #GPCQM2025' :
+                '🚴‍♂️ Teams arriving in Quebec City! Ready for the Grand Prix! #GPCQM2025',
             like_count: 342,
             comments_count: 28,
             permalink: `https://instagram.com/${INSTAGRAM_CONFIG.username}`
@@ -144,7 +144,7 @@ function displayDemoPosts() {
             media_url: 'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400',
             caption: currentLang === 'fr' ? 
                 '🎉 Les Zones animées ouvrent demain à 9h! Venez nombreux!' :
-                '🎉 Animated aera opens tomorrow at 9 AM! See you there!',
+                '🎉 Fan Zones open tomorrow at 9 AM! See you there!',
             like_count: 423,
             comments_count: 31,
             permalink: `https://instagram.com/${INSTAGRAM_CONFIG.username}`
@@ -180,7 +180,7 @@ function displayDemoPosts() {
             media_url: 'https://images.unsplash.com/photo-1557275357-e4b9d6c65a0a?w=400',
             caption: currentLang === 'fr' ? 
                 '📺 Diffusion en direct sur TVA Sports dimanche dès 10h!' :
-                '📺 Live broadcast on TVA Sports Sunday from 10 AM!',
+                '📺 Live broadcast on CBC Gem Sunday from 10 AM!',
             like_count: 156,
             comments_count: 12,
             permalink: `https://instagram.com/${INSTAGRAM_CONFIG.username}`
