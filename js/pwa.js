@@ -88,23 +88,17 @@ window.addEventListener('beforeinstallprompt', (e) => {
     // Stash the event so it can be triggered later
     deferredPrompt = e;
     
-    // Check if prompt was previously dismissed
-    const dismissed = localStorage.getItem('installPromptDismissed');
-    const dismissedTime = localStorage.getItem('installPromptDismissedTime');
+    // Pour test: ignorer les dismissals précédents
+    console.log('PWA: beforeinstallprompt event captured');
+    localStorage.removeItem('installPromptDismissed');
+    localStorage.removeItem('installPromptDismissedTime');
     
-    if (dismissed && dismissedTime) {
-        const daysSinceDismissed = (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
-        if (daysSinceDismissed < PWA_CONFIG.dismissCookieDuration) {
-            return;
-        }
-    }
-    
-    // Show install prompt after delay
+    // Show install prompt immediately (no delay for testing)
     setTimeout(() => {
         if (!installPromptShown) {
             showInstallPrompt();
         }
-    }, PWA_CONFIG.promptDelay);
+    }, 3000); // Réduit à 3 secondes pour test
 });
 
 // Show install prompt
