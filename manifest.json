@@ -1,6 +1,6 @@
 {
   "name": "Grand Prix Cycliste de Montréal 2025",
-  "short_name": "GPCQM 2025",
+  "short_name": "GPCM 2025",
   "description": "Application officielle du Grand Prix Cycliste de Montréal - 14 septembre 2025",
   "start_url": "/?utm_source=pwa",
   "scope": "/",
