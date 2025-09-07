@@ -893,7 +893,7 @@ function openBroadcastApp(e) {
     const tvPlayStore = 'https://play.google.com/store/apps/details?id=com.nurun.tva_sports';
 
     const gemDeepLink = 'cbcgem://';
-    const gemAppStore = 'https://apps.apple.com/ca/app/cbc-gem/id422689480';
+    const gemAppStore = 'https://apps.apple.com/ca/app/cbc-gem-shows-live-tv/id422191503';
     const gemPlayStore = 'https://play.google.com/store/apps/details?id=ca.cbc.android.cbctv';
 
     const deepLink = isFrench ? tvDeepLink : gemDeepLink;
