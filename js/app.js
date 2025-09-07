@@ -184,7 +184,7 @@ const translations = {
         
         // PWA
         installTitle: 'Installer l\'application',
-        installText: 'Ajoutez GPCQM à votre écran d\'accueil pour un accès rapide',
+        installText: 'Ajoutez GPCM à votre écran d\'accueil pour un accès rapide',
         installButton: 'Installer',
         iosInstallTitle: 'Installer GPCM 2025',
         iosInstallText: 'Pour installer cette app sur votre iPhone :',
@@ -367,7 +367,7 @@ const translations = {
         
         // PWA
         installTitle: 'Install App',
-        installText: 'Add GPCQM to your home screen for quick access',
+        installText: 'Add GPCM to your home screen for quick access',
         installButton: 'Install',
         iosInstallTitle: 'Install GPCM 2025',
         iosInstallText: 'To install this app on your iPhone:',
