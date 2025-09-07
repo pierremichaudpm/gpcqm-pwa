@@ -3,11 +3,11 @@
     {
       "id": 1,
       "name": "UAE Team Emirate",
-      "displayName": "UAE TEAM EMIRATES XRG - TEST CMS",
+      "displayName": "UAE TEAM EMIRATES XRG",
       "riders": [
         {
           "number": 11,
-          "name": "Tadej michaud",
+          "name": "Tadej Pogacar",
           "country": "🇸🇮"
         },
         {
@@ -41,7 +41,7 @@
           "country": "🇬🇧"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png"
     },
     {
       "id": 2,
@@ -84,7 +84,7 @@
           "country": "🇧🇪"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png"
     },
     {
       "id": 3,
@@ -127,7 +127,7 @@
           "country": "🇳🇱"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/visma.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/visma.png"
     },
     {
       "id": 4,
@@ -170,7 +170,7 @@
           "country": "🇺🇸"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ineos.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ineos.png"
     },
     {
       "id": 5,
@@ -213,7 +213,7 @@
           "country": "🇧🇪"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/soudal.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/soudal.png"
     },
     {
       "id": 6,
@@ -256,7 +256,7 @@
           "country": "🇧🇪"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png"
     },
     {
       "id": 7,
@@ -299,7 +299,7 @@
           "country": "🇫🇷"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/decathlon.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/decathlon.png"
     },
     {
       "id": 8,
@@ -342,7 +342,7 @@
           "country": "🇸🇮"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/redbullbora.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/redbullbora.png"
     },
     {
       "id": 9,
@@ -385,7 +385,7 @@
           "country": "🇧🇪"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/alpecin.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/alpecin.png"
     },
     {
       "id": 10,
@@ -428,7 +428,7 @@
           "country": "🇫🇷"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/groupama.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/groupama.png"
     },
     {
       "id": 11,
@@ -471,7 +471,7 @@
           "country": "🇩🇰"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ef.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ef.png"
     },
     {
       "id": 12,
@@ -514,7 +514,7 @@
           "country": "🇮🇹"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/bahrain.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/bahrain.png"
     },
     {
       "id": 13,
@@ -557,7 +557,7 @@
           "country": "🇪🇷"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/movistar.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/movistar.png"
     },
     {
       "id": 14,
@@ -600,7 +600,7 @@
           "country": "🇮🇹"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png"
     },
     {
       "id": 15,
@@ -643,7 +643,7 @@
           "country": "🇱🇺"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/arkea.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/arkea.png"
     },
     {
       "id": 16,
@@ -686,7 +686,7 @@
           "country": "🇳🇱"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/picnic.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/picnic.png"
     },
     {
       "id": 17,
@@ -729,7 +729,7 @@
           "country": "🇳🇱"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/intermarchewanty.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/intermarchewanty.png"
     },
     {
       "id": 18,
@@ -772,7 +772,7 @@
           "country": "🇫🇷"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png"
     },
     {
       "id": 19,
@@ -815,7 +815,7 @@
           "country": "🇳🇱"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/astana.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/astana.png"
     },
     {
       "id": 20,
@@ -858,7 +858,7 @@
           "country": "🇺🇸"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png"
     },
     {
       "id": 21,
@@ -901,7 +901,7 @@
           "country": "🇳🇴"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/uno.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/uno.png"
     },
     {
       "id": 22,
@@ -944,7 +944,7 @@
           "country": "🇩🇪"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/tudor.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/tudor.png"
     },
     {
       "id": 23,
@@ -987,7 +987,20 @@
           "country": "🇨🇦"
         }
       ],
-      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/canada.png?t=1757206460161"
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/canada.png"
+    },
+    {
+      "id": 1757192133535,
+      "name": "test",
+      "displayName": "TEST",
+      "riders": [
+        {
+          "number": 99,
+          "name": "Michauds pierre",
+          "country": "🇦🇹"
+        }
+      ],
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg"
     }
   ]
 }

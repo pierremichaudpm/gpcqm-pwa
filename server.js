@@ -780,13 +780,28 @@ app.use((err, req, res, next) => {
 async function initializeVolumeIfNeeded() {
     if (IS_RAILWAY) {
         try {
-            // Vérifier si les données existent déjà dans le volume
+            let needsInit = false;
+            
+            // Vérifier si les données existent et sont valides
             try {
-                await fs.stat(TEAMS_DATA_FILE);
-                console.log('    Volume data already exists');
+                const existingData = await fs.readFile(TEAMS_DATA_FILE, 'utf8');
+                const parsed = JSON.parse(existingData);
+                
+                // Si moins de 20 équipes, les données sont probablement corrompues
+                if (!Array.isArray(parsed) || parsed.length < 20) {
+                    console.log(`    Volume data corrupted or incomplete (${parsed.length || 0} teams), reinitializing...`);
+                    needsInit = true;
+                } else {
+                    console.log(`    Volume data exists with ${parsed.length} teams`);
+                }
             } catch {
+                console.log('    No volume data found, initializing...');
+                needsInit = true;
+            }
+            
+            if (needsInit) {
                 // Copier les données initiales depuis le repo vers le volume
-                console.log('    Initializing volume with repository data...');
+                console.log('    Copying repository data to volume...');
                 await fs.mkdir(path.dirname(TEAMS_DATA_FILE), { recursive: true });
                 await fs.mkdir(CMS_JERSEYS_DIR, { recursive: true });
                 
@@ -798,7 +813,7 @@ async function initializeVolumeIfNeeded() {
                 const sourceRiders = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
                 await fs.writeFile(RIDERS_JSON_FILE, sourceRiders);
                 
-                console.log('    Volume initialized successfully');
+                console.log('    Volume initialized with fresh data');
             }
         } catch (error) {
             console.error('    Error initializing volume:', error);

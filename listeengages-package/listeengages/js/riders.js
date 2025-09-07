@@ -1,18 +1,18 @@
 // === GPCQM 2025 - Riders Modal Management ===
-// Généré automatiquement par le CMS - 2025-09-07T00:56:28.156Z
+// Généré automatiquement - 2025-09-07T00:44:26.926Z
 
-// Données officielles des équipes et coureurs GPCQM 2025
 const ridersData = {
     teams: [
     {
         "id": 1,
         "name": "UAE Team Emirate",
-        "displayName": "UAE TEAM EMIRATES XRG - TEST CMS",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png?t=1757206588149",
+        "displayName": "UAE TEAM EMIRATES XRG",
+        "country": "🇦🇪",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png?t=1757204532831",
         "riders": [
             {
                 "number": 11,
-                "name": "Tadej michaud",
+                "name": "Tadej Pogacar",
                 "country": "🇸🇮"
             },
             {
@@ -51,7 +51,8 @@ const ridersData = {
         "id": 2,
         "name": "Lotto Dstny",
         "displayName": "LOTTO",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png?t=1757206588149",
+        "country": "🇧🇪",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png?t=1757204532831",
         "riders": [
             {
                 "number": 181,
@@ -94,7 +95,8 @@ const ridersData = {
         "id": 3,
         "name": "Team Visma | Lease a Bike",
         "displayName": "TEAM VISMA | LEASE A BIKE",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/visma.png?t=1757206588149",
+        "country": "🇳🇱",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/visma.png?t=1757204532831",
         "riders": [
             {
                 "number": 21,
@@ -137,7 +139,8 @@ const ridersData = {
         "id": 4,
         "name": "INEOS Grenadiers",
         "displayName": "INEOS GRENADIERS",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ineos.png?t=1757206588149",
+        "country": "🇬🇧",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ineos.png?t=1757204532831",
         "riders": [
             {
                 "number": 51,
@@ -180,7 +183,8 @@ const ridersData = {
         "id": 5,
         "name": "Soudal Quick-Step",
         "displayName": "SOUDAL QUICK-STEP",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/soudal.png?t=1757206588149",
+        "country": "🇧🇪",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/soudal.png?t=1757204532831",
         "riders": [
             {
                 "number": 41,
@@ -223,7 +227,8 @@ const ridersData = {
         "id": 6,
         "name": "Lidl-Trek",
         "displayName": "LIDL-TREK",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png?t=1757206588149",
+        "country": "🇺🇸",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png?t=1757204532831",
         "riders": [
             {
                 "number": 31,
@@ -266,7 +271,8 @@ const ridersData = {
         "id": 7,
         "name": "Decathlon AG2R La Mondiale Team",
         "displayName": "DECATHLON AG2R LA MONDIALE TEAM",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/decathlon.png?t=1757206588149",
+        "country": "🇫🇷",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/decathlon.png?t=1757204532831",
         "riders": [
             {
                 "number": 101,
@@ -309,7 +315,8 @@ const ridersData = {
         "id": 8,
         "name": "Red Bull - BORA - hansgrohe",
         "displayName": "RED BULL - BORA – HANSGROHE",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/redbullbora.png?t=1757206588149",
+        "country": "🇩🇪",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/redbullbora.png?t=1757204532831",
         "riders": [
             {
                 "number": 61,
@@ -352,7 +359,8 @@ const ridersData = {
         "id": 9,
         "name": "Alpecin-Deceuninck",
         "displayName": "ALPECIN-DECEUNINCK",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/alpecin.png?t=1757206588149",
+        "country": "🇧🇪",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/alpecin.png?t=1757204532831",
         "riders": [
             {
                 "number": 71,
@@ -395,7 +403,8 @@ const ridersData = {
         "id": 10,
         "name": "Groupama-FDJ",
         "displayName": "GROUPAMA-FDJ",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/groupama.png?t=1757206588149",
+        "country": "🇫🇷",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/groupama.png?t=1757204532831",
         "riders": [
             {
                 "number": 81,
@@ -438,7 +447,8 @@ const ridersData = {
         "id": 11,
         "name": "EF Education - EasyPost",
         "displayName": "EF EDUCATION - EASYPOST",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ef.png?t=1757206588149",
+        "country": "🇺🇸",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ef.png?t=1757204532831",
         "riders": [
             {
                 "number": 101,
@@ -481,7 +491,8 @@ const ridersData = {
         "id": 12,
         "name": "Bahrain Victorious",
         "displayName": "BAHRAIN VICTORIOUS",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/bahrain.png?t=1757206588149",
+        "country": "🇧🇭",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/bahrain.png?t=1757204532831",
         "riders": [
             {
                 "number": 91,
@@ -524,7 +535,8 @@ const ridersData = {
         "id": 13,
         "name": "Movistar Team",
         "displayName": "MOVISTAR TEAM",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/movistar.png?t=1757206588149",
+        "country": "🇪🇸",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/movistar.png?t=1757204532831",
         "riders": [
             {
                 "number": 121,
@@ -567,7 +579,8 @@ const ridersData = {
         "id": 14,
         "name": "Team Jayco AlUla",
         "displayName": "TEAM JAYCO ALULA",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png?t=1757206588149",
+        "country": "🇦🇺",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png?t=1757204532831",
         "riders": [
             {
                 "number": 1,
@@ -610,7 +623,8 @@ const ridersData = {
         "id": 15,
         "name": "Arkéa-B&B Hotels",
         "displayName": "ARKEA-B&B HOTELS",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/arkea.png?t=1757206588149",
+        "country": "🇫🇷",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/arkea.png?t=1757204532831",
         "riders": [
             {
                 "number": 171,
@@ -653,7 +667,8 @@ const ridersData = {
         "id": 16,
         "name": "Team DSM-Firmenich PostNL",
         "displayName": "TEAM PICNIC POSTNL",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/picnic.png?t=1757206588149",
+        "country": "🇳🇱",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/picnic.png?t=1757204532831",
         "riders": [
             {
                 "number": 141,
@@ -696,7 +711,8 @@ const ridersData = {
         "id": 17,
         "name": "Intermarché - Wanty",
         "displayName": "INTERMARCHÉ - WANTY",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/intermarchewanty.png?t=1757206588149",
+        "country": "🇧🇪",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/intermarchewanty.png?t=1757204532831",
         "riders": [
             {
                 "number": 151,
@@ -739,7 +755,8 @@ const ridersData = {
         "id": 18,
         "name": "Cofidis",
         "displayName": "COFIDIS",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png?t=1757206588149",
+        "country": "🇫🇷",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png?t=1757204532831",
         "riders": [
             {
                 "number": 161,
@@ -782,7 +799,8 @@ const ridersData = {
         "id": 19,
         "name": "Astana Qazaqstan Team",
         "displayName": "XDS ASTANA TEAM",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/astana.png?t=1757206588149",
+        "country": "🇰🇿",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/astana.png?t=1757204532831",
         "riders": [
             {
                 "number": 131,
@@ -825,7 +843,8 @@ const ridersData = {
         "id": 20,
         "name": "IPT",
         "displayName": "IPT",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png?t=1757206588149",
+        "country": "🇮🇱",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png?t=1757204532831",
         "riders": [
             {
                 "number": 191,
@@ -868,7 +887,8 @@ const ridersData = {
         "id": 21,
         "name": "Uno-X Mobility",
         "displayName": "UNO-X MOBILITY",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/uno.png?t=1757206588149",
+        "country": "🇳🇴",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/uno.png?t=1757204532831",
         "riders": [
             {
                 "number": 201,
@@ -911,7 +931,8 @@ const ridersData = {
         "id": 22,
         "name": "Tudor Pro Cycling Team",
         "displayName": "TUDOR PRO CYCLING TEAM",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/tudor.png?t=1757206588149",
+        "country": "🇨🇭",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/tudor.png?t=1757204532831",
         "riders": [
             {
                 "number": 211,
@@ -954,7 +975,8 @@ const ridersData = {
         "id": 23,
         "name": "Équipe Canada",
         "displayName": "ÉQUIPE NATIONALE CANADA",
-        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/canada.png?t=1757206588149",
+        "country": "🇨🇦",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/canada.png?t=1757204532831",
         "riders": [
             {
                 "number": 221,
@@ -992,18 +1014,23 @@ const ridersData = {
                 "country": "🇨🇦"
             }
         ]
+    },
+    {
+        "id": 1757192133535,
+        "name": "test",
+        "displayName": "TEST",
+        "country": "",
+        "riders": [
+            {
+                "number": 99,
+                "name": "Michauds pierre",
+                "country": "🇦🇹"
+            }
+        ],
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg?t=1757204532831"
     }
 ]
 };
-
-// Le reste du code JavaScript reste inchangé...
-
-
-// Le reste du code JavaScript reste inchangé...
-
-
-// Le reste du code JavaScript reste inchangé...
-
 
 // Reste du code riders.js original
 undefined
