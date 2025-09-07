@@ -399,9 +399,6 @@ function renderTeamEditor(team) {
                         <button class="btn btn-secondary btn-sm" id="previewJerseyBtn">
                             👁️ Aperçu
                         </button>
-                        <button class="btn btn-primary btn-sm" id="uploadJerseyBtn">
-                            📤 Upload
-                        </button>
                     </div>
                 </div>
             </div>
@@ -449,14 +446,14 @@ function renderTeamEditor(team) {
     const jerseyInput = editor.querySelector('#teamJerseyInput');
     const delBtn = editor.querySelector('#deleteTeamBtn');
     const prevBtn = editor.querySelector('#previewJerseyBtn');
-    const uploadBtn = editor.querySelector('#uploadJerseyBtn');
+    // Upload désactivé - const uploadBtn = editor.querySelector('#uploadJerseyBtn');
     const addRiderBtn = editor.querySelector('#addRiderBtn');
     if (nameInput) nameInput.addEventListener('change', e => updateTeamField(team.id, 'name', e.target.value));
     if (displayInput) displayInput.addEventListener('change', e => updateTeamField(team.id, 'displayName', e.target.value));
     if (jerseyInput) jerseyInput.addEventListener('change', e => updateTeamField(team.id, 'jerseyPath', e.target.value));
     if (delBtn) delBtn.addEventListener('click', () => deleteTeam(team.id), { passive: true });
     if (prevBtn) prevBtn.addEventListener('click', () => previewJersey(team.id), { passive: true });
-    if (uploadBtn) uploadBtn.addEventListener('click', () => uploadJersey(team.id), { passive: true });
+    // Upload désactivé - if (uploadBtn) uploadBtn.addEventListener('click', () => uploadJersey(team.id), { passive: true });
     if (addRiderBtn) addRiderBtn.addEventListener('click', () => openAddRiderModal(team.id), { passive: true });
 
     editor.querySelectorAll('[data-action="riderNumber"]').forEach(inp => {
@@ -503,8 +500,12 @@ function previewJersey(teamId) {
     window.open(path, '_blank', 'width=500,height=500');
 }
 
-// Upload du maillot
+// Upload du maillot DÉSACTIVÉ - Les maillots viennent du dossier officiel
+/*
 async function uploadJersey(teamId) {
+    alert("L'upload de maillots est désactivé. Les maillots proviennent uniquement du dossier officiel.");
+    return;
+    // Code original commenté
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
@@ -538,6 +539,7 @@ async function uploadJersey(teamId) {
     
     input.click();
 }
+*/
 
 // Mettre à jour un champ d'un coureur
 function updateRiderField(teamId, riderIndex, field, value) {

@@ -15,14 +15,7 @@
   "environments": {
     "production": {
       "PORT": "${{PORT}}",
-      "NODE_ENV": "production",
-      "CMS_JERSEYS_DIR": "/data/jerseys"
+      "NODE_ENV": "production"
     }
-  },
-  "volumes": [
-    {
-      "mount": "/data",
-      "name": "jerseys"
-    }
-  ]
+  }
 }

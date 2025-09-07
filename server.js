@@ -145,15 +145,10 @@ app.use((req, res, next) => {
 // CMS Data Helpers & Endpoints
 // =============================
 
-// Paths (persistant sur volume Railway si dispo)
-const IS_RAILWAY = Boolean(process.env.RAILWAY_STATIC_URL || process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_ENVIRONMENT_NAME || process.env.RAILWAY_PROJECT_ID);
-// Configuration avec volume Railway existant /data/jerseys
-const CMS_JERSEYS_DIR = process.env.CMS_JERSEYS_DIR || (IS_RAILWAY ? '/data/jerseys' : path.join(__dirname, 'images', 'jerseys'));
-// Utiliser le volume /data sur Railway pour la persistance des données
-const DATA_BASE_DIR = IS_RAILWAY ? '/data/cms' : path.join(__dirname, 'cms');
-const TEAMS_DATA_FILE = path.join(DATA_BASE_DIR, 'teams-data.json');
+// SIMPLIFIÉ : Plus de volume Railway, tout est dans le repo
+const TEAMS_DATA_FILE = path.join(__dirname, 'cms', 'teams-data.json');
 const TEAMS_COMPLETE_FILE = path.join(__dirname, 'cms', 'teams-complete.json');
-const RIDERS_JSON_FILE = IS_RAILWAY ? '/data/riders.json' : path.join(__dirname, 'riders.json');
+const RIDERS_JSON_FILE = path.join(__dirname, 'riders.json');
 const RIDERS_JS_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'js', 'riders.js');
 
 // Serve persistent jerseys directory with graceful placeholder fallback
@@ -197,7 +192,7 @@ function getLocalJerseyPath(teamName, displayName) {
 app.get('/images/jerseys/:file', async (req, res) => {
     const filename = req.params.file || '';
     try {
-        const requestedFile = path.join(CMS_JERSEYS_DIR, filename);
+        const requestedFile = path.join(REPO_JERSEYS_DIR, filename);
         await fs.stat(requestedFile);
         res.setHeader('Cache-Control', 'no-cache');
         return res.sendFile(requestedFile);
@@ -215,28 +210,11 @@ app.get('/images/jerseys/:file', async (req, res) => {
     }
 });
 
-app.use('/images/jerseys', express.static(CMS_JERSEYS_DIR));
+// Maillots servis depuis le dossier officiel uniquement
+// app.use('/images/jerseys', express.static(...)); // DÉSACTIVÉ
 
-// Multer storage for jersey uploads
-const storage = multer.diskStorage({
-    destination: async function (req, file, cb) {
-        const dir = CMS_JERSEYS_DIR;
-        try {
-            await fs.mkdir(dir, { recursive: true });
-            cb(null, dir);
-        } catch (error) {
-            cb(error, null);
-        }
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-    }
-});
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
-});
+// Upload de maillots DÉSACTIVÉ - Les maillots viennent uniquement du dossier officiel
+// const upload = multer({ ... }); // DÉSACTIVÉ
 
 // Utility: append cache-buster to asset URL (prevents stale jersey images)
 function appendCacheBusterToUrl(url) {
@@ -456,17 +434,9 @@ app.delete('/api/teams/:id', async (req, res) => {
     }
 });
 
-app.post('/api/upload-jersey', upload.single('jersey'), async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ error: 'Aucun fichier uploadé' });
-        }
-        const jerseyPath = `/images/jerseys/${req.file.filename}`;
-        // Return cache-busted path to force clients to fetch the fresh asset
-        res.json({ success: true, path: appendCacheBusterToUrl(jerseyPath) });
-    } catch (error) {
-        res.status(500).json({ error: "Erreur lors de l'upload du maillot" });
-    }
+// Upload de maillots DÉSACTIVÉ
+app.post('/api/upload-jersey', (req, res) => {
+    res.status(403).json({ error: "L'upload de maillots est désactivé. Les maillots proviennent uniquement du dossier officiel." });
 });
 
 // Optional endpoint used by cms-app.js (sauvegarde riders.json brute)
@@ -492,40 +462,13 @@ app.get('/riders.json', async (req, res) => {
             data = JSON.parse(raw);
         }
 
-        async function preferCmsOrLocal(team) {
-            try {
-                const rawPath = (team && team.jerseyPath) || '';
-                
-                // Si c'est un maillot uploadé via CMS (format jersey-xxx.png)
-                const uploadMatch = rawPath.match(/jersey-\d+-\d+\.png/i);
-                if (uploadMatch) {
-                    const filename = uploadMatch[0];
-                    try {
-                        await fs.stat(path.join(CMS_JERSEYS_DIR, filename));
-                        return appendCacheBusterToUrl(`/images/jerseys/${filename}`);
-                    } catch (_) { 
-                        // Le fichier uploadé n'existe plus, utiliser le maillot officiel
-                    }
-                }
-                
-                // Sinon, utiliser le maillot officiel défini dans jerseyPath
-                if (rawPath && rawPath.includes('/listeengages-package/')) {
-                    return rawPath;
-                }
-            } catch (_) { /* ignore */ }
-            
-            // En dernier recours, trouver le maillot officiel par le nom de l'équipe
-            return getLocalJerseyPath(team.name, team.displayName);
-        }
-
-        // Utiliser les maillots uploadés via CMS s'ils existent, sinon les maillots officiels
+        // SIMPLIFIÉ : Les maillots viennent UNIQUEMENT du dossier officiel
         if (data && Array.isArray(data.teams)) {
-            const mapped = await Promise.all(data.teams.map(async (team) => ({
+            data.teams = data.teams.map(team => ({
                 ...team,
-                // Priorité : 1) Maillot uploadé via CMS, 2) Maillot officiel
-                jerseyPath: await preferCmsOrLocal(team)
-            })));
-            data.teams = mapped;
+                // Toujours utiliser le maillot officiel basé sur le nom de l'équipe
+                jerseyPath: getLocalJerseyPath(team.name, team.displayName)
+            }));
         }
         return res.type('application/json').send(JSON.stringify(data));
     } catch (e) {
@@ -778,80 +721,24 @@ app.use((err, req, res, next) => {
 });
 
 // Initialize volume data on Railway before starting server
-async function initializeVolumeIfNeeded() {
-    console.log('    Checking volume initialization...');
-    console.log('    IS_RAILWAY:', IS_RAILWAY);
-    console.log('    TEAMS_DATA_FILE:', TEAMS_DATA_FILE);
-    console.log('    RIDERS_JSON_FILE:', RIDERS_JSON_FILE);
-    
-    if (IS_RAILWAY) {
-        try {
-            let needsInit = false;
-            
-            // Vérifier si les données existent et sont valides
-            try {
-                const existingData = await fs.readFile(TEAMS_DATA_FILE, 'utf8');
-                const parsed = JSON.parse(existingData);
-                
-                // Si moins de 20 équipes, les données sont probablement corrompues
-                if (!Array.isArray(parsed) || parsed.length < 20) {
-                    console.log(`    Volume data corrupted or incomplete (${parsed.length || 0} teams), reinitializing...`);
-                    needsInit = true;
-                } else {
-                    console.log(`    Volume data exists with ${parsed.length} teams`);
-                }
-            } catch {
-                console.log('    No volume data found, initializing...');
-                needsInit = true;
-            }
-            
-            // Vérifier aussi riders.json
-            if (!needsInit) {
-                try {
-                    const ridersData = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
-                    const ridersParsed = JSON.parse(ridersData);
-                    if (!ridersParsed.teams || ridersParsed.teams.length < 20) {
-                        console.log(`    Riders.json incomplete (${ridersParsed.teams?.length || 0} teams), reinitializing...`);
-                        needsInit = true;
-                    }
-                } catch {
-                    console.log('    Riders.json missing or invalid, reinitializing...');
-                    needsInit = true;
-                }
-            }
-            
-            if (needsInit) {
-                // Copier les données initiales depuis le repo vers le volume
-                console.log('    Copying repository data to volume...');
-                await fs.mkdir(path.dirname(TEAMS_DATA_FILE), { recursive: true });
-                await fs.mkdir(CMS_JERSEYS_DIR, { recursive: true });
-                
-                // Copier teams-data.json
-                console.log('    Reading source teams-data.json...');
-                const sourceTeams = await fs.readFile(path.join(__dirname, 'cms', 'teams-data.json'), 'utf8');
-                const teamsObj = JSON.parse(sourceTeams);
-                console.log(`    Source has ${Array.isArray(teamsObj) ? teamsObj.length : 0} teams`);
-                await fs.writeFile(TEAMS_DATA_FILE, sourceTeams);
-                console.log('    Teams data written to volume');
-                
-                // Copier riders.json
-                console.log('    Reading source riders.json...');
-                const sourceRiders = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
-                const ridersObj = JSON.parse(sourceRiders);
-                console.log(`    Source has ${ridersObj.teams?.length || 0} teams`);
-                await fs.writeFile(RIDERS_JSON_FILE, sourceRiders);
-                console.log('    Riders data written to volume');
-                
-                console.log('    Volume initialized with fresh data');
-            }
-        } catch (error) {
-            console.error('    Error initializing volume:', error);
-        }
+// Plus besoin d'initialisation de volume
+async function checkDataIntegrity() {
+    try {
+        // Vérifier que les données existent
+        const teamsData = await fs.readFile(TEAMS_DATA_FILE, 'utf8');
+        const parsed = JSON.parse(teamsData);
+        console.log(`    Teams data: ${parsed.length} teams`);
+        
+        const ridersData = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
+        const ridersParsed = JSON.parse(ridersData);
+        console.log(`    Riders data: ${ridersParsed.teams?.length || 0} teams`);
+    } catch (error) {
+        console.error('    Error checking data:', error);
     }
 }
 
-// Initialize volume if needed, then start server
-initializeVolumeIfNeeded().then(() => {
+// Start server directement
+checkDataIntegrity().then(() => {
     // Start server
     const server = app.listen(PORT, '0.0.0.0', () => {
         console.log(`
@@ -860,7 +747,7 @@ initializeVolumeIfNeeded().then(() => {
     ========================================
     Server running on port ${PORT}
     Environment: ${process.env.NODE_ENV || 'production'}
-    URL: http://localhost:${PORT}${IS_RAILWAY ? '\n    Volume: /data (persistent storage)' : ''}
+    URL: http://localhost:${PORT}
     ========================================
     `);
     });
