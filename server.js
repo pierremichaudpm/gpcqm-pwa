@@ -11,15 +11,15 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Security middleware
+// Security middleware - adjusted for Safari iOS compatibility
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
             scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://www.googletagmanager.com", "https://www.google-analytics.com", "https://snapwidget.com"],
-            imgSrc: ["'self'", "data:", "https:", "http:"],
-            connectSrc: ["'self'", "https://api.openweathermap.org", "https://graph.instagram.com", "https://www.google-analytics.com"],
+            imgSrc: ["'self'", "data:", "https:", "http:", "blob:"],
+            connectSrc: ["'self'", "https://api.openweathermap.org", "https://api.weather.gc.ca", "https://graph.instagram.com", "https://www.google-analytics.com"],
             fontSrc: ["'self'", "https://fonts.gstatic.com"],
             objectSrc: ["'none'"],
             mediaSrc: ["'self'", "https://player.vimeo.com", "https://vimeo.com"],
@@ -28,6 +28,12 @@ app.use(helmet({
         },
     },
     crossOriginEmbedderPolicy: false,
+    // Relax some policies for Safari iOS
+    hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: false // Safari iOS can have issues with preload
+    }
 }));
 
 // Enable CORS
@@ -116,17 +122,14 @@ app.get('/cms', (req, res) => {
 });
 
 // CMS API endpoints  
-const TEAMS_FILE = path.join(__dirname, 'cms', 'teams-data.json');
+const TEAMS_FILE = path.join(__dirname, 'teams-data.json');
 const RIDERS_FILE = path.join(__dirname, 'riders.json');
 
 // Get teams
 app.get('/api/teams', async (req, res) => {
     try {
         const data = await fs.readFile(TEAMS_FILE, 'utf8');
-        const teamsData = JSON.parse(data);
-        // Ensure we return an array format for CMS
-        const teams = Array.isArray(teamsData) ? teamsData : (teamsData.teams || []);
-        res.json(teams);
+        res.json(JSON.parse(data));
     } catch (error) {
         console.error('Error reading teams:', error);
         res.status(500).json({ error: 'Failed to load teams' });
@@ -163,16 +166,71 @@ app.post('/api/teams', basicAuth, async (req, res) => {
 
 // API Routes (placeholder for future implementation)
 
-// Weather proxy endpoint (to hide API key)
+// Handle OPTIONS preflight requests for CORS
+app.options('/api/weather/*', (req, res) => {
+    res.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization',
+        'Access-Control-Max-Age': '86400'
+    });
+    res.sendStatus(204);
+});
+
+// Weather proxy endpoint (to hide API key and handle CORS for Safari)
 app.get('/api/weather/current', async (req, res) => {
     try {
-        const apiKey = process.env.OPENWEATHER_API_KEY;
-        if (!apiKey) {
-            return res.status(503).json({ error: 'Weather service not configured' });
+        // Use the API key from weather.js if env var not set
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
+        const lat = 45.5017; // Montréal centre-ville (Place des Arts)
+        const lon = -73.5673;
+        const units = 'metric';
+        const lang = req.query.lang || 'fr';
+        
+        console.log(`Weather proxy request - lang: ${lang}, units: ${units}`);
+        
+        // Set CORS headers specifically for Safari - more comprehensive
+        res.set({
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization',
+            'Access-Control-Max-Age': '86400',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        });
+        
+        // Fetch real data from OpenWeatherMap
+        const fetch = require('node-fetch');
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&appid=${apiKey}`;
+        
+        console.log('Fetching from OpenWeather:', url);
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (!response.ok) {
+            console.error('OpenWeather API error:', data);
+            return res.status(response.status).json({ error: 'Weather service error', details: data });
         }
         
-        // Implementation would fetch from OpenWeatherMap API
-        // For now, return mock data
+        console.log('OpenWeather response:', {
+            temp: data.main?.temp,
+            description: data.weather?.[0]?.description,
+            lang: lang
+        });
+        
+        // Support JSONP for Safari iOS fallback
+        if (req.query.callback) {
+            res.type('application/javascript');
+            res.send(`${req.query.callback}(${JSON.stringify(data)})`);
+        } else {
+            // Return the real OpenWeatherMap data
+            res.json(data);
+        }
+    } catch (error) {
+        console.error('Weather API error:', error);
+        // Return fallback data for Safari if fetch fails - in French
+        const fallbackLang = req.query.lang || 'fr';
         res.json({
             main: {
                 temp: 18,
@@ -180,16 +238,79 @@ app.get('/api/weather/current', async (req, res) => {
                 humidity: 65
             },
             weather: [{
-                description: 'Partly cloudy',
+                main: 'Clouds',
+                description: fallbackLang === 'fr' ? 'Nuageux' : 'Cloudy',
                 icon: '02d'
             }],
             wind: {
                 speed: 3.5
-            }
+            },
+            dt: Math.floor(Date.now() / 1000),
+            name: fallbackLang === 'fr' ? 'Montréal' : 'Montreal'
         });
+    }
+});
+
+// Weather forecast endpoint for Safari
+app.get('/api/weather/forecast', async (req, res) => {
+    try {
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
+        const lat = 45.4706;
+        const lon = -73.7408;
+        const units = 'metric';
+        const lang = req.query.lang || 'fr';
+        const cnt = 8; // Get 8 3-hour forecasts
+        
+        console.log(`Forecast proxy request - lang: ${lang}, units: ${units}`);
+        
+        // Set CORS headers
+        res.set({
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Cache-Control': 'no-cache' // Disable cache for testing
+        });
+        
+        const fetch = require('node-fetch');
+        const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&cnt=${cnt}&appid=${apiKey}`;
+        
+        console.log('Fetching forecast from OpenWeather:', url);
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (!response.ok) {
+            console.error('OpenWeather Forecast API error:', data);
+            return res.status(response.status).json({ error: 'Forecast service error', details: data });
+        }
+        
+        console.log(`Forecast received: ${data.list?.length} items, first temp: ${data.list?.[0]?.main?.temp}`);
+        
+        // Transform to simpler format for the widget - keep first 6 items only
+        const simplified = data.list.slice(0, 6).map(item => ({
+            dt: item.dt,
+            main: item.main,
+            weather: item.weather
+        }));
+        
+        res.json(simplified);
     } catch (error) {
-        console.error('Weather API error:', error);
-        res.status(500).json({ error: 'Failed to fetch weather data' });
+        console.error('Forecast API error:', error);
+        // Return fallback forecast in correct language
+        const fallbackLang = req.query.lang || 'fr';
+        const baseTime = Math.floor(Date.now() / 1000);
+        const fallback = [];
+        for (let i = 1; i <= 6; i++) {
+            fallback.push({
+                dt: baseTime + (i * 3600),
+                main: { temp: 18 + (Math.random() * 4 - 2), feels_like: 17 },
+                weather: [{ 
+                    main: 'Clouds', 
+                    description: fallbackLang === 'fr' ? 'Nuageux' : 'Cloudy', 
+                    icon: '02d' 
+                }]
+            });
+        }
+        res.json(fallback);
     }
 });
 

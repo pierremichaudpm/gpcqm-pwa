@@ -4,9 +4,9 @@
 const WEATHER_CONFIG = {
     apiKey: '27fd496c6cc9c8cd6f8981bf682c5dd4',
     cityId: 6077243, // Montréal, CA
-    // Coordonnées YUL (Aéroport Montréal-Trudeau)
-    lat: 45.4706,
-    lon: -73.7408,
+    // COORDONNÉES FIXES pour tous les appareils (Montréal centre-ville)
+    lat: 45.5017,  // Coordonnées exactes Place des Arts (lieu de départ/arrivée)
+    lon: -73.5673,
     units: 'metric',
     updateIntervalMs: 10 * 60 * 1000, // 10 minutes
     forecastUseFeelsLike: false,
