@@ -493,17 +493,17 @@ function initializeApp() {
         });
     }
     
-    // Language buttons
+    // Language buttons avec protection
     if (langBtnFr) {
-        langBtnFr.addEventListener('click', function() {
-            setLanguage('fr');
-        });
+        langBtnFr.removeEventListener('click', langBtnFr._handler);
+        langBtnFr._handler = function() { setLanguage('fr'); };
+        langBtnFr.addEventListener('click', langBtnFr._handler);
     }
     
     if (langBtnEn) {
-        langBtnEn.addEventListener('click', function() {
-            setLanguage('en');
-        });
+        langBtnEn.removeEventListener('click', langBtnEn._handler);
+        langBtnEn._handler = function() { setLanguage('en'); };
+        langBtnEn.addEventListener('click', langBtnEn._handler);
     }
     
     // Broadcast app button (TVA Sports FR / CBC Gem EN)
@@ -1011,13 +1011,20 @@ function toggleMenu() {
 
 // Set Language
 function setLanguage(lang) {
+    console.log('setLanguage called with:', lang);
     currentLanguage = lang;
     localStorage.setItem('language', lang);
     updateLanguage();
     if (typeof updateWeatherLanguage === 'function') {
         updateWeatherLanguage();
     }
-    toggleMenu(); // Close menu after language change
+    
+    // Fermer le menu
+    const menu = document.getElementById('mobileMenu');
+    if (menu) {
+        menu.classList.remove('active');
+        document.body.style.overflow = '';
+    }
     
     // Update active language button
     document.querySelectorAll('.lang-btn').forEach(btn => {
