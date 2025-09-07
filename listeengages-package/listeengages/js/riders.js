@@ -1098,9 +1098,9 @@ function openRidersModal() {
 // Close modal
 function closeRidersModal() {
     const modal = document.getElementById('ridersModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-}
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 
 // No longer needed - only teams view
 
@@ -1466,8 +1466,8 @@ function highlightMatch(text, search) {
 document.addEventListener('keydown', (e) => {
     const modal = document.getElementById('ridersModal');
     if (modal && modal.style.display === 'block') {
-        if (e.key === 'Escape') {
-            closeRidersModal();
+            if (e.key === 'Escape') {
+                closeRidersModal();
         } else if (e.key === '/' || (e.ctrlKey && e.key === 'f')) {
             e.preventDefault();
             document.getElementById('ridersSearch').focus();
