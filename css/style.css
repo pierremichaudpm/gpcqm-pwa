@@ -343,19 +343,15 @@ a:hover {
 }
 
 .logo {
-    height: 50px;
+    height: 60px;
     width: auto;
     background: transparent;
     display: block;
-    object-fit: contain;
-    border: none;
-    box-shadow: none;
 }
 
 @media (min-width: 768px) {
     .logo {
-        height: 84px;
-        width: auto;
+        height: 90px;
     }
 }
 
@@ -2022,8 +2018,8 @@ a:hover {
 
 .install-close {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 2px;
+    right: 2px;
     background: var(--gray-200);
     border: none;
     width: 30px;

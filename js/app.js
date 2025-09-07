@@ -447,6 +447,7 @@ function initializeApp() {
     
     // Export critical functions immediately for onclick handlers
     exportCriticalFunctions();
+    console.log('Critical functions exported:', window.toggleMenu ? 'toggleMenu OK' : 'toggleMenu MISSING');
     
     // Lazy load non-critical functionality with fallback
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(() => {
@@ -500,6 +501,18 @@ function exportCriticalFunctions() {
     window.openWatchModal = openWatchModal;
     window.closeWatchModal = closeWatchModal;
     window.openPrivacyModal = openPrivacyModal;
+    
+    // Force immediate availability for menu
+    if (!window.toggleMenu) {
+        console.error('toggleMenu function missing, creating fallback');
+        window.toggleMenu = function() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                menu.classList.toggle('active');
+                document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+            }
+        };
+    }
     window.closePrivacyModal = closePrivacyModal;
     window.openTermsModal = openTermsModal;
     window.closeTermsModal = closeTermsModal;
