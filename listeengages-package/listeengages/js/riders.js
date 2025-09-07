@@ -1271,10 +1271,23 @@ function loadTeamsView() {
     try { applyJerseyBackgrounds(); } catch(_) {}
 
     // IMPORTANT: Bind event handlers after HTML is rendered
+    // Utiliser un délai plus long et ajouter du debugging
     setTimeout(() => {
+        console.log('Binding team event handlers...');
         bindTeamsAccordionDelegation();
         bindTeamHeaders();
-    }, 100);
+        
+        // Vérification supplémentaire
+        const headers = container.querySelectorAll('.team-header');
+        console.log(`Found ${headers.length} team headers`);
+        
+        // Forcer l'attachement direct sur chaque header
+        headers.forEach((header, index) => {
+            const card = header.closest('.team-card');
+            const teamId = card ? card.getAttribute('data-team-id') : null;
+            console.log(`Header ${index}: team-id=${teamId}, bound=${header.dataset.bound}`);
+        });
+    }, 500); // Délai augmenté à 500ms
 
     // Ensure jersey <img> has a resilient fallback if custom path 404s
     try {

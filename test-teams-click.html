@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Click Teams</title>
+</head>
+<body>
+    <h1>Test des clics sur les équipes</h1>
+    <button onclick="testTeamClicks()">Tester les clics</button>
+    <div id="results"></div>
+
+    <script>
+    function testTeamClicks() {
+        const results = document.getElementById('results');
+        let html = '<h2>Résultats du test:</h2>';
+        
+        // Vérifier si le modal existe
+        const modal = document.getElementById('ridersModal');
+        html += `<p>Modal existe: ${modal ? '✅ OUI' : '❌ NON'}</p>`;
+        
+        // Vérifier si l'accordion existe
+        const accordion = document.getElementById('teamsAccordion');
+        html += `<p>Accordion existe: ${accordion ? '✅ OUI' : '❌ NON'}</p>`;
+        
+        if (accordion) {
+            // Vérifier le nombre d'équipes
+            const teams = accordion.querySelectorAll('.team-card');
+            html += `<p>Nombre d'équipes: ${teams.length}</p>`;
+            
+            // Vérifier les headers
+            const headers = accordion.querySelectorAll('.team-header');
+            html += `<p>Nombre de headers: ${headers.length}</p>`;
+            
+            // Vérifier si les headers ont des event listeners
+            headers.forEach((header, i) => {
+                const hasDataBound = header.dataset.bound === 'true';
+                const card = header.closest('.team-card');
+                const teamId = card ? card.getAttribute('data-team-id') : 'N/A';
+                html += `<p>Header ${i+1} (team-id: ${teamId}): dataset.bound = ${hasDataBound ? '✅' : '❌'}</p>`;
+            });
+            
+            // Vérifier si bindTeamsAccordionDelegation a été appelé
+            const containerBound = accordion.dataset.bound === 'true';
+            html += `<p>Container accordion bound: ${containerBound ? '✅' : '❌'}</p>`;
+        }
+        
+        // Vérifier si la fonction toggleTeam existe
+        html += `<p>Fonction toggleTeam existe: ${typeof toggleTeam === 'function' ? '✅ OUI' : '❌ NON'}</p>`;
+        
+        // Vérifier si expandedTeams existe
+        html += `<p>Variable expandedTeams existe: ${typeof expandedTeams !== 'undefined' ? '✅ OUI' : '❌ NON'}</p>`;
+        
+        results.innerHTML = html;
+    }
+    </script>
+    
+    <iframe src="http://localhost:3000" width="100%" height="600" style="margin-top: 20px;"></iframe>
+</body>
+</html>
