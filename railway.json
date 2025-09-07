@@ -22,7 +22,7 @@
   "volumes": [
     {
       "mount": "/data",
-      "name": "gpcm-data"
+      "name": "jerseys"
     }
   ]
 }

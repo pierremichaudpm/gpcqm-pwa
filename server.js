@@ -147,7 +147,7 @@ app.use((req, res, next) => {
 
 // Paths (persistant sur volume Railway si dispo)
 const IS_RAILWAY = Boolean(process.env.RAILWAY_STATIC_URL || process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_ENVIRONMENT_NAME || process.env.RAILWAY_PROJECT_ID);
-// Configuration avec volume Railway pour persistance
+// Configuration avec volume Railway existant /data/jerseys
 const CMS_JERSEYS_DIR = process.env.CMS_JERSEYS_DIR || (IS_RAILWAY ? '/data/jerseys' : path.join(__dirname, 'images', 'jerseys'));
 // Utiliser le volume /data sur Railway pour la persistance des données
 const DATA_BASE_DIR = IS_RAILWAY ? '/data/cms' : path.join(__dirname, 'cms');
