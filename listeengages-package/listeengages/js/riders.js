@@ -1239,7 +1239,7 @@ function loadTeamsView() {
                 <div class="team-header" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}">
                     <div class="team-info">
                         <span class="team-jersey-icon">
-                            <img src="${jerseyPath}" alt="Maillot ${team.name}" style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;" onerror="this.onerror=null; this.src='${fallbackPath}'">
+                            <img src="${jerseyPath}" alt="Maillot ${team.name}" style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;" data-fallback="${fallbackPath}" class="jersey-with-fallback">
                         </span>
                         <span class="team-name">${team.displayName || team.name}</span>
                     </div>
@@ -1248,7 +1248,7 @@ function loadTeamsView() {
                 <div class="team-riders">
                     <div class="team-jersey-display">
                         <div class="team-jersey-bg" data-team="${team.name}"></div>
-                        <img class="team-jersey-img" alt="Maillot ${team.name}" src="${jerseyPath}" onerror="this.onerror=null; this.src='${fallbackPath}'">
+                        <img class="team-jersey-img" alt="Maillot ${team.name}" src="${jerseyPath}" data-fallback="${fallbackPath}" class="jersey-with-fallback">
                     </div>
                     <div class="riders-grid">
                         ${team.riders.map(rider => `
@@ -1276,6 +1276,17 @@ function loadTeamsView() {
         console.log('Binding team event handlers...');
         bindTeamsAccordionDelegation();
         bindTeamHeaders();
+        
+        // Gérer les erreurs d'images sans utiliser onerror inline (problème CSP sur Railway)
+        const jerseyImages = container.querySelectorAll('.jersey-with-fallback');
+        jerseyImages.forEach(img => {
+            img.addEventListener('error', function() {
+                const fallback = this.getAttribute('data-fallback');
+                if (fallback && this.src !== fallback) {
+                    this.src = fallback;
+                }
+            });
+        });
         
         // Vérification supplémentaire
         const headers = container.querySelectorAll('.team-header');
