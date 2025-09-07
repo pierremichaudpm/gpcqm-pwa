@@ -57,15 +57,44 @@ class WeatherWidget {
     }
 
     async fetchCurrentWeather() {
-        // Utiliser lat/lon pour être cohérent avec OneCall
-        const url = `${this.apiBase}/weather?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&appid=${this.apiKey}`;
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) {
-            const text = await res.text().catch(() => '');
-            console.error('OpenWeather current failed:', res.status, text);
-            throw new Error('OpenWeather current failed');
+        // Détection Safari iOS
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafariIOS = isSafari && isIOS;
+        
+        try {
+            if (isSafariIOS) {
+                console.log('Safari iOS detected - using server proxy for current weather');
+                // Pour Safari iOS, utiliser le proxy serveur
+                const response = await fetch('/api/weather/current?lang=' + this.lang, {
+                    method: 'GET',
+                    mode: 'same-origin',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Weather proxy failed: ${response.status}`);
+                }
+                
+                return await response.json();
+            } else {
+                // Pour les autres navigateurs, appel direct
+                const url = `${this.apiBase}/weather?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&appid=${this.apiKey}`;
+                const res = await fetch(url, { cache: 'no-store' });
+                if (!res.ok) {
+                    const text = await res.text().catch(() => '');
+                    console.error('OpenWeather current failed:', res.status, text);
+                    throw new Error('OpenWeather current failed');
+                }
+                return res.json();
+            }
+        } catch (error) {
+            console.error('Failed to fetch current weather:', error);
+            throw error;
         }
-        return res.json();
     }
 
     async fetchForecast() {
@@ -80,52 +109,61 @@ class WeatherWidget {
     }
 
     async fetchOwForecast() {
-        // Safari fix: utiliser l'API proxy du serveur au lieu d'appeler directement OpenWeather
+        // Détection spécifique Safari iOS
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafariIOS = isSafari && isIOS;
+        
         try {
-            console.log('Fetching weather via server proxy for Safari compatibility');
-            const response = await fetch('/api/weather/current', { 
-                cache: 'default',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+            if (isSafariIOS) {
+                console.log('Safari iOS detected - using server proxy for weather');
+                // Pour Safari iOS, utiliser le proxy serveur
+                const response = await fetch('/api/weather/forecast?lang=' + this.lang, {
+                    method: 'GET',
+                    mode: 'same-origin', // Important pour Safari
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Weather proxy failed: ${response.status}`);
                 }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`Weather proxy failed: ${response.status}`);
+                
+                const data = await response.json();
+                console.log('Forecast data from proxy:', data);
+                return data;
+            } else {
+                // Pour les autres navigateurs, appel direct à OpenWeather
+                const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&cnt=8&appid=${this.apiKey}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    throw new Error(`OpenWeather API failed: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                // Transformer en format simplifié
+                return data.list.slice(0, 6).map(item => ({
+                    dt: item.dt,
+                    main: item.main,
+                    weather: item.weather
+                }));
             }
-            
-            const data = await response.json();
-            console.log('Weather data received via proxy:', data);
-            
-            // L'API proxy ne retourne que current, pas forecast
-            // Utilisons les données current et créons un forecast simple
-            const currentTemp = data.main?.temp || 18;
+        } catch (error) {
+            console.error('Weather forecast failed:', error);
+            // Fallback avec données statiques
             const baseTime = Math.floor(Date.now() / 1000);
-            
-            // Créer un forecast simple basé sur la température actuelle
-            const forecastData = [];
+            const fallback = [];
             for (let i = 1; i <= 6; i++) {
-                forecastData.push({
-                    dt: baseTime + (i * 3600), // +1h, +2h, etc.
-                    main: { 
-                        temp: currentTemp + (Math.random() * 4 - 2), // ±2°C variation
-                        feels_like: currentTemp + (Math.random() * 3 - 1)
-                    },
-                    weather: data.weather || [{ description: 'Partly cloudy', icon: '02d' }]
+                fallback.push({
+                    dt: baseTime + (i * 3600),
+                    main: { temp: 18 + (Math.random() * 4 - 2), feels_like: 17 },
+                    weather: [{ description: 'Conditions actuelles', icon: '02d' }]
                 });
             }
-            
-            return forecastData;
-            
-        } catch (error) {
-            console.error('Weather proxy failed, using fallback data:', error);
-            // Fallback avec données statiques pour Safari
-            return [{
-                dt: Math.floor(Date.now() / 1000),
-                main: { temp: 18, feels_like: 17 },
-                weather: [{ description: 'Conditions actuelles', icon: '02d' }]
-            }];
+            return fallback;
         }
     }
 
@@ -455,8 +493,16 @@ window.updateWeatherLanguage = updateWeatherLanguage;
 // DOM ready: initial load SEULEMENT (pas de double setInterval)
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof loadWeather === 'function') {
-        // Délai pour Safari
-        setTimeout(loadWeather, 1000);
+        // Détection Safari iOS pour ajuster le délai
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafariIOS = isSafari && isIOS;
+        
+        // Délai plus long pour Safari iOS pour s'assurer que tout est chargé
+        const delay = isSafariIOS ? 2000 : 1000;
+        console.log(`Weather widget will load in ${delay}ms (Safari iOS: ${isSafariIOS})`);
+        
+        setTimeout(loadWeather, delay);
     }
 });
 
