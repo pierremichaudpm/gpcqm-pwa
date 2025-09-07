@@ -344,7 +344,7 @@ a:hover {
 
 .logo {
     height: 50px;
-    width: 50px;
+    width: auto;
     background: transparent;
     display: block;
     object-fit: contain;
@@ -355,7 +355,7 @@ a:hover {
 @media (min-width: 768px) {
     .logo {
         height: 84px;
-        width: 84px;
+        width: auto;
     }
 }
 
@@ -2022,8 +2022,8 @@ a:hover {
 
 .install-close {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 5px;
+    right: 5px;
     background: var(--gray-200);
     border: none;
     width: 30px;
