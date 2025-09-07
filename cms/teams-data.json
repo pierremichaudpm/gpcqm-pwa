@@ -224,7 +224,7 @@
     "name": "Lidl-Trek",
     "displayName": "LIDL-TREK",
     "country": "🇺🇸",
-    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png?t=1757204532831",
+    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png",
     "riders": [
       {
         "number": 31,
@@ -752,7 +752,7 @@
     "name": "Cofidis",
     "displayName": "COFIDIS",
     "country": "🇫🇷",
-    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png?t=1757204532831",
+    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png",
     "riders": [
       {
         "number": 161,
@@ -840,7 +840,7 @@
     "name": "IPT",
     "displayName": "IPT",
     "country": "🇮🇱",
-    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png?t=1757204532831",
+    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png",
     "riders": [
       {
         "number": 191,

@@ -506,12 +506,13 @@ app.get('/riders.json', async (req, res) => {
             return getLocalJerseyPath(team.name, team.displayName);
         }
 
-        // Appliquer les maillots (CMS ou vrais maillots)
+        // Toujours utiliser les vrais maillots officiels
+        // La fonction preferCmsOrLocal est désactivée pour éviter les mauvais maillots
         if (data && Array.isArray(data.teams)) {
             const mapped = await Promise.all(data.teams.map(async (team) => ({
                 ...team,
-                // Garder le maillot défini dans teams-data.json (vrais maillots ou uploads CMS)
-                jerseyPath: team.jerseyPath || await preferCmsOrLocal(team)
+                // Utiliser directement le jerseyPath défini (vrais maillots officiels)
+                jerseyPath: team.jerseyPath || getLocalJerseyPath(team.name, team.displayName)
             })));
             data.teams = mapped;
         }
