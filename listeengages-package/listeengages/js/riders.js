@@ -1236,7 +1236,7 @@ function loadTeamsView() {
         
         html += `
             <div class="team-card ${isExpanded ? 'expanded' : ''}" data-team-id="${team.id}">
-                <div class="team-header" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}">
+                <div class="team-header team-clickable" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}" data-team-id="${team.id}">
                     <div class="team-info">
                         <span class="team-jersey-icon">
                             <img src="${jerseyPath}" alt="Maillot ${team.name}" style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;" data-fallback="${fallbackPath}" class="jersey-with-fallback">
@@ -1270,35 +1270,55 @@ function loadTeamsView() {
     // Apply jersey backgrounds (guard against runtime errors)
     try { applyJerseyBackgrounds(); } catch(_) {}
 
-    // IMPORTANT: Bind event handlers after HTML is rendered
-    // Utiliser un délai plus long et ajouter du debugging
-    setTimeout(() => {
-        console.log('Binding team event handlers...');
-        bindTeamsAccordionDelegation();
-        bindTeamHeaders();
+    // Solution simple et directe pour Railway (compatible CSP)
+    // Attacher les événements immédiatement sans délai
+    const attachEvents = () => {
+        // Méthode simple : attacher directement sur chaque header avec addEventListener
+        const headers = container.querySelectorAll('.team-clickable');
+        headers.forEach(header => {
+            // Éviter les doublons
+            if (header.dataset.eventsAttached === 'true') return;
+            
+            const teamId = parseInt(header.getAttribute('data-team-id'), 10);
+            if (!isNaN(teamId)) {
+                // Click event - utiliser addEventListener pour compatibilité CSP
+                header.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleTeam(teamId);
+                });
+                
+                // Keyboard event
+                header.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleTeam(teamId);
+                    }
+                });
+                
+                header.dataset.eventsAttached = 'true';
+            }
+        });
         
-        // Gérer les erreurs d'images sans utiliser onerror inline (problème CSP sur Railway)
+        // Gérer les erreurs d'images avec addEventListener
         const jerseyImages = container.querySelectorAll('.jersey-with-fallback');
         jerseyImages.forEach(img => {
+            if (img.dataset.errorHandlerAttached === 'true') return;
+            
             img.addEventListener('error', function() {
                 const fallback = this.getAttribute('data-fallback');
                 if (fallback && this.src !== fallback) {
                     this.src = fallback;
                 }
             });
+            
+            img.dataset.errorHandlerAttached = 'true';
         });
-        
-        // Vérification supplémentaire
-        const headers = container.querySelectorAll('.team-header');
-        console.log(`Found ${headers.length} team headers`);
-        
-        // Forcer l'attachement direct sur chaque header
-        headers.forEach((header, index) => {
-            const card = header.closest('.team-card');
-            const teamId = card ? card.getAttribute('data-team-id') : null;
-            console.log(`Header ${index}: team-id=${teamId}, bound=${header.dataset.bound}`);
-        });
-    }, 500); // Délai augmenté à 500ms
+    };
+    
+    // Attacher immédiatement ET après un délai pour être sûr
+    attachEvents();
+    setTimeout(attachEvents, 100);
 
     // Ensure jersey <img> has a resilient fallback if custom path 404s
     try {
@@ -1412,8 +1432,8 @@ function tryLoadImageInOrder(paths, onSuccess, onFailure) {
     tryNext();
 }
 
-// Toggle team expansion
-function toggleTeam(teamId) {
+// Toggle team expansion - Exposer globalement pour debugging
+window.toggleTeam = function toggleTeam(teamId) {
     const teamCard = document.querySelector(`[data-team-id="${teamId}"]`);
     
     if (expandedTeams.has(teamId)) {
