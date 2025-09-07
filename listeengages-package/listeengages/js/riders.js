@@ -1,5 +1,5 @@
 // === GPCQM 2025 - Riders Modal Management ===
-// Généré automatiquement par le CMS - 2025-09-06T20:56:51.177Z
+// Généré automatiquement par le CMS - 2025-09-07T03:24:06.799Z
 
 // Données officielles des équipes et coureurs GPCQM 2025
 const ridersData = {
@@ -8,6 +8,7 @@ const ridersData = {
         "id": 1,
         "name": "UAE Team Emirate",
         "displayName": "UAE TEAM EMIRATES XRG",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png",
         "riders": [
             {
                 "number": 11,
@@ -50,6 +51,7 @@ const ridersData = {
         "id": 2,
         "name": "Lotto Dstny",
         "displayName": "LOTTO",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png",
         "riders": [
             {
                 "number": 181,
@@ -92,6 +94,7 @@ const ridersData = {
         "id": 3,
         "name": "Team Visma | Lease a Bike",
         "displayName": "TEAM VISMA | LEASE A BIKE",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/visma.png",
         "riders": [
             {
                 "number": 21,
@@ -134,6 +137,7 @@ const ridersData = {
         "id": 4,
         "name": "INEOS Grenadiers",
         "displayName": "INEOS GRENADIERS",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ineos.png",
         "riders": [
             {
                 "number": 51,
@@ -176,6 +180,7 @@ const ridersData = {
         "id": 5,
         "name": "Soudal Quick-Step",
         "displayName": "SOUDAL QUICK-STEP",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/soudal.png",
         "riders": [
             {
                 "number": 41,
@@ -218,6 +223,7 @@ const ridersData = {
         "id": 6,
         "name": "Lidl-Trek",
         "displayName": "LIDL-TREK",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png",
         "riders": [
             {
                 "number": 31,
@@ -260,6 +266,7 @@ const ridersData = {
         "id": 7,
         "name": "Decathlon AG2R La Mondiale Team",
         "displayName": "DECATHLON AG2R LA MONDIALE TEAM",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/decathlon.png",
         "riders": [
             {
                 "number": 101,
@@ -302,6 +309,7 @@ const ridersData = {
         "id": 8,
         "name": "Red Bull - BORA - hansgrohe",
         "displayName": "RED BULL - BORA – HANSGROHE",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/redbullbora.png",
         "riders": [
             {
                 "number": 61,
@@ -344,6 +352,7 @@ const ridersData = {
         "id": 9,
         "name": "Alpecin-Deceuninck",
         "displayName": "ALPECIN-DECEUNINCK",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/alpecin.png",
         "riders": [
             {
                 "number": 71,
@@ -386,6 +395,7 @@ const ridersData = {
         "id": 10,
         "name": "Groupama-FDJ",
         "displayName": "GROUPAMA-FDJ",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/groupama.png",
         "riders": [
             {
                 "number": 81,
@@ -428,6 +438,7 @@ const ridersData = {
         "id": 11,
         "name": "EF Education - EasyPost",
         "displayName": "EF EDUCATION - EASYPOST",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ef.png",
         "riders": [
             {
                 "number": 101,
@@ -470,6 +481,7 @@ const ridersData = {
         "id": 12,
         "name": "Bahrain Victorious",
         "displayName": "BAHRAIN VICTORIOUS",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/bahrain.png",
         "riders": [
             {
                 "number": 91,
@@ -512,6 +524,7 @@ const ridersData = {
         "id": 13,
         "name": "Movistar Team",
         "displayName": "MOVISTAR TEAM",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/movistar.png",
         "riders": [
             {
                 "number": 121,
@@ -554,6 +567,7 @@ const ridersData = {
         "id": 14,
         "name": "Team Jayco AlUla",
         "displayName": "TEAM JAYCO ALULA",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png",
         "riders": [
             {
                 "number": 1,
@@ -596,6 +610,7 @@ const ridersData = {
         "id": 15,
         "name": "Arkéa-B&B Hotels",
         "displayName": "ARKEA-B&B HOTELS",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/arkea.png",
         "riders": [
             {
                 "number": 171,
@@ -638,6 +653,7 @@ const ridersData = {
         "id": 16,
         "name": "Team DSM-Firmenich PostNL",
         "displayName": "TEAM PICNIC POSTNL",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/picnic.png",
         "riders": [
             {
                 "number": 141,
@@ -680,6 +696,7 @@ const ridersData = {
         "id": 17,
         "name": "Intermarché - Wanty",
         "displayName": "INTERMARCHÉ - WANTY",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/intermarchewanty.png",
         "riders": [
             {
                 "number": 151,
@@ -722,6 +739,7 @@ const ridersData = {
         "id": 18,
         "name": "Cofidis",
         "displayName": "COFIDIS",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png",
         "riders": [
             {
                 "number": 161,
@@ -764,6 +782,7 @@ const ridersData = {
         "id": 19,
         "name": "Astana Qazaqstan Team",
         "displayName": "XDS ASTANA TEAM",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/astana.png",
         "riders": [
             {
                 "number": 131,
@@ -806,6 +825,7 @@ const ridersData = {
         "id": 20,
         "name": "IPT",
         "displayName": "IPT",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png",
         "riders": [
             {
                 "number": 191,
@@ -848,6 +868,7 @@ const ridersData = {
         "id": 21,
         "name": "Uno-X Mobility",
         "displayName": "UNO-X MOBILITY",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/uno.png",
         "riders": [
             {
                 "number": 201,
@@ -890,6 +911,7 @@ const ridersData = {
         "id": 22,
         "name": "Tudor Pro Cycling Team",
         "displayName": "TUDOR PRO CYCLING TEAM",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/tudor.png",
         "riders": [
             {
                 "number": 211,
@@ -932,6 +954,7 @@ const ridersData = {
         "id": 23,
         "name": "Équipe Canada",
         "displayName": "ÉQUIPE NATIONALE CANADA",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/canada.png",
         "riders": [
             {
                 "number": 221,
@@ -969,21 +992,18 @@ const ridersData = {
                 "country": "🇨🇦"
             }
         ]
-    },
-    {
-        "id": 1757192133535,
-        "name": "test",
-        "displayName": "TEST",
-        "riders": [
-            {
-                "number": 99,
-                "name": "Michauds",
-                "country": "🇧🇯"
-            }
-        ]
     }
 ]
 };
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
 
 // Le reste du code JavaScript reste inchangé...
 
@@ -1150,9 +1170,9 @@ function openRidersModal() {
 // Close modal
 function closeRidersModal() {
     const modal = document.getElementById('ridersModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-}
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 
 // No longer needed - only teams view
 
@@ -1490,8 +1510,8 @@ function highlightMatch(text, search) {
 document.addEventListener('keydown', (e) => {
     const modal = document.getElementById('ridersModal');
     if (modal && modal.style.display === 'block') {
-        if (e.key === 'Escape') {
-            closeRidersModal();
+            if (e.key === 'Escape') {
+                closeRidersModal();
         } else if (e.key === '/' || (e.ctrlKey && e.key === 'f')) {
             e.preventDefault();
             document.getElementById('ridersSearch').focus();

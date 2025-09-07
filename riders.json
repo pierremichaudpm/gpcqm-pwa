@@ -4,990 +4,990 @@
       "id": 1,
       "name": "UAE Team Emirate",
       "displayName": "UAE TEAM EMIRATES XRG",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png",
       "riders": [
         {
           "number": 11,
           "name": "Tadej Pogacar",
-          "country": "🇸🇮"
+          "country": "SLO"
         },
         {
           "number": 12,
           "name": "Brandon MCNULTY",
-          "country": "🇺🇸"
+          "country": "USA"
         },
         {
           "number": 13,
           "name": "Jhonatan NARVAEZ",
-          "country": "🇪🇨"
+          "country": "ECU"
         },
         {
           "number": 14,
           "name": "Nils POLITT",
-          "country": "🇩🇪"
+          "country": "GER"
         },
         {
           "number": 15,
           "name": "Pavel SIVAKOV",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 16,
           "name": "Tim WELLENS",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 17,
           "name": "Adam YATES",
-          "country": "🇬🇧"
+          "country": "GBR"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185101643-199792434.png"
+      ]
     },
     {
       "id": 2,
       "name": "Lotto Dstny",
       "displayName": "LOTTO",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png",
       "riders": [
         {
           "number": 181,
           "name": "DE LIE, Arnaud",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 182,
           "name": "BERCKMOES, Jenno",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 183,
           "name": "DRIZNERS, Jarrad",
-          "country": "🇦🇺"
+          "country": "AUS"
         },
         {
           "number": 184,
           "name": "GRIGNARD, Sébastien",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 185,
           "name": "THOMPSON, Reuben",
-          "country": "🇳🇿"
+          "country": "NZL"
         },
         {
           "number": 186,
           "name": "CURRIE, Logan",
-          "country": "🇳🇿"
+          "country": "NZL"
         },
         {
           "number": 187,
           "name": "VANDENABEELE, Henri",
-          "country": "🇧🇪"
+          "country": "BEL"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757184966447-260600803.png"
+      ]
     },
     {
       "id": 3,
       "name": "Team Visma | Lease a Bike",
       "displayName": "TEAM VISMA | LEASE A BIKE",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/visma.png",
       "riders": [
         {
           "number": 21,
           "name": "VAN AERT, Wout",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 22,
           "name": "BENOOT, Tiesj",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 23,
           "name": "LAPORTE, Christophe",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 24,
           "name": "NORDHAGEN, Jorgen",
-          "country": "🇳🇴"
+          "country": "NOR"
         },
         {
           "number": 25,
           "name": "VALTER, Attila",
-          "country": "🇭🇺"
+          "country": "HUN"
         },
         {
           "number": 26,
           "name": "YATES, Simon",
-          "country": "🇬🇧"
+          "country": "GBR"
         },
         {
           "number": 27,
           "name": "KRUIJSWIJK, Steven",
-          "country": "🇳🇱"
+          "country": "NED"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185110965-173424288.png"
+      ]
     },
     {
       "id": 4,
       "name": "INEOS Grenadiers",
       "displayName": "INEOS GRENADIERS",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ineos.png",
       "riders": [
         {
           "number": 51,
           "name": "LAURANCE, Axel",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 52,
           "name": "AUGUST, Andrew Jacob",
-          "country": "🇺🇸"
+          "country": "USA"
         },
         {
           "number": 53,
           "name": "HAMILTON, Lucas",
-          "country": "🇦🇺"
+          "country": "AUS"
         },
         {
           "number": 54,
           "name": "LEONARD, Michael",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 55,
           "name": "HANSEN, Peter Øxenberg",
-          "country": "🇩🇰"
+          "country": "DEN"
         },
         {
           "number": 56,
           "name": "PUCCIO, Salvatore",
-          "country": "🇮🇹"
+          "country": "ITA"
         },
         {
           "number": 57,
           "name": "SCHMIDT, Artem",
-          "country": "🇺🇸"
+          "country": "USA"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185124618-249436990.png"
+      ]
     },
     {
       "id": 5,
       "name": "Soudal Quick-Step",
       "displayName": "SOUDAL QUICK-STEP",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/soudal.png",
       "riders": [
         {
           "number": 41,
           "name": "CATTANEO, Mattia",
-          "country": "🇮🇹"
+          "country": "ITA"
         },
         {
           "number": 42,
           "name": "EENKHOORN, Pascal",
-          "country": "🇳🇱"
+          "country": "NED"
         },
         {
           "number": 43,
           "name": "GELDERS, Gil",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 44,
           "name": "HUBY, Antoine",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 45,
           "name": "PARET-PEINTRE, Valentin",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 46,
           "name": "LAMPERTI, Lucianno",
-          "country": "🇺🇸"
+          "country": "USA"
         },
         {
           "number": 47,
           "name": "SERRY, Pieter",
-          "country": "🇧🇪"
+          "country": "BEL"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185137185-12171038.png"
+      ]
     },
     {
       "id": 6,
       "name": "Lidl-Trek",
       "displayName": "LIDL-TREK",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png",
       "riders": [
         {
           "number": 31,
           "name": "SIMMONS, Quinn",
-          "country": "🇺🇸"
+          "country": "USA"
         },
         {
           "number": 32,
           "name": "LOPEZ PEREZ, Juan Pedro",
-          "country": "🇪🇸"
+          "country": "ESP"
         },
         {
           "number": 33,
           "name": "MOSCA, Jacopo",
-          "country": "🇮🇹"
+          "country": "ITA"
         },
         {
           "number": 34,
           "name": "NYS, Thibau",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 35,
           "name": "OOMEN, Sam",
-          "country": "🇳🇱"
+          "country": "NED"
         },
         {
           "number": 36,
           "name": "JENSEN, Mattias",
-          "country": "🇩🇰"
+          "country": "DEN"
         },
         {
           "number": 37,
           "name": "VERGAERDE, Otto",
-          "country": "🇧🇪"
+          "country": "BEL"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185144539-276633200.png"
+      ]
     },
     {
       "id": 7,
       "name": "Decathlon AG2R La Mondiale Team",
       "displayName": "DECATHLON AG2R LA MONDIALE TEAM",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/decathlon.png",
       "riders": [
         {
           "number": 101,
           "name": "GODON, Dorian",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 102,
           "name": "BERTHET, Clément",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 103,
           "name": "DEWULF, Stan",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 104,
           "name": "LAFAY, Victor",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 105,
           "name": "LAPEIRA, Paul",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 106,
           "name": "TRONCHON, Bastien",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 107,
           "name": "GAUTHERAT, Pierre",
-          "country": "🇫🇷"
+          "country": "FRA"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185150694-64830581.png"
+      ]
     },
     {
       "id": 8,
       "name": "Red Bull - BORA - hansgrohe",
       "displayName": "RED BULL - BORA – HANSGROHE",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/redbullbora.png",
       "riders": [
         {
           "number": 61,
           "name": "VAN GILS, Maxim",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 62,
           "name": "ADRIA OLIVERAS, Roger",
-          "country": "🇪🇸"
+          "country": "ESP"
         },
         {
           "number": 63,
           "name": "KOCH, Jonas",
-          "country": "🇩🇪"
+          "country": "GER"
         },
         {
           "number": 64,
           "name": "LIPOWITZ, Florian",
-          "country": "🇩🇪"
+          "country": "GER"
         },
         {
           "number": 65,
           "name": "PALZER, Anton",
-          "country": "🇩🇪"
+          "country": "GER"
         },
         {
           "number": 66,
           "name": "PITHIE, Laurence",
-          "country": "🇳🇿"
+          "country": "NZL"
         },
         {
           "number": 67,
           "name": "TRATNIK, Jan",
-          "country": "🇸🇮"
+          "country": "SLO"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185161413-842253388.png"
+      ]
     },
     {
       "id": 9,
       "name": "Alpecin-Deceuninck",
       "displayName": "ALPECIN-DECEUNINCK",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/alpecin.png",
       "riders": [
         {
           "number": 71,
           "name": "HERMANS, Quinten",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 72,
           "name": "BOVEN, Lars",
-          "country": "🇳🇱"
+          "country": "NED"
         },
         {
           "number": 73,
           "name": "GHYS, Robbe",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 74,
           "name": "VERMEERSCH, Gianni",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 75,
           "name": "MEURISSE, Xandro",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 76,
           "name": "VAN TRICHT, Stan",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 77,
           "name": "VAN DEN BOSSCHE, Fabio",
-          "country": "🇧🇪"
+          "country": "BEL"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185167245-801819329.png"
+      ]
     },
     {
       "id": 10,
       "name": "Groupama-FDJ",
       "displayName": "GROUPAMA-FDJ",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/groupama.png",
       "riders": [
         {
           "number": 81,
           "name": "MADOUAS, Valentin",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 82,
           "name": "ASKEY, Lewis",
-          "country": "🇬🇧"
+          "country": "GBR"
         },
         {
           "number": 83,
           "name": "DAVY, Clement",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 84,
           "name": "GENIETS, Kevin",
-          "country": "🇱🇺"
+          "country": "LUX"
         },
         {
           "number": 85,
           "name": "JACOBS, Johan",
-          "country": "🇨🇭"
+          "country": "SUI"
         },
         {
           "number": 86,
           "name": "PACHER, Quentin",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 87,
           "name": "ROCHAS, Remy",
-          "country": "🇫🇷"
+          "country": "FRA"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185172217-585412211.png"
+      ]
     },
     {
       "id": 11,
       "name": "EF Education - EasyPost",
       "displayName": "EF EDUCATION - EASYPOST",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ef.png",
       "riders": [
         {
           "number": 101,
           "name": "Tejay VAN GARDEREN",
-          "country": "🇺🇸"
+          "country": "USA"
         },
         {
           "number": 102,
           "name": "Ben HEALY",
-          "country": "🇮🇪"
+          "country": "IRL"
         },
         {
           "number": 103,
           "name": "Mikkel HONORÉ",
-          "country": "🇩🇰"
+          "country": "DEN"
         },
         {
           "number": 104,
           "name": "Lukas NERURKAR",
-          "country": "🇬🇧"
+          "country": "GBR"
         },
         {
           "number": 105,
           "name": "Nelson QUINN",
-          "country": "🇺🇸"
+          "country": "USA"
         },
         {
           "number": 106,
           "name": "Stefan DE BOD",
-          "country": "🇿🇦"
+          "country": "RSA"
         },
         {
           "number": 107,
           "name": "Michael VALGREN",
-          "country": "🇩🇰"
+          "country": "DEN"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185178736-70760523.png"
+      ]
     },
     {
       "id": 12,
       "name": "Bahrain Victorious",
       "displayName": "BAHRAIN VICTORIOUS",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/bahrain.png",
       "riders": [
         {
           "number": 91,
           "name": "BILBAO LOPEZ DE ARMENTIA, Pello",
-          "country": "🇪🇸"
+          "country": "ESP"
         },
         {
           "number": 92,
           "name": "MARTINEZ, Lenny",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 93,
           "name": "MIHOLJEVIC, Fran",
-          "country": "🇭🇷"
+          "country": "CRO"
         },
         {
           "number": 94,
           "name": "MOHORIC, Matej",
-          "country": "🇸🇮"
+          "country": "SLO"
         },
         {
           "number": 95,
           "name": "ARNDT, Nikias",
-          "country": "🇩🇪"
+          "country": "GER"
         },
         {
           "number": 96,
           "name": "EULALIO, Afonso",
-          "country": "🇵🇹"
+          "country": "POR"
         },
         {
           "number": 97,
           "name": "ZAMBANINI, Edoardo",
-          "country": "🇮🇹"
+          "country": "ITA"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185182800-817080181.png"
+      ]
     },
     {
       "id": 13,
       "name": "Movistar Team",
       "displayName": "MOVISTAR TEAM",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/movistar.png",
       "riders": [
         {
           "number": 121,
           "name": "RUBIO, Einer Augusto",
-          "country": "🇨🇴"
+          "country": "COL"
         },
         {
           "number": 122,
           "name": "BARRENETXEA, Jon",
-          "country": "🇪🇸"
+          "country": "ESP"
         },
         {
           "number": 123,
           "name": "BARTA, William",
-          "country": "🇺🇸"
+          "country": "USA"
         },
         {
           "number": 124,
           "name": "FORMOLO, Davide",
-          "country": "🇮🇹"
+          "country": "ITA"
         },
         {
           "number": 125,
           "name": "GUERREIRO, Ruben Antonio",
-          "country": "🇵🇹"
+          "country": "POR"
         },
         {
           "number": 126,
           "name": "MUHLBERGER, Gregor",
-          "country": "🇦🇹"
+          "country": "AUT"
         },
         {
           "number": 127,
           "name": "TESFAZIÓN OCBIT, Natnael",
-          "country": "🇪🇷"
+          "country": "ERI"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185188530-734203037.png"
+      ]
     },
     {
       "id": 14,
       "name": "Team Jayco AlUla",
       "displayName": "TEAM JAYCO ALULA",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png",
       "riders": [
         {
           "number": 1,
           "name": "Michael MATTHEWS",
-          "country": "🇦🇺"
+          "country": "AUS"
         },
         {
           "number": 2,
           "name": "Luke DURBRIDGE",
-          "country": "🇦🇺"
+          "country": "AUS"
         },
         {
           "number": 3,
           "name": "Asbjørn HELLEMOSE",
-          "country": "🇩🇰"
+          "country": "DEN"
         },
         {
           "number": 4,
           "name": "Michael HEPBURN",
-          "country": "🇦🇺"
+          "country": "AUS"
         },
         {
           "number": 5,
           "name": "Mauro SCHMID",
-          "country": "🇨🇭"
+          "country": "SUI"
         },
         {
           "number": 6,
           "name": "DONALDSON, Robert Edward",
-          "country": "🇬🇧"
+          "country": "GBR"
         },
         {
           "number": 7,
           "name": "Filippo ZANA",
-          "country": "🇮🇹"
+          "country": "ITA"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185200782-276508233.png"
+      ]
     },
     {
       "id": 15,
       "name": "Arkéa-B&B Hotels",
       "displayName": "ARKEA-B&B HOTELS",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/arkea.png",
       "riders": [
         {
           "number": 171,
           "name": "COSTIOU, Ewen",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 172,
           "name": "DELAPLACE, Anthony",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 173,
           "name": "HUYS, Laurens",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 174,
           "name": "LE BERRE, Mathis",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 175,
           "name": "SVESTAD-BARDSENG, Embret",
-          "country": "🇳🇴"
+          "country": "NOR"
         },
         {
           "number": 176,
           "name": "GRONDIN, Donavan",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 177,
           "name": "RIES, Michel",
-          "country": "🇱🇺"
+          "country": "LUX"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185206376-775522379.png"
+      ]
     },
     {
       "id": 16,
       "name": "Team DSM-Firmenich PostNL",
       "displayName": "TEAM PICNIC POSTNL",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/picnic.png",
       "riders": [
         {
           "number": 141,
           "name": "ONLEY, Oscar",
-          "country": "🇬🇧"
+          "country": "GBR"
         },
         {
           "number": 142,
           "name": "ANDRESEN, Tobias Lund",
-          "country": "🇩🇰"
+          "country": "DEN"
         },
         {
           "number": 143,
           "name": "BARGUIL, Warren",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 144,
           "name": "VAN DEN BROEK, Frank",
-          "country": "🇳🇱"
+          "country": "NED"
         },
         {
           "number": 145,
           "name": "COMBAUD, Romain",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 146,
           "name": "DHONDT, Robbe",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 147,
           "name": "NABERMAN, Tim",
-          "country": "🇳🇱"
+          "country": "NED"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185213820-949859911.png"
+      ]
     },
     {
       "id": 17,
       "name": "Intermarché - Wanty",
       "displayName": "INTERMARCHÉ - WANTY",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/intermarchewanty.png",
       "riders": [
         {
           "number": 151,
           "name": "GIRMAY, Biniam",
-          "country": "🇪🇷"
+          "country": "ERI"
         },
         {
           "number": 152,
           "name": "BARRÉ, Louis",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 153,
           "name": "BRAET, Vito",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 154,
           "name": "KAMP, Alexander",
-          "country": "🇩🇰"
+          "country": "DEN"
         },
         {
           "number": 155,
           "name": "PAQUOT, Tom",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 156,
           "name": "RUTSCH, Jonas",
-          "country": "🇩🇪"
+          "country": "GER"
         },
         {
           "number": 157,
           "name": "VAN SINTMAARTENSDIJK, Roel",
-          "country": "🇳🇱"
+          "country": "NED"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185220971-516649448.png"
+      ]
     },
     {
       "id": 18,
       "name": "Cofidis",
       "displayName": "COFIDIS",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png",
       "riders": [
         {
           "number": 161,
           "name": "ARANBURU, Alex",
-          "country": "🇪🇸"
+          "country": "ESP"
         },
         {
           "number": 162,
           "name": "DEBEAUMARCHE, Nicolas",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 163,
           "name": "IZAGUIRRE, Ion",
-          "country": "🇪🇸"
+          "country": "ESP"
         },
         {
           "number": 164,
           "name": "MAISONOBE, Sam",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 165,
           "name": "PEREZ, Anthony",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 166,
           "name": "ROBEET, Ludovic",
-          "country": "🇧🇪"
+          "country": "BEL"
         },
         {
           "number": 167,
           "name": "TOUZE, Damien",
-          "country": "🇫🇷"
+          "country": "FRA"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185227509-733485913.png"
+      ]
     },
     {
       "id": 19,
       "name": "Astana Qazaqstan Team",
       "displayName": "XDS ASTANA TEAM",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/astana.png",
       "riders": [
         {
           "number": 131,
           "name": "BETTIOL, Alberto",
-          "country": "🇮🇹"
+          "country": "ITA"
         },
         {
           "number": 132,
           "name": "CHARMIG, Anthon",
-          "country": "🇩🇰"
+          "country": "DEN"
         },
         {
           "number": 133,
           "name": "GATE, Aaron Murray",
-          "country": "🇳🇿"
+          "country": "NZL"
         },
         {
           "number": 134,
           "name": "MULUEBERHAN SOLOMON, Henok",
-          "country": "🇪🇷"
+          "country": "ERI"
         },
         {
           "number": 135,
           "name": "KANTER, Max",
-          "country": "🇩🇪"
+          "country": "GER"
         },
         {
           "number": 136,
           "name": "VELASCO, Simone",
-          "country": "🇮🇹"
+          "country": "ITA"
         },
         {
           "number": 137,
           "name": "SCHELLING, Ide",
-          "country": "🇳🇱"
+          "country": "NED"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185235950-638809992.png"
+      ]
     },
     {
       "id": 20,
       "name": "IPT",
       "displayName": "IPT",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png",
       "riders": [
         {
           "number": 191,
           "name": "STRONG, Corbin",
-          "country": "🇳🇿"
+          "country": "NZL"
         },
         {
           "number": 192,
           "name": "BLACKMORE, Joseph Peter",
-          "country": "🇬🇧"
+          "country": "GBR"
         },
         {
           "number": 193,
           "name": "BOIVIN, Guillaume",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 194,
           "name": "CLARKE, Simon",
-          "country": "🇦🇺"
+          "country": "AUS"
         },
         {
           "number": 195,
           "name": "HOULE, Hugo",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 196,
           "name": "NEILANDS, Krists",
-          "country": "🇱🇻"
+          "country": "LAT"
         },
         {
           "number": 197,
           "name": "SHEEHAN, Riley",
-          "country": "🇺🇸"
+          "country": "USA"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185250194-689122994.png"
+      ]
     },
     {
       "id": 21,
       "name": "Uno-X Mobility",
       "displayName": "UNO-X MOBILITY",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/uno.png",
       "riders": [
         {
           "number": 201,
           "name": "JOHANNESSEN, Tobias Halland",
-          "country": "🇳🇴"
+          "country": "NOR"
         },
         {
           "number": 202,
           "name": "JOHANNESSEN, Anders Halland",
-          "country": "🇳🇴"
+          "country": "NOR"
         },
         {
           "number": 203,
           "name": "ABRAHAMSEN, Jonas",
-          "country": "🇳🇴"
+          "country": "NOR"
         },
         {
           "number": 204,
           "name": "DVERSNES, Fredrik",
-          "country": "🇳🇴"
+          "country": "NOR"
         },
         {
           "number": 205,
           "name": "LEVY, William Blume",
-          "country": "🇩🇰"
+          "country": "DEN"
         },
         {
           "number": 206,
           "name": "LØLAND, Sakarias",
-          "country": "🇳🇴"
+          "country": "NOR"
         },
         {
           "number": 207,
           "name": "SKAARSETH, Anders",
-          "country": "🇳🇴"
+          "country": "NOR"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185341873-284279985.png"
+      ]
     },
     {
       "id": 22,
       "name": "Tudor Pro Cycling Team",
       "displayName": "TUDOR PRO CYCLING TEAM",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/tudor.png",
       "riders": [
         {
           "number": 211,
           "name": "ALAPHILIPPE, Julian",
-          "country": "🇫🇷"
+          "country": "FRA"
         },
         {
           "number": 212,
           "name": "ERIKSSON, Jacob",
-          "country": "🇸🇪"
+          "country": "SWE"
         },
         {
           "number": 213,
           "name": "ERIKSSON, Lucas",
-          "country": "🇸🇪"
+          "country": "SWE"
         },
         {
           "number": 214,
           "name": "MAYRHOFER, Marius",
-          "country": "🇩🇪"
+          "country": "GER"
         },
         {
           "number": 215,
           "name": "WARBASSE, Lawrence",
-          "country": "🇺🇸"
+          "country": "USA"
         },
         {
           "number": 216,
           "name": "WEISS, Fabian",
-          "country": "🇨🇭"
+          "country": "SUI"
         },
         {
           "number": 217,
           "name": "WILKSCH, Hannes",
-          "country": "🇩🇪"
+          "country": "GER"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185349756-192251538.png"
+      ]
     },
     {
       "id": 23,
       "name": "Équipe Canada",
       "displayName": "ÉQUIPE NATIONALE CANADA",
+      "jerseyPath": "/listeengages-package/listeengages/images/jerseys/canada.png",
       "riders": [
         {
           "number": 221,
           "name": "JACOB, Philippe",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 222,
           "name": "GAUTHIER, Jérôme",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 223,
           "name": "MATTERN, Carson",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 224,
           "name": "COUTURE, Samuel",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 225,
           "name": "COWAN, Quentin",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 226,
           "name": "BOUCHARD, Félix",
-          "country": "🇨🇦"
+          "country": "CAN"
         },
         {
           "number": 227,
           "name": "HAMEL, Félix",
-          "country": "🇨🇦"
+          "country": "CAN"
         }
-      ],
-      "jerseyPath": "/images/jerseys/jersey-1757185354627-421181568.png"
+      ]
     }
   ]
 }

@@ -7,7 +7,7 @@ const cors = require('cors');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
 const fs = require('fs').promises;
-const multer = require('multer');
+// const multer = require('multer'); // DÉSACTIVÉ - Plus d'upload de maillots
 // Ensure fetch is available on Node < 18
 const fetch = global.fetch || ((...args) => import('node-fetch').then(({ default: f }) => f(...args)));
 require('dotenv').config();
@@ -112,6 +112,49 @@ app.use((req, res, next) => {
     next();
 });
 
+// IMPORTANT: Route riders.json AVANT le middleware static pour pouvoir modifier les données
+app.get('/riders.json', async (req, res) => {
+    console.log('GET /riders.json - Processing');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    
+    try {
+        // Lire le fichier riders.json
+        const raw = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
+        const data = JSON.parse(raw);
+        
+        // REMPLACER TOUS les chemins des maillots par les bons chemins officiels
+        if (data && data.teams && Array.isArray(data.teams)) {
+            data.teams = data.teams.map(team => {
+                const newPath = getLocalJerseyPath(team.name, team.displayName);
+                return {
+                    ...team,
+                    jerseyPath: newPath
+                };
+            });
+        }
+        
+        return res.type('application/json').send(JSON.stringify(data));
+    } catch (e) {
+        // Si erreur, essayer le fichier de fallback
+        try {
+            const raw = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
+            const data = JSON.parse(raw);
+            
+            if (data && data.teams && Array.isArray(data.teams)) {
+                data.teams = data.teams.map(team => ({
+                    ...team,
+                    jerseyPath: getLocalJerseyPath(team.name, team.displayName)
+                }));
+            }
+            
+            return res.type('application/json').send(JSON.stringify(data));
+        } catch (fallbackError) {
+            console.error('Error serving riders.json:', fallbackError);
+            return res.status(404).json({ error: 'riders_json_not_found' });
+        }
+    }
+});
+
 // Serve static files with caching (AFTER auth check)
 app.use(setCache);
 app.use((req, res, next) => {
@@ -145,7 +188,7 @@ const CMS_JERSEYS_DIR = process.env.CMS_JERSEYS_DIR || (IS_RAILWAY ? '/data/jers
 const DATA_BASE_DIR = IS_RAILWAY ? '/data/_data' : path.join(__dirname, 'cms');
 const TEAMS_DATA_FILE = path.join(DATA_BASE_DIR, 'teams-data.json');
 const TEAMS_COMPLETE_FILE = path.join(__dirname, 'cms', 'teams-complete.json');
-const RIDERS_JSON_FILE = path.join(DATA_BASE_DIR, 'riders.json');
+const RIDERS_JSON_FILE = path.join(__dirname, 'riders.json');
 const RIDERS_JS_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'js', 'riders.js');
 
 // Serve persistent jerseys directory with graceful placeholder fallback
@@ -171,11 +214,12 @@ function getLocalJerseyPath(teamName, displayName) {
         [/movistar/, 'movistar.png'],
         [/jayco/, 'jayco.png'],
         [/arkea|arkéa/, 'arkea.png'],
+        [/lotto|dstny/, 'lotto.png'],
         [/picnic|postnl|dsm/, 'picnic.png'],
         [/intermarche|intermarché|wanty/, 'intermarchewanty.png'],
         [/cofidis/, 'cofidis.png'],
         [/astana/, 'astana.png'],
-        [/israel|premier\s*tech|ipt/, 'palestine.png'],
+        [/israel|premier\s*tech|ipt/, 'ipt.png'],
         [/uno\s*-?x|uno\sx/, 'uno.png'],
         [/tudor/, 'tudor.png'],
         [/canada|équipe nationale/, 'canada.png']
@@ -186,49 +230,31 @@ function getLocalJerseyPath(teamName, displayName) {
     return base + 'jersey-placeholder.svg';
 }
 
+// DÉSACTIVÉ - Cette route servait les mauvais maillots
+/*
 app.get('/images/jerseys/:file', async (req, res) => {
-    const filename = req.params.file || '';
-    try {
-        const requestedFile = path.join(CMS_JERSEYS_DIR, filename);
-        await fs.stat(requestedFile);
-        res.setHeader('Cache-Control', 'no-cache');
-        return res.sendFile(requestedFile);
-    } catch (_) {
-        // Si absent du volume, on tente le dossier du repo
-        try {
-            const repoFile = path.join(REPO_JERSEYS_DIR, filename);
-            await fs.stat(repoFile);
-            res.setHeader('Cache-Control', 'no-cache');
-            return res.sendFile(repoFile);
-        } catch (__) {
-            // Important: renvoyer 404 pour déclencher le fallback client (maillot local)
-            return res.status(404).end();
-        }
-    }
+    // Route désactivée
 });
+*/
 
-app.use('/images/jerseys', express.static(CMS_JERSEYS_DIR));
+// DÉSACTIVÉ - Les maillots viennent du dossier officiel
+// app.use('/images/jerseys', express.static(CMS_JERSEYS_DIR));
 
-// Multer storage for jersey uploads
-const storage = multer.diskStorage({
-    destination: async function (req, file, cb) {
-        const dir = CMS_JERSEYS_DIR;
-        try {
-            await fs.mkdir(dir, { recursive: true });
-            cb(null, dir);
-        } catch (error) {
-            cb(error, null);
-        }
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-    }
-});
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
-});
+// Multer storage for jersey uploads - DÉSACTIVÉ
+// const storage = multer.diskStorage({
+//     destination: async function (req, file, cb) {
+//         // Upload désactivé - retourner une erreur
+//         cb(new Error('Upload de maillots désactivé'), null);
+//     },
+//     filename: function (req, file, cb) {
+//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+//         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+//     }
+// });
+// const upload = multer({
+//     storage: storage,
+//     limits: { fileSize: 5 * 1024 * 1024 },
+// });
 
 // Utility: append cache-buster to asset URL (prevents stale jersey images)
 function appendCacheBusterToUrl(url) {
@@ -447,17 +473,11 @@ app.delete('/api/teams/:id', async (req, res) => {
     }
 });
 
-app.post('/api/upload-jersey', upload.single('jersey'), async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ error: 'Aucun fichier uploadé' });
-        }
-        const jerseyPath = `/images/jerseys/${req.file.filename}`;
-        // Return cache-busted path to force clients to fetch the fresh asset
-        res.json({ success: true, path: appendCacheBusterToUrl(jerseyPath) });
-    } catch (error) {
-        res.status(500).json({ error: "Erreur lors de l'upload du maillot" });
-    }
+// Upload de maillots DÉSACTIVÉ - Les maillots sont gérés uniquement depuis le dossier officiel
+app.post('/api/upload-jersey', (req, res) => {
+    res.status(403).json({ 
+        error: "L'upload de maillots est désactivé. Les maillots proviennent uniquement du dossier officiel." 
+    });
 });
 
 // Optional endpoint used by cms-app.js (sauvegarde riders.json brute)
@@ -470,29 +490,7 @@ app.post('/api/riders-json', async (req, res) => {
     }
 });
 
-// Expose riders.json depuis le volume pour le front
-app.get('/riders.json', async (req, res) => {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    try {
-        let data;
-        try {
-            const raw = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
-            data = JSON.parse(raw);
-        } catch (_) {
-            const raw = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
-            data = JSON.parse(raw);
-        }
-        if (data && Array.isArray(data.teams)) {
-            data.teams = data.teams.map(team => ({
-                ...team,
-                jerseyPath: getLocalJerseyPath(team.name, team.displayName)
-            }));
-        }
-        return res.type('application/json').send(JSON.stringify(data));
-    } catch (e) {
-        return res.status(404).json({ error: 'riders_json_not_found' });
-    }
-});
+// Route déplacée plus bas après le middleware static
 
 // CMS routes are handled below after CSP setup
 
@@ -529,7 +527,7 @@ app.use('/cms', (req, res, next) => {
 // Weather proxy endpoints (hide API key and centralize calls)
 app.get('/api/weather/current', async (req, res) => {
     try {
-        const apiKey = process.env.OPENWEATHER_API_KEY;
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
         if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
 
         const lat = parseFloat(req.query.lat) || 45.5019; // Montréal
@@ -568,7 +566,7 @@ app.get('/api/weather/current', async (req, res) => {
 // Weather hourly forecast proxy (One Call 3.0 puis 2.5)
 app.get('/api/weather/forecast', async (req, res) => {
     try {
-        const apiKey = process.env.OPENWEATHER_API_KEY;
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
         if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
 
         const lat = parseFloat(req.query.lat) || 45.5019;
@@ -576,27 +574,26 @@ app.get('/api/weather/forecast', async (req, res) => {
         const units = (req.query.units || 'metric');
         const lang = (req.query.lang || 'fr');
 
-        const build = (base) => `${base}/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily,alerts,current&units=${units}&lang=${lang}&appid=${apiKey}`;
-        const url30 = `https://api.openweathermap.org/data/3.0`;
-        const url25 = `https://api.openweathermap.org/data/2.5`;
+        // Utiliser l'API forecast standard au lieu de onecall (qui nécessite un abonnement)
+        const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&appid=${apiKey}`;
 
-        async function fetchOnce(url) {
-            try {
-                const r = await fetch(url);
-                if (!r.ok) throw new Error('bad_status_' + r.status);
-                return await r.json();
-            } catch (e) { throw e; }
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Weather API error: ${response.status}`);
         }
-
-        let data;
-        try {
-            data = await fetchOnce(build(url30));
-        } catch (_) {
-            data = await fetchOnce(build(url25));
-        }
-        const hourly = Array.isArray(data.hourly) ? data.hourly.slice(0, 6) : [];
-        const simplified = hourly.map(h => ({ dt: h.dt, main: { temp: h.temp, feels_like: h.feels_like }, weather: h.weather || [] }));
-        return res.json({ hourly: simplified, timezone_offset: data.timezone_offset || 0 });
+        const data = await response.json();
+        
+        // Transformer les données de l'API forecast en format hourly
+        const hourly = data.list.slice(0, 6).map(item => ({
+            dt: item.dt,
+            main: { 
+                temp: item.main.temp, 
+                feels_like: item.main.feels_like 
+            },
+            weather: item.weather || []
+        }));
+        
+        return res.json({ hourly, timezone_offset: 0 });
     } catch (error) {
         console.error('Weather forecast error:', error);
         return res.status(500).json({ error: 'weather_forecast_failed' });
