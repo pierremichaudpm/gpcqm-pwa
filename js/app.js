@@ -779,20 +779,19 @@ function openWatchModal() {
     if (!m) return;
     const img = document.getElementById('watchModalImage');
     if (img) {
-        const frBase = 'images/meilleurs_endroits_mtl_fr.png';
-        const enBase = 'images/meilleurs_endroits_mtl_en.png';
-        const base = currentLanguage === 'en' ? enBase : frBase;
-        const desiredSrc = `${base}?t=${Date.now()}`;
-        if (img.getAttribute('src') !== desiredSrc) {
-            img.setAttribute('src', desiredSrc);
-        }
-        img.style.display = '';
+        // Simplifier : toujours utiliser l'image française qui existe
+        img.src = 'images/meilleurs_endroits_mtl_fr.png';
+        img.style.display = 'block';
+        img.style.width = '100%';
+        img.style.height = 'auto';
+        
         img.onerror = function() {
-            const altBase = base === frBase ? enBase : frBase;
-            const altSrc = `${altBase}?t=${Date.now()}`;
-            if (img.getAttribute('src') !== altSrc) {
-                img.setAttribute('src', altSrc);
-            }
+            console.error('Failed to load watch modal image');
+            this.style.display = 'none';
+        };
+        
+        img.onload = function() {
+            console.log('Watch modal image loaded successfully');
         };
     }
     m.classList.remove('hidden');

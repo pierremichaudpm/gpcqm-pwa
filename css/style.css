@@ -2018,8 +2018,8 @@ a:hover {
 
 .install-close {
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: -5px;
+    right: -5px;
     background: var(--gray-200);
     border: none;
     width: 30px;
