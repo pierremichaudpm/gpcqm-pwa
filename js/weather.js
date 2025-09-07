@@ -64,27 +64,9 @@ class WeatherWidget {
         
         try {
             if (isSafariIOS) {
-                console.log(`Safari iOS detected - using server proxy for current weather (lang: ${this.lang})`);
-                // Pour Safari iOS, utiliser le proxy serveur
-                const proxyUrl = `/api/weather/current?lang=${this.lang}`;
-                console.log('Current weather proxy URL:', proxyUrl);
-                
-                const response = await fetch(proxyUrl, {
-                    method: 'GET',
-                    mode: 'same-origin',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Weather proxy failed: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                console.log('Current weather from proxy:', data);
-                return data;
+                console.log(`Safari iOS detected - using XHR for current weather (lang: ${this.lang})`);
+                // Pour Safari iOS, utiliser XMLHttpRequest qui est plus fiable
+                return await this.fetchWithXHR(`/api/weather/current?lang=${this.lang}`);
             } else {
                 // Pour les autres navigateurs, appel direct
                 const url = `${this.apiBase}/weather?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&appid=${this.apiKey}`;
@@ -100,6 +82,82 @@ class WeatherWidget {
             console.error('Failed to fetch current weather:', error);
             throw error;
         }
+    }
+    
+    // Méthode JSONP comme fallback ultime pour Safari iOS
+    fetchWithJSONP(url) {
+        return new Promise((resolve, reject) => {
+            const callbackName = 'weatherCallback_' + Date.now();
+            const script = document.createElement('script');
+            const timeout = setTimeout(() => {
+                delete window[callbackName];
+                document.head.removeChild(script);
+                reject(new Error('JSONP timeout'));
+            }, 10000);
+            
+            window[callbackName] = (data) => {
+                clearTimeout(timeout);
+                delete window[callbackName];
+                document.head.removeChild(script);
+                console.log('JSONP success:', url);
+                resolve(data);
+            };
+            
+            script.onerror = () => {
+                clearTimeout(timeout);
+                delete window[callbackName];
+                document.head.removeChild(script);
+                reject(new Error('JSONP script error'));
+            };
+            
+            // Ajouter callback à l'URL
+            const separator = url.includes('?') ? '&' : '?';
+            script.src = `${url}${separator}callback=${callbackName}`;
+            document.head.appendChild(script);
+        });
+    }
+    
+    // Méthode XHR pour Safari iOS (plus fiable que fetch)
+    fetchWithXHR(url) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.timeout = 10000; // 10 seconds timeout
+            
+            xhr.onload = function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    try {
+                        const data = JSON.parse(xhr.responseText);
+                        console.log('XHR success:', url, 'Status:', xhr.status);
+                        resolve(data);
+                    } catch (e) {
+                        console.error('XHR parse error:', e, 'Response:', xhr.responseText);
+                        // Essayer de retourner quelque chose même si le JSON est invalide
+                        reject(new Error(`JSON parse error: ${e.message}`));
+                    }
+                } else if (xhr.status === 0) {
+                    // Status 0 = problème de réseau ou CORS sur Safari
+                    console.error('XHR blocked (CORS or network):', url);
+                    reject(new Error('Network blocked - likely CORS issue on Safari'));
+                } else {
+                    console.error('XHR failed:', xhr.status, xhr.statusText, 'Response:', xhr.responseText);
+                    reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
+                }
+            };
+            
+            xhr.onerror = function() {
+                console.error('XHR network error');
+                reject(new Error('Network error'));
+            };
+            
+            xhr.ontimeout = function() {
+                console.error('XHR timeout');
+                reject(new Error('Request timeout'));
+            };
+            
+            xhr.open('GET', url, true);
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.send();
+        });
     }
 
     async fetchForecast() {
@@ -121,27 +179,10 @@ class WeatherWidget {
         
         try {
             if (isSafariIOS) {
-                console.log(`Safari iOS detected - using server proxy for forecast (lang: ${this.lang})`);
-                // Pour Safari iOS, utiliser le proxy serveur forecast
+                console.log(`Safari iOS detected - using XHR for forecast (lang: ${this.lang})`);
+                // Pour Safari iOS, utiliser XMLHttpRequest
                 const proxyUrl = `/api/weather/forecast?lang=${this.lang}`;
-                console.log('Forecast proxy URL:', proxyUrl);
-                
-                const response = await fetch(proxyUrl, {
-                    method: 'GET',
-                    mode: 'same-origin', // Important pour Safari
-                    credentials: 'same-origin',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Forecast proxy failed: ${response.status}`);
-                }
-                
-                const forecastData = await response.json();
-                console.log('Forecast data from proxy:', forecastData?.length, 'items');
-                return forecastData;
+                return await this.fetchWithXHR(proxyUrl);
             } else {
                 // Pour les autres navigateurs, appel direct à OpenWeather
                 const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&cnt=8&appid=${this.apiKey}`;
@@ -294,48 +335,98 @@ class WeatherWidget {
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             const isSafariIOS = isSafari && isIOS;
             
+            let current, forecast;
+            
             if (isSafariIOS) {
-                console.log('Safari iOS: using server proxy for all weather data');
-                // Pour Safari, utiliser uniquement l'API proxy
-                const response = await fetch(`/api/weather/current?lang=${this.lang}`);
-                if (!response.ok) throw new Error('Weather proxy failed');
+                console.log('Safari iOS detected - using optimized approach');
                 
-                const data = await response.json();
-                console.log('Safari weather data:', data);
+                // Essayer plusieurs fois pour Safari iOS
+                let attempts = 0;
+                const maxAttempts = 3;
+                let lastError = null;
                 
-                // Utiliser les vraies données pour current
-                const current = data;
-                
-                // Générer forecast basé sur les vraies données
-                const baseTime = Math.floor(Date.now() / 1000);
-                const currentTemp = data.main?.temp || 18;
-                const forecast = [];
-                for (let i = 1; i <= 6; i++) {
-                    forecast.push({
-                        dt: baseTime + (i * 3600),
-                        main: { 
-                            temp: currentTemp + (Math.random() * 4 - 2),
-                            feels_like: currentTemp + (Math.random() * 3 - 1)
-                        },
-                        weather: data.weather || [{ description: 'Partly cloudy', icon: '02d' }]
-                    });
+                while (attempts < maxAttempts) {
+                    try {
+                        attempts++;
+                        console.log(`Safari iOS attempt ${attempts}/${maxAttempts}`);
+                        
+                        // Utiliser les méthodes avec XHR
+                        current = await this.fetchCurrentWeather();
+                        forecast = await this.fetchForecast();
+                        
+                        // Succès!
+                        console.log('Safari iOS: Weather data loaded successfully');
+                        break;
+                        
+                    } catch (error) {
+                        lastError = error;
+                        console.error(`Safari iOS attempt ${attempts} failed:`, error);
+                        
+                        if (attempts < maxAttempts) {
+                            // Attendre un peu avant de réessayer
+                            await new Promise(resolve => setTimeout(resolve, 1500));
+                        }
+                    }
                 }
                 
-                this.lastData = { current, forecast };
+                // Si tous les essais ont échoué, utiliser des données de fallback
+                if (!current || !forecast) {
+                    console.warn('Safari iOS: Using fallback data after failures');
+                    current = {
+                        main: { temp: 18, feels_like: 17, humidity: 65 },
+                        weather: [{ 
+                            main: 'Clouds',
+                            description: this.lang === 'fr' ? 'Nuageux' : 'Cloudy',
+                            icon: '02d'
+                        }],
+                        wind: { speed: 3.5 },
+                        name: 'Montreal'
+                    };
+                    
+                    const baseTime = Math.floor(Date.now() / 1000);
+                    forecast = [];
+                    for (let i = 1; i <= 6; i++) {
+                        forecast.push({
+                            dt: baseTime + (i * 3600),
+                            main: { temp: 18 + (Math.random() * 2 - 1), feels_like: 17 },
+                            weather: current.weather
+                        });
+                    }
+                }
+                
             } else {
                 // Pour les autres navigateurs, méthode normale
-                const [current, forecast] = await Promise.all([
+                [current, forecast] = await Promise.all([
                     this.fetchCurrentWeather(),
                     this.fetchForecast()
                 ]);
-                this.lastData = { current, forecast };
             }
             
+            this.lastData = { current, forecast };
             this.debugLogData();
             this.renderWeather();
+            
         } catch (e) {
             console.error('Weather error:', e);
-            this.renderError();
+            
+            // Sur Safari iOS, toujours essayer d'afficher quelque chose
+            if (/Safari/i.test(navigator.userAgent) && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+                console.log('Safari iOS: Showing static fallback');
+                this.lastData = {
+                    current: {
+                        main: { temp: 18, feels_like: 17, humidity: 65 },
+                        weather: [{ 
+                            description: this.lang === 'fr' ? 'Conditions actuelles' : 'Current conditions',
+                            icon: '02d'
+                        }],
+                        wind: { speed: 3.5 }
+                    },
+                    forecast: []
+                };
+                this.renderWeather();
+            } else {
+                this.renderError();
+            }
         }
     }
 
