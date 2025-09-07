@@ -186,6 +186,10 @@ const translations = {
         installTitle: 'Installer l\'application',
         installText: 'Ajoutez GPCQM à votre écran d\'accueil pour un accès rapide',
         installButton: 'Installer',
+        iosInstallTitle: 'Installer GPCQM 2025',
+        iosInstallText: 'Pour installer cette app sur votre iPhone :',
+        iosStep1: 'Appuyez sur le bouton Partager 📤',
+        iosStep2: 'Sélectionnez "Sur l\'écran d\'accueil"',
         offlineMode: 'Mode hors ligne'
     },
     en: {
@@ -365,6 +369,10 @@ const translations = {
         installTitle: 'Install App',
         installText: 'Add GPCQM to your home screen for quick access',
         installButton: 'Install',
+        iosInstallTitle: 'Install GPCQM 2025',
+        iosInstallText: 'To install this app on your iPhone:',
+        iosStep1: 'Tap the Share button 📤',
+        iosStep2: 'Select "Add to Home Screen"',
         offlineMode: 'Offline Mode'
     },
     // Extra keys for shop
@@ -481,6 +489,43 @@ function initializeApp() {
                 prompt.classList.add('hidden');
             }
         });
+    }
+    
+    // iOS Install Prompt Logic
+    const iosInstallCloseBtn = document.getElementById('iosInstallCloseBtn');
+    if (iosInstallCloseBtn) {
+        iosInstallCloseBtn.addEventListener('click', function() {
+            const prompt = document.getElementById('iosInstallPrompt');
+            if (prompt) {
+                prompt.classList.add('hidden');
+                localStorage.setItem('iosInstallPromptDismissed', 'true');
+                localStorage.setItem('iosInstallPromptDismissedTime', Date.now());
+            }
+        });
+    }
+    
+    // Detect iOS and show install prompt
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isInStandaloneMode = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+    
+    if (isIOS && !isInStandaloneMode) {
+        const dismissed = localStorage.getItem('iosInstallPromptDismissed');
+        const dismissedTime = localStorage.getItem('iosInstallPromptDismissedTime');
+        
+        let shouldShow = true;
+        if (dismissed && dismissedTime) {
+            const daysSinceDismissed = (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
+            shouldShow = daysSinceDismissed > 7; // Show again after 7 days
+        }
+        
+        if (shouldShow) {
+            setTimeout(() => {
+                const iosPrompt = document.getElementById('iosInstallPrompt');
+                if (iosPrompt) {
+                    iosPrompt.classList.remove('hidden');
+                }
+            }, 4000); // Show after 4 seconds
+        }
     }
     
     // Lazy load non-critical functionality with fallback
