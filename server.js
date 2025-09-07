@@ -494,25 +494,35 @@ app.get('/riders.json', async (req, res) => {
         async function preferCmsOrLocal(team) {
             try {
                 const rawPath = (team && team.jerseyPath) || '';
-                const m = rawPath.match(/^\/?images\/jerseys\/([^?&#]+)/i);
-                if (m && m[1]) {
-                    const filename = m[1];
+                
+                // Si c'est un maillot uploadé via CMS (format jersey-xxx.png)
+                const uploadMatch = rawPath.match(/jersey-\d+-\d+\.png/i);
+                if (uploadMatch) {
+                    const filename = uploadMatch[0];
                     try {
                         await fs.stat(path.join(CMS_JERSEYS_DIR, filename));
                         return appendCacheBusterToUrl(`/images/jerseys/${filename}`);
-                    } catch (_) { /* fall back */ }
+                    } catch (_) { 
+                        // Le fichier uploadé n'existe plus, utiliser le maillot officiel
+                    }
+                }
+                
+                // Sinon, utiliser le maillot officiel défini dans jerseyPath
+                if (rawPath && rawPath.includes('/listeengages-package/')) {
+                    return rawPath;
                 }
             } catch (_) { /* ignore */ }
+            
+            // En dernier recours, trouver le maillot officiel par le nom de l'équipe
             return getLocalJerseyPath(team.name, team.displayName);
         }
 
-        // Toujours utiliser les vrais maillots officiels
-        // La fonction preferCmsOrLocal est désactivée pour éviter les mauvais maillots
+        // Utiliser les maillots uploadés via CMS s'ils existent, sinon les maillots officiels
         if (data && Array.isArray(data.teams)) {
             const mapped = await Promise.all(data.teams.map(async (team) => ({
                 ...team,
-                // Utiliser directement le jerseyPath défini (vrais maillots officiels)
-                jerseyPath: team.jerseyPath || getLocalJerseyPath(team.name, team.displayName)
+                // Priorité : 1) Maillot uploadé via CMS, 2) Maillot officiel
+                jerseyPath: await preferCmsOrLocal(team)
             })));
             data.teams = mapped;
         }
