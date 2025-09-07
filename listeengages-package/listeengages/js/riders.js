@@ -493,7 +493,7 @@ function loadTeamsView() {
             'MOV': 'movistar.png',
             'JAY': 'jayco.png',
             'ARK': 'arkea.png',
-            'DSM': 'decathlon.png',
+            'DSM': 'picnic.png',
             'IWA': 'intermarchewanty.png',
             'COF': 'cofidis.png',
             'AST': 'astana.png',

@@ -347,6 +347,9 @@ a:hover {
     width: auto;
     background: transparent;
     display: block;
+    border-radius: 50%;
+    border: none;
+    box-shadow: none;
 }
 
 @media (min-width: 768px) {
@@ -2018,8 +2021,8 @@ a:hover {
 
 .install-close {
     position: absolute;
-    top: -var(--spacing-sm);
-    right: -var(--spacing-sm);
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
     background: var(--gray-200);
     border: none;
     width: 30px;
@@ -2031,6 +2034,7 @@ a:hover {
     align-items: center;
     justify-content: center;
     transition: all var(--transition-base);
+    z-index: 10;
 }
 
 .install-close:hover {
