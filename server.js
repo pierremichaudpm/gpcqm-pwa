@@ -32,21 +32,22 @@ function basicAuth(req, res, next) {
 
 // Security middleware (disable helmet CSP to manage it manually per-route)
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
-// Default CSP for the app (stricter)
+// Default CSP for the app - DÉSACTIVÉE TEMPORAIREMENT POUR DEBUG
 function setDefaultCspHeaders(res) {
-    res.setHeader('Content-Security-Policy', [
-        "default-src 'self'",
-        "img-src 'self' data: https: http:",
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-        "font-src 'self' https://fonts.gstatic.com",
-        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://snapwidget.com",
-        "connect-src 'self' https://api.openweathermap.org https://api.weather.gc.ca https://graph.instagram.com https://www.google-analytics.com",
-        "frame-src 'self' https://player.vimeo.com https://www.youtube.com https://www.google.com https://www.google.ca https://snapwidget.com",
-        "child-src 'self' https://player.vimeo.com https://www.youtube.com https://www.google.com https://www.google.ca https://snapwidget.com",
-        "object-src 'none'",
-        "media-src 'self' https://player.vimeo.com https://vimeo.com",
-        "script-src-attr 'unsafe-inline'"
-    ].join('; '));
+    // CSP COMPLÈTEMENT DÉSACTIVÉE pour identifier le problème
+    // res.setHeader('Content-Security-Policy', [
+    //     "default-src 'self'",
+    //     "img-src 'self' data: https: http:",
+    //     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    //     "font-src 'self' https://fonts.gstatic.com",
+    //     "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://snapwidget.com",
+    //     "connect-src 'self' https://api.openweathermap.org https://api.weather.gc.ca https://graph.instagram.com https://www.google-analytics.com",
+    //     "frame-src 'self' https://player.vimeo.com https://www.youtube.com https://www.google.com https://www.google.ca https://snapwidget.com",
+    //     "child-src 'self' https://player.vimeo.com https://www.youtube.com https://www.google.com https://www.google.ca https://snapwidget.com",
+    //     "object-src 'none'",
+    //     "media-src 'self' https://player.vimeo.com https://vimeo.com",
+    //     "script-src-attr 'unsafe-inline'"
+    // ].join('; '));
 }
 
 // Apply CSP per request
