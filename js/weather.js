@@ -423,21 +423,8 @@ async function loadWeather() {
             console.log('Weather widget created, Safari detected:', isSafari);
         }
         
-        if (isSafari) {
-            // Safari : forcer l'affichage avec données statiques fiables
-            console.log('Safari detected: using static fallback data');
-            __gpcqmWeatherWidget.lastData = {
-                current: {
-                    main: { temp: 18, feels_like: 17, humidity: 65 },
-                    weather: [{ main: 'Clear', description: 'Ensoleillé', icon: '01d' }],
-                    wind: { speed: 3.5 }
-                },
-                forecast: []
-            };
-            __gpcqmWeatherWidget.renderWeather();
-        } else {
-            await __gpcqmWeatherWidget.refresh();
-        }
+        // Essayer les vraies données pour tous les navigateurs, y compris Safari
+        await __gpcqmWeatherWidget.refresh();
         
         console.log('Weather loaded successfully');
     } catch (error) {
