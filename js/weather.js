@@ -57,8 +57,8 @@ class WeatherWidget {
     }
 
     async fetchCurrentWeather() {
-        // Passe par le proxy serveur pour éviter l'exposition de la clé et fiabiliser les quotas
-        const url = `/api/weather/current?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}`;
+        // Utiliser lat/lon pour être cohérent avec OneCall
+        const url = `${this.apiBase}/weather?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&appid=${this.apiKey}`;
         const res = await fetch(url, { cache: 'no-store' });
         if (!res.ok) {
             const text = await res.text().catch(() => '');
@@ -80,18 +80,39 @@ class WeatherWidget {
     }
 
     async fetchOwForecast() {
-        // Passe par le proxy backend pour éviter toute clé côté client
-        const url = `/api/weather/forecast?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}`;
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) {
-            const text = await res.text().catch(() => '');
-            console.error('OWM forecast proxy failed:', res.status, text);
-            throw new Error('OWM forecast proxy failed');
+        // Hourly forecast: try One Call 3.0, fallback to 2.5
+        const build = (base) => `${base}/onecall?lat=${this.lat}&lon=${this.lon}&exclude=minutely,daily,alerts,current&units=${this.units}&lang=${this.lang}&appid=${this.apiKey}`;
+        const url30 = `https://api.openweathermap.org/data/3.0`;
+        const url25 = `https://api.openweathermap.org/data/2.5`;
+        // Try 3.0
+        try {
+            const res30 = await fetch(build(url30), { cache: 'no-store' });
+            if (!res30.ok) {
+                const text = await res30.text().catch(() => '');
+                console.warn('One Call 3.0 failed:', res30.status, text);
+                throw new Error('onecall30');
+            }
+            const data30 = await res30.json();
+            this.tzOffsetSeconds = Number(data30.timezone_offset || 0);
+            const hourly30 = (data30.hourly || []).slice(0, 6);
+            return hourly30.map(h => ({ dt: h.dt, main: { temp: h.temp, feels_like: h.feels_like }, weather: h.weather || [] }));
+        } catch (e) {
+            // Fallback 2.5
+            try {
+                const res25 = await fetch(build(url25), { cache: 'no-store' });
+                if (!res25.ok) {
+                    const text = await res25.text().catch(() => '');
+                    console.error('One Call 2.5 failed:', res25.status, text);
+                    throw new Error('onecall25');
+                }
+                const data25 = await res25.json();
+                this.tzOffsetSeconds = Number(data25.timezone_offset || 0);
+                const hourly25 = (data25.hourly || []).slice(0, 6);
+                return hourly25.map(h => ({ dt: h.dt, main: { temp: h.temp, feels_like: h.feels_like }, weather: h.weather || [] }));
+            } catch (e2) {
+                throw e2;
+            }
         }
-        const data = await res.json();
-        this.tzOffsetSeconds = Number(data.timezone_offset || 0);
-        const hourly = Array.isArray(data.hourly) ? data.hourly : [];
-        return hourly.slice(0, 6);
     }
 
     async fetchEcccForecast() {
