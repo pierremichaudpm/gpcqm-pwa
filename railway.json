@@ -18,5 +18,11 @@
       "NODE_ENV": "production",
       "CMS_JERSEYS_DIR": "/data/jerseys"
     }
-  }
+  },
+  "volumes": [
+    {
+      "mount": "/data",
+      "name": "gpcm-data"
+    }
+  ]
 }

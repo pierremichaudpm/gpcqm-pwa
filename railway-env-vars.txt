@@ -1,0 +1,20 @@
+=== VARIABLES D'ENVIRONNEMENT À CONFIGURER DANS RAILWAY ===
+
+1. IMPORTANT - API Météo (utilise votre clé API avec abonnement):
+   OPENWEATHER_API_KEY = 27fd496c6cc9c8cd6f8981bf682c5dd4
+   
+   Note: Cette clé est déjà configurée comme valeur par défaut dans le code.
+   Si vous avez une clé différente/premium, ajoutez-la dans Railway.
+
+2. Authentification CMS (déjà configurées par défaut):
+   CMS_USER = admin
+   CMS_PASS = Axelle20
+
+3. Variables automatiques (Railway les définit):
+   PORT = (automatique)
+   NODE_ENV = production
+
+=== IMPORTANT ===
+- La clé OpenWeather est maintenant intégrée dans le code comme fallback
+- Les images de maillots sont stockées dans ./images/jerseys/ (pas de volume nécessaire)
+- Déployer avec: git push origin main

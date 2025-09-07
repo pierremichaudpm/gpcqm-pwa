@@ -147,11 +147,13 @@ app.use((req, res, next) => {
 
 // Paths (persistant sur volume Railway si dispo)
 const IS_RAILWAY = Boolean(process.env.RAILWAY_STATIC_URL || process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_ENVIRONMENT_NAME || process.env.RAILWAY_PROJECT_ID);
+// Configuration avec volume Railway pour persistance
 const CMS_JERSEYS_DIR = process.env.CMS_JERSEYS_DIR || (IS_RAILWAY ? '/data/jerseys' : path.join(__dirname, 'images', 'jerseys'));
-const DATA_BASE_DIR = IS_RAILWAY ? '/data/_data' : path.join(__dirname, 'cms');
+// Utiliser le volume /data sur Railway pour la persistance des données
+const DATA_BASE_DIR = IS_RAILWAY ? '/data/cms' : path.join(__dirname, 'cms');
 const TEAMS_DATA_FILE = path.join(DATA_BASE_DIR, 'teams-data.json');
 const TEAMS_COMPLETE_FILE = path.join(__dirname, 'cms', 'teams-complete.json');
-const RIDERS_JSON_FILE = path.join(DATA_BASE_DIR, 'riders.json');
+const RIDERS_JSON_FILE = IS_RAILWAY ? '/data/riders.json' : path.join(__dirname, 'riders.json');
 const RIDERS_JS_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'js', 'riders.js');
 
 // Serve persistent jerseys directory with graceful placeholder fallback
@@ -504,6 +506,9 @@ app.get('/riders.json', async (req, res) => {
             return getLocalJerseyPath(team.name, team.displayName);
         }
 
+        // Utiliser directement les maillots définis dans teams-data.json
+        // (commenté pour utiliser les vrais maillots des équipes)
+        /*
         if (data && Array.isArray(data.teams)) {
             const mapped = await Promise.all(data.teams.map(async (team) => ({
                 ...team,
@@ -511,6 +516,7 @@ app.get('/riders.json', async (req, res) => {
             })));
             data.teams = mapped;
         }
+        */
         return res.type('application/json').send(JSON.stringify(data));
     } catch (e) {
         return res.status(404).json({ error: 'riders_json_not_found' });
@@ -553,7 +559,8 @@ app.use('/cms', (req, res, next) => {
 app.get('/api/weather/current', async (req, res) => {
     try {
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        const apiKey = process.env.OPENWEATHER_API_KEY;
+        // Utiliser la clé API de l'environnement ou celle par défaut
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
         if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
 
         const lat = parseFloat(req.query.lat) || 45.5019; // Montréal
@@ -589,11 +596,12 @@ app.get('/api/weather/current', async (req, res) => {
     }
 });
 
-// Weather hourly forecast proxy (One Call 3.0 puis 2.5)
+// Weather hourly forecast proxy (utilise l'API forecast standard qui fonctionne avec tous les comptes)
 app.get('/api/weather/forecast', async (req, res) => {
     try {
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        const apiKey = process.env.OPENWEATHER_API_KEY;
+        // Utiliser la clé API de l'environnement ou celle par défaut
+        const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
         if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
 
         const lat = parseFloat(req.query.lat) || 45.5019;
@@ -601,27 +609,35 @@ app.get('/api/weather/forecast', async (req, res) => {
         const units = (req.query.units || 'metric');
         const lang = (req.query.lang || 'fr');
 
-        const build = (base) => `${base}/onecall?lat=${lat}&lon=${lon}&exclude=minutely,daily,alerts,current&units=${units}&lang=${lang}&appid=${apiKey}`;
-        const url30 = `https://api.openweathermap.org/data/3.0`;
-        const url25 = `https://api.openweathermap.org/data/2.5`;
-
-        async function fetchOnce(url) {
-            try {
-                const r = await fetch(url);
-                if (!r.ok) throw new Error('bad_status_' + r.status);
-                return await r.json();
-            } catch (e) { throw e; }
-        }
-
-        let data;
+        // Utiliser l'API forecast standard (gratuite et fonctionne avec tous les comptes)
+        const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&appid=${apiKey}&cnt=8`;
+        
         try {
-            data = await fetchOnce(build(url30));
-        } catch (_) {
-            data = await fetchOnce(build(url25));
+            const r = await fetch(url);
+            if (!r.ok) {
+                const errorText = await r.text();
+                console.error('Weather API error:', r.status, errorText);
+                throw new Error('bad_status_' + r.status);
+            }
+            const data = await r.json();
+            
+            // Convertir le format forecast en format similaire à OneCall pour compatibilité
+            const hourly = (data.list || []).slice(0, 6).map(item => ({
+                dt: item.dt,
+                main: {
+                    temp: item.main.temp,
+                    feels_like: item.main.feels_like
+                },
+                weather: item.weather || []
+            }));
+            
+            return res.json({ 
+                hourly: hourly, 
+                timezone_offset: data.city?.timezone || 0 
+            });
+        } catch (e) {
+            throw e;
         }
-        const hourly = Array.isArray(data.hourly) ? data.hourly.slice(0, 6) : [];
-        const simplified = hourly.map(h => ({ dt: h.dt, main: { temp: h.temp, feels_like: h.feels_like }, weather: h.weather || [] }));
-        return res.json({ hourly: simplified, timezone_offset: data.timezone_offset || 0 });
     } catch (error) {
         console.error('Weather forecast error:', error);
         return res.status(500).json({ error: 'weather_forecast_failed' });
@@ -751,18 +767,57 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server
-const server = app.listen(PORT, '0.0.0.0', () => {
-    console.log(`
+// Initialize volume data on Railway before starting server
+async function initializeVolumeIfNeeded() {
+    if (IS_RAILWAY) {
+        try {
+            // Vérifier si les données existent déjà dans le volume
+            try {
+                await fs.stat(TEAMS_DATA_FILE);
+                console.log('    Volume data already exists');
+            } catch {
+                // Copier les données initiales depuis le repo vers le volume
+                console.log('    Initializing volume with repository data...');
+                await fs.mkdir(path.dirname(TEAMS_DATA_FILE), { recursive: true });
+                await fs.mkdir(CMS_JERSEYS_DIR, { recursive: true });
+                
+                // Copier teams-data.json
+                const sourceTeams = await fs.readFile(path.join(__dirname, 'cms', 'teams-data.json'), 'utf8');
+                await fs.writeFile(TEAMS_DATA_FILE, sourceTeams);
+                
+                // Copier riders.json
+                const sourceRiders = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
+                await fs.writeFile(RIDERS_JSON_FILE, sourceRiders);
+                
+                console.log('    Volume initialized successfully');
+            }
+        } catch (error) {
+            console.error('    Error initializing volume:', error);
+        }
+    }
+}
+
+// Initialize volume if needed, then start server
+initializeVolumeIfNeeded().then(() => {
+    // Start server
+    const server = app.listen(PORT, '0.0.0.0', () => {
+        console.log(`
     ========================================
     🚴 GPCQM 2025 PWA Server
     ========================================
     Server running on port ${PORT}
     Environment: ${process.env.NODE_ENV || 'production'}
-    URL: http://localhost:${PORT}
+    URL: http://localhost:${PORT}${IS_RAILWAY ? '\n    Volume: /data (persistent storage)' : ''}
     ========================================
     `);
+    });
+    
+    // Store server globally for shutdown handlers
+    global.server = server;
 });
+
+// Get server reference for shutdown
+const server = global.server;
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
