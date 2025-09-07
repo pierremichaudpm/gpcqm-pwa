@@ -461,6 +461,8 @@ function initializeApp() {
     const menuToggleBtn = document.getElementById('menuToggleBtn');
     const menuCloseBtn = document.getElementById('menuCloseBtn');
     const installCloseBtn = document.querySelector('.install-close');
+    const langBtnFr = document.getElementById('langBtnFr');
+    const langBtnEn = document.getElementById('langBtnEn');
     
     if (menuToggleBtn) {
         menuToggleBtn.addEventListener('click', function() {
@@ -488,6 +490,19 @@ function initializeApp() {
             if (prompt) {
                 prompt.classList.add('hidden');
             }
+        });
+    }
+    
+    // Language buttons
+    if (langBtnFr) {
+        langBtnFr.addEventListener('click', function() {
+            setLanguage('fr');
+        });
+    }
+    
+    if (langBtnEn) {
+        langBtnEn.addEventListener('click', function() {
+            setLanguage('en');
         });
     }
     
