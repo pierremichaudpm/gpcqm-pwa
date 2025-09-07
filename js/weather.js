@@ -410,12 +410,16 @@ class WeatherWidget {
 let __gpcqmWeatherWidget = null;
 
 async function loadWeather() {
-    if (!__gpcqmWeatherWidget) {
-        __gpcqmWeatherWidget = new WeatherWidget();
-        // Auto-refresh
-        setInterval(() => __gpcqmWeatherWidget && __gpcqmWeatherWidget.refresh(), WEATHER_CONFIG.updateIntervalMs);
+    try {
+        if (!__gpcqmWeatherWidget) {
+            __gpcqmWeatherWidget = new WeatherWidget();
+            console.log('Weather widget created for Safari');
+        }
+        await __gpcqmWeatherWidget.refresh();
+        console.log('Weather refreshed successfully');
+    } catch (error) {
+        console.error('Weather loading failed:', error);
     }
-    await __gpcqmWeatherWidget.refresh();
 }
 
 function updateWeatherLanguage() {
@@ -428,11 +432,11 @@ function updateWeatherLanguage() {
 window.loadWeather = loadWeather;
 window.updateWeatherLanguage = updateWeatherLanguage;
 
-// DOM ready: initial load and periodic refresh
+// DOM ready: initial load SEULEMENT (pas de double setInterval)
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof loadWeather === 'function') {
-        loadWeather();
-        setInterval(loadWeather, WEATHER_CONFIG.updateIntervalMs);
+        // Délai pour Safari
+        setTimeout(loadWeather, 1000);
     }
 });
 
