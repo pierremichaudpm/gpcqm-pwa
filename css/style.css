@@ -344,10 +344,10 @@ a:hover {
 
 .logo {
     height: 50px;
-    width: auto;
+    width: 50px;
     background: transparent;
     display: block;
-    border-radius: 50%;
+    object-fit: contain;
     border: none;
     box-shadow: none;
 }
@@ -355,6 +355,7 @@ a:hover {
 @media (min-width: 768px) {
     .logo {
         height: 84px;
+        width: 84px;
     }
 }
 
@@ -2021,8 +2022,8 @@ a:hover {
 
 .install-close {
     position: absolute;
-    top: var(--spacing-xs);
-    right: var(--spacing-xs);
+    top: 8px;
+    right: 8px;
     background: var(--gray-200);
     border: none;
     width: 30px;
