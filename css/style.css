@@ -2127,10 +2127,10 @@ a:hover {
 }
 
 .ios-step-icon-img {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     object-fit: contain;
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .install-content h3 {
