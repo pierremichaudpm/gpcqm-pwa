@@ -188,7 +188,7 @@ const translations = {
         installButton: 'Installer',
         iosInstallTitle: 'Installer GPCM 2025',
         iosInstallText: 'Pour installer cette app sur votre iPhone :',
-        iosStep1: 'Appuyez sur le bouton Partager 📤',
+        iosStep1: 'Appuyez sur le bouton Partager',
         iosStep2: 'Sélectionnez "Sur l\'écran d\'accueil"',
         offlineMode: 'Mode hors ligne'
     },
@@ -371,7 +371,7 @@ const translations = {
         installButton: 'Install',
         iosInstallTitle: 'Install GPCM 2025',
         iosInstallText: 'To install this app on your iPhone:',
-        iosStep1: 'Tap the Share button 📤',
+        iosStep1: 'Tap the Share button',
         iosStep2: 'Select "Add to Home Screen"',
         offlineMode: 'Offline Mode'
     },
