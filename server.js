@@ -396,7 +396,8 @@ async function saveTeamsData(teams) {
     await fs.mkdir(path.dirname(TEAMS_DATA_FILE), { recursive: true });
     await fs.writeFile(TEAMS_DATA_FILE, JSON.stringify(teamsWithBusters, null, 2));
     await updateRidersJson(teamsWithBusters);
-    await updateRidersJs(teamsWithBusters);
+    // DÉSACTIVÉ - Cette fonction détruit le fichier riders.js !
+    // await updateRidersJs(teamsWithBusters);
 }
 
 // CMS API routes
