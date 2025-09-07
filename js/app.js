@@ -506,6 +506,15 @@ function initializeApp() {
         });
     }
     
+    // Broadcast app button (TVA Sports FR / CBC Gem EN)
+    const broadcastAppBtn = document.getElementById('broadcastAppBtn');
+    if (broadcastAppBtn) {
+        broadcastAppBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openBroadcastApp(e);
+        });
+    }
+    
     // iOS Install Prompt Logic
     const iosInstallCloseBtn = document.getElementById('iosInstallCloseBtn');
     if (iosInstallCloseBtn) {
