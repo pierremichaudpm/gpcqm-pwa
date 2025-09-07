@@ -2126,6 +2126,13 @@ a:hover {
     text-align: center;
 }
 
+.ios-step-icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
 .install-content h3 {
     color: var(--primary-green);
     margin-bottom: var(--spacing-sm);
