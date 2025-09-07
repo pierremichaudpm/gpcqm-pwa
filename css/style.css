@@ -2131,6 +2131,31 @@ a:hover {
     height: 18px;
     object-fit: contain;
     border-radius: 3px;
+    max-width: 18px !important;
+    max-height: 18px !important;
+    min-width: 18px !important;
+    min-height: 18px !important;
+}
+
+/* Spécifique pour navigateurs intégrés (Messenger, Instagram, etc.) */
+@media screen and (max-width: 768px) {
+    .ios-step-icon-img {
+        width: 16px !important;
+        height: 16px !important;
+        max-width: 16px !important;
+        max-height: 16px !important;
+        min-width: 16px !important;
+        min-height: 16px !important;
+        flex-shrink: 0;
+    }
+}
+
+/* Force pour tous les contextes problématiques */
+.ios-step-icon-img[src*="icon-white-border"] {
+    width: 16px !important;
+    height: 16px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
 }
 
 .install-content h3 {
