@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Modal</title>
+</head>
+<body>
+    <h1>Test de la modal</h1>
+    <button onclick="testModal()">Test Modal Directement</button>
+    <button onclick="testRidersJS()">Test riders.js</button>
+    
+    <div id="output"></div>
+    
+    <script>
+        function testModal() {
+            const output = document.getElementById('output');
+            
+            // Test si RidersModal existe
+            if (window.RidersModal) {
+                output.innerHTML += '<p>✅ RidersModal existe</p>';
+                
+                if (typeof window.RidersModal.open === 'function') {
+                    output.innerHTML += '<p>✅ RidersModal.open est une fonction</p>';
+                    try {
+                        window.RidersModal.open();
+                        output.innerHTML += '<p>✅ RidersModal.open() appelé sans erreur</p>';
+                    } catch(e) {
+                        output.innerHTML += '<p>❌ Erreur: ' + e.message + '</p>';
+                    }
+                } else {
+                    output.innerHTML += '<p>❌ RidersModal.open n\'est pas une fonction</p>';
+                }
+            } else {
+                output.innerHTML += '<p>❌ RidersModal n\'existe pas</p>';
+            }
+            
+            // Test si openRidersModal existe
+            if (window.openRidersModal) {
+                output.innerHTML += '<p>✅ openRidersModal existe</p>';
+                try {
+                    window.openRidersModal();
+                    output.innerHTML += '<p>✅ openRidersModal() appelé</p>';
+                } catch(e) {
+                    output.innerHTML += '<p>❌ Erreur openRidersModal: ' + e.message + '</p>';
+                }
+            } else {
+                output.innerHTML += '<p>❌ openRidersModal n\'existe pas</p>';
+            }
+        }
+        
+        function testRidersJS() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<p>Chargement de riders.js...</p>';
+            
+            const script = document.createElement('script');
+            script.src = '/listeengages-package/listeengages/js/riders.js?v=' + Date.now();
+            script.onload = function() {
+                output.innerHTML += '<p>✅ riders.js chargé</p>';
+                setTimeout(testModal, 100);
+            };
+            script.onerror = function() {
+                output.innerHTML += '<p>❌ Erreur de chargement de riders.js</p>';
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+</body>
+</html>
