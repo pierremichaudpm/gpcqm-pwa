@@ -2151,9 +2151,10 @@ a:hover {
 }
 
 /* Force pour tous les contextes problématiques */
+/* Icônes iOS */
 .ios-step-icon-img[src*="icon-white-border"] {
-    width: 28px !important;
-    height: 28px !important;
+    width: 32px !important;
+    height: 32px !important;
     display: inline-block !important;
     vertical-align: middle !important;
 }
