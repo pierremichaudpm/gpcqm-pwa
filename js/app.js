@@ -900,34 +900,14 @@ function openBroadcastApp(e) {
     const appStoreUrl = isFrench ? tvAppStore : gemAppStore;
     const playStoreUrl = isFrench ? tvPlayStore : gemPlayStore;
 
-    // Prefer opening app via deep link; if it fails, fallback to store
-    let fallbackTimer = null;
-    const fallback = () => {
-        if (isIOS) {
-            window.location.href = appStoreUrl;
-        } else if (isAndroid) {
-            window.location.href = playStoreUrl;
-        } else {
-            // Desktop fallback: app landing pages
-            window.open(isFrench ? 'https://www.tvasports.ca/application' : 'https://gem.cbc.ca/', '_blank', 'noopener');
-        }
-    };
-
-    try {
-        // Heuristic: if app doesn't open within 1200ms, go to store
-        fallbackTimer = setTimeout(fallback, 1200);
-        // Use hidden iframe trick for older Android browsers; else set location
-        if (isAndroid) {
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = deepLink;
-            document.body.appendChild(iframe);
-            setTimeout(() => { try { document.body.removeChild(iframe); } catch(_){} }, 1500);
-        } else {
-            window.location.href = deepLink;
-        }
-    } catch(_) {
-        fallback();
+    // Aller directement vers l'App Store sans deep link
+    if (isIOS) {
+        window.open(appStoreUrl, '_blank', 'noopener');
+    } else if (isAndroid) {
+        window.open(playStoreUrl, '_blank', 'noopener');
+    } else {
+        // Desktop fallback: app landing pages
+        window.open(isFrench ? 'https://www.tvasports.ca/application' : 'https://gem.cbc.ca/', '_blank', 'noopener');
     }
 }
 
