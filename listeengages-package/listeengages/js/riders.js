@@ -1270,6 +1270,12 @@ function loadTeamsView() {
     // Apply jersey backgrounds (guard against runtime errors)
     try { applyJerseyBackgrounds(); } catch(_) {}
 
+    // IMPORTANT: Bind event handlers after HTML is rendered
+    setTimeout(() => {
+        bindTeamsAccordionDelegation();
+        bindTeamHeaders();
+    }, 100);
+
     // Ensure jersey <img> has a resilient fallback if custom path 404s
     try {
         const cards = container.querySelectorAll('.team-card');
