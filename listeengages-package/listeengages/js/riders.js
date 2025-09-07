@@ -1,6 +1,9 @@
 // === GPCQM 2025 - Riders Modal Management ===
 // Généré automatiquement par le CMS - 2025-09-06T15:20:45.371Z
 
+// FIX: Define teamStyles that was missing and causing errors
+const teamStyles = {};
+
 // Données officielles des équipes et coureurs GPCQM 2025
 const ridersData = {
     teams: [
