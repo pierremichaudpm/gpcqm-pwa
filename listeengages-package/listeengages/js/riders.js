@@ -1181,6 +1181,9 @@ function loadTeamsView() {
     const container = document.getElementById('teamsAccordion');
     const teamsView = document.getElementById('teamsView');
     
+    // DEBUG: Ajouter un message visible pour savoir si le code s'exécute
+    console.error('DEBUG RAILWAY: loadTeamsView() appelée');
+    
     let html = '';
 
     // Sort teams according to the desired display order
@@ -1273,6 +1276,9 @@ function loadTeamsView() {
     // Solution simple et directe pour Railway (compatible CSP)
     // Attacher les événements immédiatement sans délai
     const attachEvents = () => {
+        // DEBUG RAILWAY
+        console.error(`DEBUG RAILWAY: attachEvents() - trouvé ${container.querySelectorAll('.team-clickable').length} headers`);
+        
         // Méthode simple : attacher directement sur chaque header avec addEventListener
         const headers = container.querySelectorAll('.team-clickable');
         headers.forEach(header => {
