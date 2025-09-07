@@ -1029,41 +1029,41 @@ function getJerseyPath(teamName, displayName) {
     
     // Mapping des noms d'équipes vers les fichiers de maillots
     const jerseyMap = {
-        'uae': 'listeengages-package/listeengages/images/jerseys/emirates.png',
-        'emirates': 'listeengages-package/listeengages/images/jerseys/emirates.png',
-        'lidl': 'listeengages-package/listeengages/images/jerseys/lidltrek.png',
-        'trek': 'listeengages-package/listeengages/images/jerseys/lidltrek.png',
-        'bora': 'listeengages-package/listeengages/images/jerseys/redbullbora.png',
-        'red bull': 'listeengages-package/listeengages/images/jerseys/redbullbora.png',
-        'soudal': 'listeengages-package/listeengages/images/jerseys/soudal.png',
-        'quick': 'listeengages-package/listeengages/images/jerseys/soudal.png',
-        'ineos': 'listeengages-package/listeengages/images/jerseys/ineos.png',
-        'ef': 'listeengages-package/listeengages/images/jerseys/ef.png',
-        'education': 'listeengages-package/listeengages/images/jerseys/ef.png',
-        'visma': 'listeengages-package/listeengages/images/jerseys/visma.png',
-        'alpecin': 'listeengages-package/listeengages/images/jerseys/alpecin.png',
-        'decathlon': 'listeengages-package/listeengages/images/jerseys/decathlon.png',
-        'ag2r': 'listeengages-package/listeengages/images/jerseys/decathlon.png',
-        'movistar': 'listeengages-package/listeengages/images/jerseys/movistar.png',
-        'astana': 'listeengages-package/listeengages/images/jerseys/astana.png',
-        'bahrain': 'listeengages-package/listeengages/images/jerseys/bahrain.png',
-        'jayco': 'listeengages-package/listeengages/images/jerseys/jayco.png',
-        'groupama': 'listeengages-package/listeengages/images/jerseys/groupama.png',
-        'fdj': 'listeengages-package/listeengages/images/jerseys/groupama.png',
-        'cofidis': 'listeengages-package/listeengages/images/jerseys/cofidis.png',
-        'arkea': 'listeengages-package/listeengages/images/jerseys/arkea.png',
-        'arkéa': 'listeengages-package/listeengages/images/jerseys/arkea.png',
-        'intermarche': 'listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
-        'intermarché': 'listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
-        'wanty': 'listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
-        'lotto': 'listeengages-package/listeengages/images/jerseys/lotto.png',
-        'tudor': 'listeengages-package/listeengages/images/jerseys/tudor.png',
-        'uno': 'listeengages-package/listeengages/images/jerseys/uno.png',
-        'uno-x': 'listeengages-package/listeengages/images/jerseys/uno.png',
-        'picnic': 'listeengages-package/listeengages/images/jerseys/picnic.png',
-        'postnl': 'listeengages-package/listeengages/images/jerseys/picnic.png',
-        'canada': 'listeengages-package/listeengages/images/jerseys/canada.png',
-        'palestine': 'listeengages-package/listeengages/images/jerseys/palestine.png'
+        'uae': '/listeengages-package/listeengages/images/jerseys/emirates.png',
+        'emirates': '/listeengages-package/listeengages/images/jerseys/emirates.png',
+        'lidl': '/listeengages-package/listeengages/images/jerseys/lidltrek.png',
+        'trek': '/listeengages-package/listeengages/images/jerseys/lidltrek.png',
+        'bora': '/listeengages-package/listeengages/images/jerseys/redbullbora.png',
+        'red bull': '/listeengages-package/listeengages/images/jerseys/redbullbora.png',
+        'soudal': '/listeengages-package/listeengages/images/jerseys/soudal.png',
+        'quick': '/listeengages-package/listeengages/images/jerseys/soudal.png',
+        'ineos': '/listeengages-package/listeengages/images/jerseys/ineos.png',
+        'ef': '/listeengages-package/listeengages/images/jerseys/ef.png',
+        'education': '/listeengages-package/listeengages/images/jerseys/ef.png',
+        'visma': '/listeengages-package/listeengages/images/jerseys/visma.png',
+        'alpecin': '/listeengages-package/listeengages/images/jerseys/alpecin.png',
+        'decathlon': '/listeengages-package/listeengages/images/jerseys/decathlon.png',
+        'ag2r': '/listeengages-package/listeengages/images/jerseys/decathlon.png',
+        'movistar': '/listeengages-package/listeengages/images/jerseys/movistar.png',
+        'astana': '/listeengages-package/listeengages/images/jerseys/astana.png',
+        'bahrain': '/listeengages-package/listeengages/images/jerseys/bahrain.png',
+        'jayco': '/listeengages-package/listeengages/images/jerseys/jayco.png',
+        'groupama': '/listeengages-package/listeengages/images/jerseys/groupama.png',
+        'fdj': '/listeengages-package/listeengages/images/jerseys/groupama.png',
+        'cofidis': '/listeengages-package/listeengages/images/jerseys/cofidis.png',
+        'arkea': '/listeengages-package/listeengages/images/jerseys/arkea.png',
+        'arkéa': '/listeengages-package/listeengages/images/jerseys/arkea.png',
+        'intermarche': '/listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
+        'intermarché': '/listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
+        'wanty': '/listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
+        'lotto': '/listeengages-package/listeengages/images/jerseys/lotto.png',
+        'tudor': '/listeengages-package/listeengages/images/jerseys/tudor.png',
+        'uno': '/listeengages-package/listeengages/images/jerseys/uno.png',
+        'uno-x': '/listeengages-package/listeengages/images/jerseys/uno.png',
+        'picnic': '/listeengages-package/listeengages/images/jerseys/picnic.png',
+        'postnl': '/listeengages-package/listeengages/images/jerseys/picnic.png',
+        'canada': '/listeengages-package/listeengages/images/jerseys/canada.png',
+        'palestine': '/listeengages-package/listeengages/images/jerseys/palestine.png'
     };
     
     // Chercher une correspondance dans le mapping
@@ -1178,7 +1178,7 @@ function loadTeamsView() {
                 <div class="team-riders">
                     <div class="team-jersey-display">
                         <div class="team-jersey-bg" data-team="${team.name}"></div>
-                        <img class="team-jersey-img" alt="Maillot ${team.name}" src="${(jerseyPath || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg')}">
+                        <img class="team-jersey-img" alt="Maillot ${team.name}" src="${(jerseyPath || '/listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg')}">
                     </div>
                     <div class="riders-grid">
                         ${team.riders.map(rider => `
