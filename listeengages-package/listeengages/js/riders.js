@@ -1,9 +1,6 @@
 // === GPCQM 2025 - Riders Modal Management ===
 // Généré automatiquement par le CMS - 2025-09-06T15:20:45.371Z
 
-// FIX: Define teamStyles that was missing and causing errors
-const teamStyles = {};
-
 // Données officielles des équipes et coureurs GPCQM 2025
 const ridersData = {
     teams: [
@@ -1101,9 +1098,9 @@ function openRidersModal() {
 // Close modal
 function closeRidersModal() {
     const modal = document.getElementById('ridersModal');
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    }
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+}
 
 // No longer needed - only teams view
 
@@ -1232,8 +1229,7 @@ function updateRidersStats() {
 function applyJerseyBackgrounds() {
     document.querySelectorAll('.team-jersey-bg').forEach(bg => {
         const teamName = bg.dataset.team;
-        // FIX: teamStyles might not be defined, use default
-        const style = (typeof teamStyles !== 'undefined' && teamStyles[teamName]) || { color: '#6BA053', bg: '#ffffff' };
+        const style = teamStyles[teamName] || { color: '#6BA053', bg: '#ffffff' };
 
         // Set a visible placeholder immediately
         const placeholder = 'images/jerseys/jersey-placeholder.svg';
@@ -1470,8 +1466,8 @@ function highlightMatch(text, search) {
 document.addEventListener('keydown', (e) => {
     const modal = document.getElementById('ridersModal');
     if (modal && modal.style.display === 'block') {
-            if (e.key === 'Escape') {
-                closeRidersModal();
+        if (e.key === 'Escape') {
+            closeRidersModal();
         } else if (e.key === '/' || (e.ctrlKey && e.key === 'f')) {
             e.preventDefault();
             document.getElementById('ridersSearch').focus();
