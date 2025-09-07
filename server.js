@@ -7,7 +7,7 @@ const cors = require('cors');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
 const fs = require('fs').promises;
-const multer = require('multer');
+// const multer = require('multer'); // DÉSACTIVÉ - Plus d'upload de maillots
 // Ensure fetch is available on Node < 18
 const fetch = global.fetch || ((...args) => import('node-fetch').then(({ default: f }) => f(...args)));
 require('dotenv').config();
@@ -91,12 +91,6 @@ const setCache = (req, res, next) => {
                    req.path.match(/\.(css|js)$/i) ? '1d' : '1h';
 
     if (req.method === 'GET') {
-        if (req.path.startsWith('/api/')) {
-            res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-            res.set('Pragma', 'no-cache');
-            res.set('Expires', '0');
-            return next();
-        }
         if (isDev || req.path.startsWith('/cms')) {
             // In development, disable caching for quicker feedback
             res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
@@ -116,6 +110,49 @@ app.use((req, res, next) => {
         return basicAuth(req, res, next);
     }
     next();
+});
+
+// IMPORTANT: Route riders.json AVANT le middleware static pour pouvoir modifier les données
+app.get('/riders.json', async (req, res) => {
+    console.log('GET /riders.json - Processing');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    
+    try {
+        // Lire le fichier riders.json
+        const raw = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
+        const data = JSON.parse(raw);
+        
+        // REMPLACER TOUS les chemins des maillots par les bons chemins officiels
+        if (data && data.teams && Array.isArray(data.teams)) {
+            data.teams = data.teams.map(team => {
+                const newPath = getLocalJerseyPath(team.name, team.displayName);
+                return {
+                    ...team,
+                    jerseyPath: newPath
+                };
+            });
+        }
+        
+        return res.type('application/json').send(JSON.stringify(data));
+    } catch (e) {
+        // Si erreur, essayer le fichier de fallback
+        try {
+            const raw = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
+            const data = JSON.parse(raw);
+            
+            if (data && data.teams && Array.isArray(data.teams)) {
+                data.teams = data.teams.map(team => ({
+                    ...team,
+                    jerseyPath: getLocalJerseyPath(team.name, team.displayName)
+                }));
+            }
+            
+            return res.type('application/json').send(JSON.stringify(data));
+        } catch (fallbackError) {
+            console.error('Error serving riders.json:', fallbackError);
+            return res.status(404).json({ error: 'riders_json_not_found' });
+        }
+    }
 });
 
 // Serve static files with caching (AFTER auth check)
@@ -145,8 +182,11 @@ app.use((req, res, next) => {
 // CMS Data Helpers & Endpoints
 // =============================
 
-// SIMPLIFIÉ : Plus de volume Railway, tout est dans le repo
-const TEAMS_DATA_FILE = path.join(__dirname, 'cms', 'teams-data.json');
+// Paths (persistant sur volume Railway si dispo)
+const IS_RAILWAY = Boolean(process.env.RAILWAY_STATIC_URL || process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_ENVIRONMENT_NAME || process.env.RAILWAY_PROJECT_ID);
+const CMS_JERSEYS_DIR = process.env.CMS_JERSEYS_DIR || (IS_RAILWAY ? '/data/jerseys' : path.join(__dirname, 'images', 'jerseys'));
+const DATA_BASE_DIR = IS_RAILWAY ? '/data/_data' : path.join(__dirname, 'cms');
+const TEAMS_DATA_FILE = path.join(DATA_BASE_DIR, 'teams-data.json');
 const TEAMS_COMPLETE_FILE = path.join(__dirname, 'cms', 'teams-complete.json');
 const RIDERS_JSON_FILE = path.join(__dirname, 'riders.json');
 const RIDERS_JS_FILE = path.join(__dirname, 'listeengages-package', 'listeengages', 'js', 'riders.js');
@@ -174,47 +214,47 @@ function getLocalJerseyPath(teamName, displayName) {
         [/movistar/, 'movistar.png'],
         [/jayco/, 'jayco.png'],
         [/arkea|arkéa/, 'arkea.png'],
+        [/lotto|dstny/, 'lotto.png'],
         [/picnic|postnl|dsm/, 'picnic.png'],
         [/intermarche|intermarché|wanty/, 'intermarchewanty.png'],
         [/cofidis/, 'cofidis.png'],
         [/astana/, 'astana.png'],
-        [/israel|premier\s*tech|ipt/, 'palestine.png'],
+        [/israel|premier\s*tech|ipt/, 'ipt.png'],
         [/uno\s*-?x|uno\sx/, 'uno.png'],
         [/tudor/, 'tudor.png'],
         [/canada|équipe nationale/, 'canada.png']
     ];
     for (const [re, file] of pair) {
-        if (re.test(name)) return appendCacheBusterToUrl(base + file);
+        if (re.test(name)) return base + file;
     }
-    return appendCacheBusterToUrl(base + 'jersey-placeholder.svg');
+    return base + 'jersey-placeholder.svg';
 }
 
+// DÉSACTIVÉ - Cette route servait les mauvais maillots
+/*
 app.get('/images/jerseys/:file', async (req, res) => {
-    const filename = req.params.file || '';
-    try {
-        const requestedFile = path.join(REPO_JERSEYS_DIR, filename);
-        await fs.stat(requestedFile);
-        res.setHeader('Cache-Control', 'no-cache');
-        return res.sendFile(requestedFile);
-    } catch (_) {
-        // Si absent du volume, on tente le dossier du repo
-        try {
-            const repoFile = path.join(REPO_JERSEYS_DIR, filename);
-            await fs.stat(repoFile);
-            res.setHeader('Cache-Control', 'no-cache');
-            return res.sendFile(repoFile);
-        } catch (__) {
-            // Important: renvoyer 404 pour déclencher le fallback client (maillot local)
-            return res.status(404).end();
-        }
-    }
+    // Route désactivée
 });
+*/
 
-// Maillots servis depuis le dossier officiel uniquement
-// app.use('/images/jerseys', express.static(...)); // DÉSACTIVÉ
+// DÉSACTIVÉ - Les maillots viennent du dossier officiel
+// app.use('/images/jerseys', express.static(CMS_JERSEYS_DIR));
 
-// Upload de maillots DÉSACTIVÉ - Les maillots viennent uniquement du dossier officiel
-// const upload = multer({ ... }); // DÉSACTIVÉ
+// Multer storage for jersey uploads - DÉSACTIVÉ
+// const storage = multer.diskStorage({
+//     destination: async function (req, file, cb) {
+//         // Upload désactivé - retourner une erreur
+//         cb(new Error('Upload de maillots désactivé'), null);
+//     },
+//     filename: function (req, file, cb) {
+//         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+//         cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+//     }
+// });
+// const upload = multer({
+//     storage: storage,
+//     limits: { fileSize: 5 * 1024 * 1024 },
+// });
 
 // Utility: append cache-buster to asset URL (prevents stale jersey images)
 function appendCacheBusterToUrl(url) {
@@ -374,8 +414,7 @@ async function saveTeamsData(teams) {
     await fs.mkdir(path.dirname(TEAMS_DATA_FILE), { recursive: true });
     await fs.writeFile(TEAMS_DATA_FILE, JSON.stringify(teamsWithBusters, null, 2));
     await updateRidersJson(teamsWithBusters);
-    // DÉSACTIVÉ - Cette fonction détruit le fichier riders.js !
-    // await updateRidersJs(teamsWithBusters);
+    await updateRidersJs(teamsWithBusters);
 }
 
 // CMS API routes
@@ -434,9 +473,11 @@ app.delete('/api/teams/:id', async (req, res) => {
     }
 });
 
-// Upload de maillots DÉSACTIVÉ
+// Upload de maillots DÉSACTIVÉ - Les maillots sont gérés uniquement depuis le dossier officiel
 app.post('/api/upload-jersey', (req, res) => {
-    res.status(403).json({ error: "L'upload de maillots est désactivé. Les maillots proviennent uniquement du dossier officiel." });
+    res.status(403).json({ 
+        error: "L'upload de maillots est désactivé. Les maillots proviennent uniquement du dossier officiel." 
+    });
 });
 
 // Optional endpoint used by cms-app.js (sauvegarde riders.json brute)
@@ -449,32 +490,7 @@ app.post('/api/riders-json', async (req, res) => {
     }
 });
 
-// Expose riders.json depuis le volume pour le front
-app.get('/riders.json', async (req, res) => {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    try {
-        let data;
-        try {
-            const raw = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
-            data = JSON.parse(raw);
-        } catch (_) {
-            const raw = await fs.readFile(path.join(__dirname, 'riders.json'), 'utf8');
-            data = JSON.parse(raw);
-        }
-
-        // SIMPLIFIÉ : Les maillots viennent UNIQUEMENT du dossier officiel
-        if (data && Array.isArray(data.teams)) {
-            data.teams = data.teams.map(team => ({
-                ...team,
-                // Toujours utiliser le maillot officiel basé sur le nom de l'équipe
-                jerseyPath: getLocalJerseyPath(team.name, team.displayName)
-            }));
-        }
-        return res.type('application/json').send(JSON.stringify(data));
-    } catch (e) {
-        return res.status(404).json({ error: 'riders_json_not_found' });
-    }
-});
+// Route déplacée plus bas après le middleware static
 
 // CMS routes are handled below after CSP setup
 
@@ -511,8 +527,6 @@ app.use('/cms', (req, res, next) => {
 // Weather proxy endpoints (hide API key and centralize calls)
 app.get('/api/weather/current', async (req, res) => {
     try {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        // Utiliser la clé API de l'environnement ou celle par défaut
         const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
         if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
 
@@ -549,11 +563,9 @@ app.get('/api/weather/current', async (req, res) => {
     }
 });
 
-// Weather hourly forecast proxy (utilise l'API forecast standard qui fonctionne avec tous les comptes)
+// Weather hourly forecast proxy (One Call 3.0 puis 2.5)
 app.get('/api/weather/forecast', async (req, res) => {
     try {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        // Utiliser la clé API de l'environnement ou celle par défaut
         const apiKey = process.env.OPENWEATHER_API_KEY || '27fd496c6cc9c8cd6f8981bf682c5dd4';
         if (!apiKey) return res.status(503).json({ error: 'Weather service not configured' });
 
@@ -562,35 +574,26 @@ app.get('/api/weather/forecast', async (req, res) => {
         const units = (req.query.units || 'metric');
         const lang = (req.query.lang || 'fr');
 
-        // Utiliser l'API forecast standard (gratuite et fonctionne avec tous les comptes)
-        const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&appid=${apiKey}&cnt=8`;
-        
-        try {
-            const r = await fetch(url);
-            if (!r.ok) {
-                const errorText = await r.text();
-                console.error('Weather API error:', r.status, errorText);
-                throw new Error('bad_status_' + r.status);
-            }
-            const data = await r.json();
-            
-            // Convertir le format forecast en format similaire à OneCall pour compatibilité
-            const hourly = (data.list || []).slice(0, 6).map(item => ({
-                dt: item.dt,
-                main: {
-                    temp: item.main.temp,
-                    feels_like: item.main.feels_like
-                },
-                weather: item.weather || []
-            }));
-            
-            return res.json({ 
-                hourly: hourly, 
-                timezone_offset: data.city?.timezone || 0 
-            });
-        } catch (e) {
-            throw e;
+        // Utiliser l'API forecast standard au lieu de onecall (qui nécessite un abonnement)
+        const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&appid=${apiKey}`;
+
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Weather API error: ${response.status}`);
         }
+        const data = await response.json();
+        
+        // Transformer les données de l'API forecast en format hourly
+        const hourly = data.list.slice(0, 6).map(item => ({
+            dt: item.dt,
+            main: { 
+                temp: item.main.temp, 
+                feels_like: item.main.feels_like 
+            },
+            weather: item.weather || []
+        }));
+        
+        return res.json({ hourly, timezone_offset: 0 });
     } catch (error) {
         console.error('Weather forecast error:', error);
         return res.status(500).json({ error: 'weather_forecast_failed' });
@@ -720,28 +723,9 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Initialize volume data on Railway before starting server
-// Plus besoin d'initialisation de volume
-async function checkDataIntegrity() {
-    try {
-        // Vérifier que les données existent
-        const teamsData = await fs.readFile(TEAMS_DATA_FILE, 'utf8');
-        const parsed = JSON.parse(teamsData);
-        console.log(`    Teams data: ${parsed.length} teams`);
-        
-        const ridersData = await fs.readFile(RIDERS_JSON_FILE, 'utf8');
-        const ridersParsed = JSON.parse(ridersData);
-        console.log(`    Riders data: ${ridersParsed.teams?.length || 0} teams`);
-    } catch (error) {
-        console.error('    Error checking data:', error);
-    }
-}
-
-// Start server directement
-checkDataIntegrity().then(() => {
-    // Start server
-    const server = app.listen(PORT, '0.0.0.0', () => {
-        console.log(`
+// Start server
+const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log(`
     ========================================
     🚴 GPCQM 2025 PWA Server
     ========================================
@@ -750,14 +734,7 @@ checkDataIntegrity().then(() => {
     URL: http://localhost:${PORT}
     ========================================
     `);
-    });
-    
-    // Store server globally for shutdown handlers
-    global.server = server;
 });
-
-// Get server reference for shutdown
-const server = global.server;
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

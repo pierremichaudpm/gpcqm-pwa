@@ -1,17 +1,18 @@
 // === GPCQM 2025 - Riders Modal Management ===
-// Généré automatiquement par le CMS - 2025-09-06T15:20:45.371Z
+// Généré automatiquement par le CMS - 2025-09-07T03:24:06.799Z
 
 // Données officielles des équipes et coureurs GPCQM 2025
 const ridersData = {
     teams: [
     {
         "id": 1,
-        "name": "UAE Team Emirates",
+        "name": "UAE Team Emirate",
         "displayName": "UAE TEAM EMIRATES XRG",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png",
         "riders": [
             {
                 "number": 11,
-                "name": "Tadej POGACAR",
+                "name": "Tadej Pogacar",
                 "country": "🇸🇮"
             },
             {
@@ -50,6 +51,7 @@ const ridersData = {
         "id": 2,
         "name": "Lotto Dstny",
         "displayName": "LOTTO",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png",
         "riders": [
             {
                 "number": 181,
@@ -92,6 +94,7 @@ const ridersData = {
         "id": 3,
         "name": "Team Visma | Lease a Bike",
         "displayName": "TEAM VISMA | LEASE A BIKE",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/visma.png",
         "riders": [
             {
                 "number": 21,
@@ -134,6 +137,7 @@ const ridersData = {
         "id": 4,
         "name": "INEOS Grenadiers",
         "displayName": "INEOS GRENADIERS",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ineos.png",
         "riders": [
             {
                 "number": 51,
@@ -176,6 +180,7 @@ const ridersData = {
         "id": 5,
         "name": "Soudal Quick-Step",
         "displayName": "SOUDAL QUICK-STEP",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/soudal.png",
         "riders": [
             {
                 "number": 41,
@@ -218,6 +223,7 @@ const ridersData = {
         "id": 6,
         "name": "Lidl-Trek",
         "displayName": "LIDL-TREK",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lidltrek.png",
         "riders": [
             {
                 "number": 31,
@@ -260,6 +266,7 @@ const ridersData = {
         "id": 7,
         "name": "Decathlon AG2R La Mondiale Team",
         "displayName": "DECATHLON AG2R LA MONDIALE TEAM",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/decathlon.png",
         "riders": [
             {
                 "number": 101,
@@ -302,6 +309,7 @@ const ridersData = {
         "id": 8,
         "name": "Red Bull - BORA - hansgrohe",
         "displayName": "RED BULL - BORA – HANSGROHE",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/redbullbora.png",
         "riders": [
             {
                 "number": 61,
@@ -344,6 +352,7 @@ const ridersData = {
         "id": 9,
         "name": "Alpecin-Deceuninck",
         "displayName": "ALPECIN-DECEUNINCK",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/alpecin.png",
         "riders": [
             {
                 "number": 71,
@@ -386,6 +395,7 @@ const ridersData = {
         "id": 10,
         "name": "Groupama-FDJ",
         "displayName": "GROUPAMA-FDJ",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/groupama.png",
         "riders": [
             {
                 "number": 81,
@@ -428,6 +438,7 @@ const ridersData = {
         "id": 11,
         "name": "EF Education - EasyPost",
         "displayName": "EF EDUCATION - EASYPOST",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ef.png",
         "riders": [
             {
                 "number": 101,
@@ -470,6 +481,7 @@ const ridersData = {
         "id": 12,
         "name": "Bahrain Victorious",
         "displayName": "BAHRAIN VICTORIOUS",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/bahrain.png",
         "riders": [
             {
                 "number": 91,
@@ -512,6 +524,7 @@ const ridersData = {
         "id": 13,
         "name": "Movistar Team",
         "displayName": "MOVISTAR TEAM",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/movistar.png",
         "riders": [
             {
                 "number": 121,
@@ -554,6 +567,7 @@ const ridersData = {
         "id": 14,
         "name": "Team Jayco AlUla",
         "displayName": "TEAM JAYCO ALULA",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png",
         "riders": [
             {
                 "number": 1,
@@ -596,6 +610,7 @@ const ridersData = {
         "id": 15,
         "name": "Arkéa-B&B Hotels",
         "displayName": "ARKEA-B&B HOTELS",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/arkea.png",
         "riders": [
             {
                 "number": 171,
@@ -638,6 +653,7 @@ const ridersData = {
         "id": 16,
         "name": "Team DSM-Firmenich PostNL",
         "displayName": "TEAM PICNIC POSTNL",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/picnic.png",
         "riders": [
             {
                 "number": 141,
@@ -680,6 +696,7 @@ const ridersData = {
         "id": 17,
         "name": "Intermarché - Wanty",
         "displayName": "INTERMARCHÉ - WANTY",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/intermarchewanty.png",
         "riders": [
             {
                 "number": 151,
@@ -722,6 +739,7 @@ const ridersData = {
         "id": 18,
         "name": "Cofidis",
         "displayName": "COFIDIS",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/cofidis.png",
         "riders": [
             {
                 "number": 161,
@@ -764,6 +782,7 @@ const ridersData = {
         "id": 19,
         "name": "Astana Qazaqstan Team",
         "displayName": "XDS ASTANA TEAM",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/astana.png",
         "riders": [
             {
                 "number": 131,
@@ -804,8 +823,9 @@ const ridersData = {
     },
     {
         "id": 20,
-        "name": "Israel - Premier Tech",
+        "name": "IPT",
         "displayName": "IPT",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png",
         "riders": [
             {
                 "number": 191,
@@ -848,6 +868,7 @@ const ridersData = {
         "id": 21,
         "name": "Uno-X Mobility",
         "displayName": "UNO-X MOBILITY",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/uno.png",
         "riders": [
             {
                 "number": 201,
@@ -890,6 +911,7 @@ const ridersData = {
         "id": 22,
         "name": "Tudor Pro Cycling Team",
         "displayName": "TUDOR PRO CYCLING TEAM",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/tudor.png",
         "riders": [
             {
                 "number": 211,
@@ -932,6 +954,7 @@ const ridersData = {
         "id": 23,
         "name": "Équipe Canada",
         "displayName": "ÉQUIPE NATIONALE CANADA",
+        "jerseyPath": "/listeengages-package/listeengages/images/jerseys/canada.png",
         "riders": [
             {
                 "number": 221,
@@ -991,6 +1014,42 @@ const ridersData = {
 // Le reste du code JavaScript reste inchangé...
 
 
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
+// Le reste du code JavaScript reste inchangé...
+
+
 // Filename overrides for jersey images present in the package
 const jerseySlugOverrides = {
     "UAE Team Emirates": "emirates",
@@ -1029,41 +1088,41 @@ function getJerseyPath(teamName, displayName) {
     
     // Mapping des noms d'équipes vers les fichiers de maillots
     const jerseyMap = {
-        'uae': '/listeengages-package/listeengages/images/jerseys/emirates.png',
-        'emirates': '/listeengages-package/listeengages/images/jerseys/emirates.png',
-        'lidl': '/listeengages-package/listeengages/images/jerseys/lidltrek.png',
-        'trek': '/listeengages-package/listeengages/images/jerseys/lidltrek.png',
-        'bora': '/listeengages-package/listeengages/images/jerseys/redbullbora.png',
-        'red bull': '/listeengages-package/listeengages/images/jerseys/redbullbora.png',
-        'soudal': '/listeengages-package/listeengages/images/jerseys/soudal.png',
-        'quick': '/listeengages-package/listeengages/images/jerseys/soudal.png',
-        'ineos': '/listeengages-package/listeengages/images/jerseys/ineos.png',
-        'ef': '/listeengages-package/listeengages/images/jerseys/ef.png',
-        'education': '/listeengages-package/listeengages/images/jerseys/ef.png',
-        'visma': '/listeengages-package/listeengages/images/jerseys/visma.png',
-        'alpecin': '/listeengages-package/listeengages/images/jerseys/alpecin.png',
-        'decathlon': '/listeengages-package/listeengages/images/jerseys/decathlon.png',
-        'ag2r': '/listeengages-package/listeengages/images/jerseys/decathlon.png',
-        'movistar': '/listeengages-package/listeengages/images/jerseys/movistar.png',
-        'astana': '/listeengages-package/listeengages/images/jerseys/astana.png',
-        'bahrain': '/listeengages-package/listeengages/images/jerseys/bahrain.png',
-        'jayco': '/listeengages-package/listeengages/images/jerseys/jayco.png',
-        'groupama': '/listeengages-package/listeengages/images/jerseys/groupama.png',
-        'fdj': '/listeengages-package/listeengages/images/jerseys/groupama.png',
-        'cofidis': '/listeengages-package/listeengages/images/jerseys/cofidis.png',
-        'arkea': '/listeengages-package/listeengages/images/jerseys/arkea.png',
-        'arkéa': '/listeengages-package/listeengages/images/jerseys/arkea.png',
-        'intermarche': '/listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
-        'intermarché': '/listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
-        'wanty': '/listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
-        'lotto': '/listeengages-package/listeengages/images/jerseys/lotto.png',
-        'tudor': '/listeengages-package/listeengages/images/jerseys/tudor.png',
-        'uno': '/listeengages-package/listeengages/images/jerseys/uno.png',
-        'uno-x': '/listeengages-package/listeengages/images/jerseys/uno.png',
-        'picnic': '/listeengages-package/listeengages/images/jerseys/picnic.png',
-        'postnl': '/listeengages-package/listeengages/images/jerseys/picnic.png',
-        'canada': '/listeengages-package/listeengages/images/jerseys/canada.png',
-        'palestine': '/listeengages-package/listeengages/images/jerseys/palestine.png'
+        'uae': 'listeengages-package/listeengages/images/jerseys/emirates.png',
+        'emirates': 'listeengages-package/listeengages/images/jerseys/emirates.png',
+        'lidl': 'listeengages-package/listeengages/images/jerseys/lidltrek.png',
+        'trek': 'listeengages-package/listeengages/images/jerseys/lidltrek.png',
+        'bora': 'listeengages-package/listeengages/images/jerseys/redbullbora.png',
+        'red bull': 'listeengages-package/listeengages/images/jerseys/redbullbora.png',
+        'soudal': 'listeengages-package/listeengages/images/jerseys/soudal.png',
+        'quick': 'listeengages-package/listeengages/images/jerseys/soudal.png',
+        'ineos': 'listeengages-package/listeengages/images/jerseys/ineos.png',
+        'ef': 'listeengages-package/listeengages/images/jerseys/ef.png',
+        'education': 'listeengages-package/listeengages/images/jerseys/ef.png',
+        'visma': 'listeengages-package/listeengages/images/jerseys/visma.png',
+        'alpecin': 'listeengages-package/listeengages/images/jerseys/alpecin.png',
+        'decathlon': 'listeengages-package/listeengages/images/jerseys/decathlon.png',
+        'ag2r': 'listeengages-package/listeengages/images/jerseys/decathlon.png',
+        'movistar': 'listeengages-package/listeengages/images/jerseys/movistar.png',
+        'astana': 'listeengages-package/listeengages/images/jerseys/astana.png',
+        'bahrain': 'listeengages-package/listeengages/images/jerseys/bahrain.png',
+        'jayco': 'listeengages-package/listeengages/images/jerseys/jayco.png',
+        'groupama': 'listeengages-package/listeengages/images/jerseys/groupama.png',
+        'fdj': 'listeengages-package/listeengages/images/jerseys/groupama.png',
+        'cofidis': 'listeengages-package/listeengages/images/jerseys/cofidis.png',
+        'arkea': 'listeengages-package/listeengages/images/jerseys/arkea.png',
+        'arkéa': 'listeengages-package/listeengages/images/jerseys/arkea.png',
+        'intermarche': 'listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
+        'intermarché': 'listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
+        'wanty': 'listeengages-package/listeengages/images/jerseys/intermarchewanty.png',
+        'lotto': 'listeengages-package/listeengages/images/jerseys/lotto.png',
+        'tudor': 'listeengages-package/listeengages/images/jerseys/tudor.png',
+        'uno': 'listeengages-package/listeengages/images/jerseys/uno.png',
+        'uno-x': 'listeengages-package/listeengages/images/jerseys/uno.png',
+        'picnic': 'listeengages-package/listeengages/images/jerseys/picnic.png',
+        'postnl': 'listeengages-package/listeengages/images/jerseys/picnic.png',
+        'canada': 'listeengages-package/listeengages/images/jerseys/canada.png',
+        'palestine': 'listeengages-package/listeengages/images/jerseys/palestine.png'
     };
     
     // Chercher une correspondance dans le mapping
@@ -1078,8 +1137,15 @@ function getJerseyPath(teamName, displayName) {
 
 // Initialize the riders modal
 function initializeRidersModal() {
-    loadTeamsView();
-    updateRidersStats();
+    // Essayer de charger les dernières données sauvegardées par le CMS
+    tryFetchLatestRidersData().then(() => {
+        loadTeamsView();
+        updateRidersStats();
+    }).catch(() => {
+        // En cas d'échec, utiliser les données embarquées
+        loadTeamsView();
+        updateRidersStats();
+    });
 }
 
 // Open modal
@@ -1092,15 +1158,21 @@ function openRidersModal() {
     if (!modal.dataset.initialized) {
         initializeRidersModal();
         modal.dataset.initialized = 'true';
+    } else {
+        // Always refresh latest data and stats when reopening
+        tryFetchLatestRidersData().finally(() => {
+            loadTeamsView();
+            updateRidersStats();
+        });
     }
 }
 
 // Close modal
 function closeRidersModal() {
     const modal = document.getElementById('ridersModal');
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-}
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
 
 // No longer needed - only teams view
 
@@ -1158,18 +1230,16 @@ function loadTeamsView() {
     sortedTeams.forEach(team => {
         const isExpanded = expandedTeams.has(team.id);
         
-        // Obtenir le chemin du maillot ou utiliser un maillot par défaut
-        const jerseyPath = team.jerseyPath || getJerseyPath(team.name, team.displayName);
+        // Obtenir le chemin du maillot, plus un fallback local déterministe
+        const fallbackPath = getJerseyPath(team.name, team.displayName) || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
+        const jerseyPath = team.jerseyPath || fallbackPath;
         
         html += `
             <div class="team-card ${isExpanded ? 'expanded' : ''}" data-team-id="${team.id}">
-                <div class="team-header" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}" onclick="try{toggleTeam(${team.id})}catch(e){}" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();try{toggleTeam(${team.id})}catch(e){}}">
+                <div class="team-header" role="button" tabindex="0" aria-expanded="${isExpanded ? 'true' : 'false'}">
                     <div class="team-info">
                         <span class="team-jersey-icon">
-                            ${jerseyPath ? 
-                                `<img src="${jerseyPath}" alt="Maillot ${team.name}" style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;">` : 
-                                '👕'
-                            }
+                            <img src="${jerseyPath}" alt="Maillot ${team.name}" style="width: 30px; height: 30px; object-fit: contain; vertical-align: middle;" onerror="this.onerror=null; this.src='${fallbackPath}'">
                         </span>
                         <span class="team-name">${team.displayName || team.name}</span>
                     </div>
@@ -1178,7 +1248,7 @@ function loadTeamsView() {
                 <div class="team-riders">
                     <div class="team-jersey-display">
                         <div class="team-jersey-bg" data-team="${team.name}"></div>
-                        <img class="team-jersey-img" alt="Maillot ${team.name}" src="${(jerseyPath || '/listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg')}">
+                        <img class="team-jersey-img" alt="Maillot ${team.name}" src="${jerseyPath}" onerror="this.onerror=null; this.src='${fallbackPath}'">
                     </div>
                     <div class="riders-grid">
                         ${team.riders.map(rider => `
@@ -1197,19 +1267,64 @@ function loadTeamsView() {
     container.innerHTML = html;
     teamsView.style.display = 'block';
     
-    // Apply jersey backgrounds
-    applyJerseyBackgrounds();
+    // Apply jersey backgrounds (guard against runtime errors)
+    try { applyJerseyBackgrounds(); } catch(_) {}
+
+    // Ensure jersey <img> has a resilient fallback if custom path 404s
+    try {
+        const cards = container.querySelectorAll('.team-card');
+        cards.forEach(card => {
+            const img = card.querySelector('.team-jersey-img');
+            if (!img || img.dataset.fallbackBound === 'true') return;
+            const bg = card.querySelector('.team-jersey-bg');
+            const teamName = (bg && bg.getAttribute('data-team')) || (card.querySelector('.team-name')?.textContent) || '';
+            // Si l'image est déjà chargée et que ce n'est pas le placeholder, supprimer le bg tout de suite
+            try {
+                const srcNow = img.getAttribute('src') || '';
+                if (bg && srcNow.indexOf('jersey-placeholder.svg') === -1 && img.complete && img.naturalWidth > 0) {
+                    bg.style.backgroundImage = 'none';
+                }
+            } catch(_) {}
+            // Quand l'image réelle est chargée, retirer le placeholder de fond pour éviter l'effet de "double" maillot
+            img.addEventListener('load', function onLoad() {
+                try {
+                    const src = img.getAttribute('src') || '';
+                    if (bg && !src.includes('jersey-placeholder.svg')) {
+                        bg.style.backgroundImage = 'none';
+                    }
+                } catch(_) {}
+            }, { once: true });
+            img.addEventListener('error', function onErr() {
+                try {
+                    const fallback = getJerseyPath(teamName, teamName) || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
+                    if (img.getAttribute('src') !== fallback) {
+                        img.setAttribute('src', fallback);
+                    }
+                } catch(_) {}
+            }, { once: true });
+            img.dataset.fallbackBound = 'true';
+
+            // Also bind fallback for the small jersey icon in the header
+            const iconImg = card.querySelector('.team-jersey-icon img');
+            if (iconImg && iconImg.dataset.fallbackBound !== 'true') {
+                iconImg.addEventListener('error', function onIconErr() {
+                    try {
+                        const iconFallback = getJerseyPath(teamName, teamName) || 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
+                        if (iconImg.getAttribute('src') !== iconFallback) {
+                            iconImg.setAttribute('src', iconFallback);
+                        }
+                    } catch(_) {}
+                }, { once: true });
+                iconImg.dataset.fallbackBound = 'true';
+            }
+        });
+    } catch(_) {}
 
     // Ensure clicks on team headers toggle expansion (event delegation + direct bind)
     bindTeamsAccordionDelegation();
     bindTeamHeaders();
 
-    // Ouverture par défaut de la première équipe pour valider l'interaction
-    try {
-        if ((!expandedTeams || expandedTeams.size === 0) && sortedTeams.length > 0) {
-            toggleTeam(sortedTeams[0].id);
-        }
-    } catch(_) {}
+    // Ne pas ouvrir d'équipe par défaut
 }
 
 function updateRidersStats() {
@@ -1225,90 +1340,19 @@ function updateRidersStats() {
     } catch(_) {}
 }
 
+// Ensure teamStyles exists to prevent runtime errors in applyJerseyBackgrounds
+const teamStyles = (typeof window !== 'undefined' && window.teamStyles) ? window.teamStyles : {};
+
 // Apply jersey backgrounds to expanded teams
 function applyJerseyBackgrounds() {
-    document.querySelectorAll('.team-jersey-bg').forEach(bg => {
-        const teamName = bg.dataset.team;
-        const style = teamStyles[teamName] || { color: '#6BA053', bg: '#ffffff' };
-
-        // Set a visible placeholder immediately
-        const placeholder = 'images/jerseys/jersey-placeholder.svg';
-        const altPlaceholder = 'listeengages-package/listeengages/images/jerseys/jersey-placeholder.svg';
-        tryLoadImageInOrder([placeholder, altPlaceholder], function(path){
-            bg.style.backgroundImage = `url(${path})`;
-            bg.style.backgroundSize = '80%';
-            bg.style.backgroundPosition = 'center';
-            bg.style.backgroundRepeat = 'no-repeat';
-            bg.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-        });
-
-        // Build candidate paths in priority order
-        const slug = slugifyTeamName(teamName);
-        const overrideSlug = jerseySlugOverrides[teamName];
-        const explicit = style && style.jersey ? [style.jersey] : [];
-        const candidates = [];
-
-        // 1) Explicit mapping
-        explicit.forEach(file => {
-            candidates.push(`images/jerseys/${file}`);
-            candidates.push(`listeengages-package/listeengages/images/jerseys/${file}`);
-        });
-
-        // 2) Derived from team name
-        const slugCandidates = [];
-        if (overrideSlug) {
-            slugCandidates.push(overrideSlug);
-            // Try lowercase variant too (for files like EF.png)
-            if (overrideSlug.toLowerCase() !== overrideSlug) {
-                slugCandidates.push(overrideSlug.toLowerCase());
-            }
-        }
-        slugCandidates.push(slug);
-        // Build path candidates for each slug candidate
-        slugCandidates.forEach(base => {
-            ['png', 'svg', 'webp'].forEach(ext => {
-                candidates.push(`images/jerseys/${base}.${ext}`);
-                candidates.push(`listeengages-package/listeengages/images/jerseys/${base}.${ext}`);
-            });
-        });
-
-        tryLoadImageInOrder(candidates, function(path) {
-            bg.style.backgroundImage = `url(${path})`;
-            bg.style.backgroundSize = '80%';
-            bg.style.backgroundPosition = 'center';
-            bg.style.backgroundRepeat = 'no-repeat';
-            bg.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-            bg.setAttribute('data-jersey-path', path);
-        }, function() {
-            // Fallback: SVG jersey with team colors
-            const teamId = teamName.replace(/[^a-zA-Z0-9]/g, '');
-            const svgJersey = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
-                    <defs>
-                        <linearGradient id="grad${teamId}" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:${style.bg};stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:${style.bg};stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:${style.color};stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:${style.color};stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M50 60 L50 40 Q50 20 70 20 L80 20 L85 10 L115 10 L120 20 L130 20 Q150 20 150 40 L150 60 L180 80 L180 120 L160 100 L160 180 Q160 200 150 200 L50 200 Q40 200 40 180 L40 100 L20 120 L20 80 L50 60 Z" 
-                          fill="url(#grad${teamId})" 
-                          stroke="#444" 
-                          stroke-width="1.5"/>
-                    <text x="100" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="${style.bg === '#FFFFFF' ? '#333' : '#FFF'}">
-                        ${teamName.split(' ')[0].substring(0, 3).toUpperCase()}
-                    </text>
-                </svg>
-            `;
-            const encodedSvg = encodeURIComponent(svgJersey);
-            bg.style.backgroundImage = `url("data:image/svg+xml,${encodedSvg}")`;
-            bg.style.backgroundSize = '70%';
-            bg.style.backgroundPosition = 'center';
-            bg.style.backgroundRepeat = 'no-repeat';
-            bg.setAttribute('data-jersey-path', 'inline-svg');
-        });
+    const bgs = document.querySelectorAll('.team-jersey-bg');
+    bgs.forEach(bg => {
+        try {
+            bg.style.backgroundImage = 'none';
+            bg.style.display = 'none';
+        } catch(_) {}
     });
+    return; // Désactiver les backgrounds pour éviter tout mélange d'images
 }
 
 function slugifyTeamName(name) {
@@ -1466,8 +1510,8 @@ function highlightMatch(text, search) {
 document.addEventListener('keydown', (e) => {
     const modal = document.getElementById('ridersModal');
     if (modal && modal.style.display === 'block') {
-        if (e.key === 'Escape') {
-            closeRidersModal();
+            if (e.key === 'Escape') {
+                closeRidersModal();
         } else if (e.key === '/' || (e.ctrlKey && e.key === 'f')) {
             e.preventDefault();
             document.getElementById('ridersSearch').focus();
@@ -1627,10 +1671,85 @@ document.addEventListener('DOMContentLoaded', function() {
         const modal = document.getElementById('ridersModal');
         const accordion = document.getElementById('teamsAccordion');
         if (modal && accordion) {
-            // Build content and bind once
-            loadTeamsView();
-            updateRidersStats();
+            // Charger les dernières données (riders.json) puis construire la vue
+            tryFetchLatestRidersData().finally(() => {
+                loadTeamsView();
+                updateRidersStats();
+            });
             modal.dataset.initialized = 'true';
         }
+        // Rafraîchir les totaux quand on revient sur l’onglet/fenêtre
+        const refresh = () => {
+            tryFetchLatestRidersData().finally(() => {
+                loadTeamsView();
+                updateRidersStats();
+            });
+        };
+        window.addEventListener('focus', refresh);
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
     } catch (_) {}
 });
+
+// =============================
+// Chargement dynamique riders.json
+// =============================
+
+function countryCodeToFlag(code) {
+    if (!code || typeof code !== 'string') return code;
+    // Déjà un drapeau
+    if (/\p{Emoji}/u.test(code) || code.length > 3) return code;
+    const map = {
+        FRA:'🇫🇷', USA:'🇺🇸', GBR:'🇬🇧', GER:'🇩🇪', DEU:'🇩🇪',
+        ITA:'🇮🇹', ESP:'🇪🇸', BEL:'🇧🇪', NED:'🇳🇱', NLD:'🇳🇱',
+        AUS:'🇦🇺', CAN:'🇨🇦', NOR:'🇳🇴', DEN:'🇩🇰', DNK:'🇩🇰',
+        SUI:'🇨🇭', CHE:'🇨🇭', AUT:'🇦🇹', POL:'🇵🇱', POR:'🇵🇹', PRT:'🇵🇹',
+        CZE:'🇨🇿', SVK:'🇸🇰', SLO:'🇸🇮', SVN:'🇸🇮', HUN:'🇭🇺', ROU:'🇷🇴',
+        RUS:'🇷🇺', UKR:'🇺🇦', SWE:'🇸🇪', FIN:'🇫🇮', EST:'🇪🇪', LAT:'🇱🇻', LTU:'🇱🇹',
+        IRL:'🇮🇪', LUX:'🇱🇺', COL:'🇨🇴', ARG:'🇦🇷', BRA:'🇧🇷', MEX:'🇲🇽',
+        JPN:'🇯🇵', KOR:'🇰🇷', CHN:'🇨🇳', NZL:'🇳🇿', RSA:'🇿🇦', UAE:'🇦🇪',
+        KAZ:'🇰🇿', ISR:'🇮🇱', ECU:'🇪🇨', ERI:'🇪🇷', CRO:'🇭🇷', HRV:'🇭🇷',
+        BHR:'🇧🇭', BIH:'🇧🇦'
+    };
+    return map[code.toUpperCase()] || code;
+}
+
+function normalizeRidersJson(data) {
+    try {
+        const teams = Array.isArray(data && data.teams) ? data.teams : [];
+        teams.forEach(team => {
+            team.riders = Array.isArray(team.riders) ? team.riders.map(r => ({
+                number: r.number || '',
+                name: r.name || '',
+                country: countryCodeToFlag(r.country || '')
+            })) : [];
+        });
+        return { teams };
+    } catch(_) {
+        return { teams: [] };
+    }
+}
+
+async function tryFetchLatestRidersData() {
+    try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 1500);
+        const cacheBuster = Date.now();
+        const resp = await fetch(`/riders.json?t=${cacheBuster}`, { signal: controller.signal, cache: 'no-cache' });
+        clearTimeout(timeout);
+        if (!resp.ok) return;
+        const json = await resp.json();
+        const normalized = normalizeRidersJson(json);
+        if (normalized.teams && normalized.teams.length) {
+            // Preserve jerseyPath from server when available
+            normalized.teams.forEach(team => {
+                const serverTeam = (json.teams || []).find(t => String(t.id) === String(team.id));
+                if (serverTeam && serverTeam.jerseyPath) {
+                    team.jerseyPath = serverTeam.jerseyPath;
+                }
+            });
+            ridersData.teams = normalized.teams;
+        }
+    } catch(_) {
+        // silencieux: on garde les données embarquées
+    }
+}
