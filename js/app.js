@@ -449,6 +449,40 @@ function initializeApp() {
     exportCriticalFunctions();
     console.log('Critical functions exported:', window.toggleMenu ? 'toggleMenu OK' : 'toggleMenu MISSING');
     
+    // Add direct event listeners for menu
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const menuCloseBtn = document.getElementById('menuCloseBtn');
+    const installCloseBtn = document.querySelector('.install-close');
+    
+    if (menuToggleBtn) {
+        menuToggleBtn.addEventListener('click', function() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                menu.classList.toggle('active');
+                document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+            }
+        });
+    }
+    
+    if (menuCloseBtn) {
+        menuCloseBtn.addEventListener('click', function() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                menu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+    
+    if (installCloseBtn) {
+        installCloseBtn.addEventListener('click', function() {
+            const prompt = document.getElementById('installPrompt');
+            if (prompt) {
+                prompt.classList.add('hidden');
+            }
+        });
+    }
+    
     // Lazy load non-critical functionality with fallback
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(() => {
         initLanguageButtons();
