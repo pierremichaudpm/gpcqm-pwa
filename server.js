@@ -116,14 +116,17 @@ app.get('/cms', (req, res) => {
 });
 
 // CMS API endpoints  
-const TEAMS_FILE = path.join(__dirname, 'teams-data.json');
+const TEAMS_FILE = path.join(__dirname, 'cms', 'teams-data.json');
 const RIDERS_FILE = path.join(__dirname, 'riders.json');
 
 // Get teams
 app.get('/api/teams', async (req, res) => {
     try {
         const data = await fs.readFile(TEAMS_FILE, 'utf8');
-        res.json(JSON.parse(data));
+        const teamsData = JSON.parse(data);
+        // Ensure we return an array format for CMS
+        const teams = Array.isArray(teamsData) ? teamsData : (teamsData.teams || []);
+        res.json(teams);
     } catch (error) {
         console.error('Error reading teams:', error);
         res.status(500).json({ error: 'Failed to load teams' });
