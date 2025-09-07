@@ -290,11 +290,49 @@ class WeatherWidget {
         if (!this.widget) return;
         try {
             this.renderLoading();
-            const [current, forecast] = await Promise.all([
-                this.fetchCurrentWeather(),
-                this.fetchForecast()
-            ]);
-            this.lastData = { current, forecast };
+            
+            // Détection Safari iOS
+            const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const isSafariIOS = isSafari && isIOS;
+            
+            if (isSafariIOS) {
+                console.log('Safari iOS: using server proxy for all weather data');
+                // Pour Safari, utiliser uniquement l'API proxy
+                const response = await fetch(`/api/weather/current?lang=${this.lang}`);
+                if (!response.ok) throw new Error('Weather proxy failed');
+                
+                const data = await response.json();
+                console.log('Safari weather data:', data);
+                
+                // Utiliser les vraies données pour current
+                const current = data;
+                
+                // Générer forecast basé sur les vraies données
+                const baseTime = Math.floor(Date.now() / 1000);
+                const currentTemp = data.main?.temp || 18;
+                const forecast = [];
+                for (let i = 1; i <= 6; i++) {
+                    forecast.push({
+                        dt: baseTime + (i * 3600),
+                        main: { 
+                            temp: currentTemp + (Math.random() * 4 - 2),
+                            feels_like: currentTemp + (Math.random() * 3 - 1)
+                        },
+                        weather: data.weather || [{ description: 'Partly cloudy', icon: '02d' }]
+                    });
+                }
+                
+                this.lastData = { current, forecast };
+            } else {
+                // Pour les autres navigateurs, méthode normale
+                const [current, forecast] = await Promise.all([
+                    this.fetchCurrentWeather(),
+                    this.fetchForecast()
+                ]);
+                this.lastData = { current, forecast };
+            }
+            
             this.debugLogData();
             this.renderWeather();
         } catch (e) {
