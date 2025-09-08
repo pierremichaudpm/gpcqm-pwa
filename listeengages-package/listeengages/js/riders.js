@@ -22,7 +22,7 @@ const teamStyles = {
     "Intermarché - Wanty": { color: "#00A9E0", bg: "#FFFFFF", jersey: "intermarche-wanty.png" },
     "Cofidis": { color: "#ED1C24", bg: "#FFFFFF", jersey: "cofidis.png" },
     "Astana Qazaqstan Team": { color: "#00BFFF", bg: "#FFD700", jersey: "astana-qazaqstan.png" },
-    "Israel - Premier Tech": { color: "#0038A8", bg: "#FFFFFF", jersey: "israel-premier-tech.png" },
+    "Israel - Premier Tech": { color: "#0038A8", bg: "#FFFFFF", jersey: "ipt.png" },
     "Uno-X Mobility": { color: "#FFD700", bg: "#E30613", jersey: "uno-x-mobility.png" },
     "Tudor Pro Cycling Team": { color: "#E30613", bg: "#000000", jersey: "tudor-pro-cycling.png" },
     "Équipe Canada": { color: "#FF0000", bg: "#FFFFFF", jersey: "equipe-canada.png" }
@@ -30,7 +30,7 @@ const teamStyles = {
 
 let ridersData = {
     teams: [
-        {
+    {
             id: 1,
             name: "UAE Team Emirates",
             displayName: "UAE TEAM EMIRATES XRG",
@@ -389,9 +389,9 @@ let ridersData = {
                 { number: 225, name: "COWAN, Quentin", country: "🇨🇦" },
                 { number: 226, name: "BOUCHARD, Félix", country: "🇨🇦" },
                 { number: 227, name: "HAMEL, Félix", country: "🇨🇦" }
-            ]
-        }
-    ]
+        ]
+    }
+]
 };
 
 // Filename overrides for jersey images present in the package
@@ -415,7 +415,7 @@ const jerseySlugOverrides = {
     "Intermarché - Wanty": "intermarchewanty",
     "Cofidis": "cofidis",
     "Astana Qazaqstan Team": "astana",
-    "Israel - Premier Tech": "palestine",
+    "Israel - Premier Tech": "ipt",
     "Uno-X Mobility": "uno",
     "Tudor Pro Cycling Team": "tudor",
     "Équipe Canada": "canada"
