@@ -67,8 +67,6 @@ const translations = {
         socialMedia: 'Instagram',
         fanVillageInfo: 'Zones animées',
         officialWebsite: 'Site officiel',
-        quebecResults: 'Résultats Québec',
-
         // Riders Modal
         ridersTitle: 'Liste des Partants - 2025',
         ridersInfo: 'Données officielles UCI WorldTour 2025',
@@ -453,7 +451,10 @@ function addSafeTapListener(element, onTap) {
 
 // Initialize Application - Mobile Optimized
 function initializeApp() {
-    // Critical rendering path first
+    // Critical rendering path first - ensure language is set before updating
+    if (!currentLanguage) {
+        currentLanguage = APP_CONFIG.defaultLanguage;
+    }
     updateLanguage();
     hideLoader();
     
@@ -1164,6 +1165,14 @@ function closeInstallPrompt() {
     if (prompt) {
         prompt.classList.add('hidden');
         localStorage.setItem('installPromptDismissed', 'true');
+        localStorage.setItem('installPromptDismissedTime', Date.now().toString());
+        
+        // Track dismissal
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'install_prompt_dismissed', {
+                event_category: 'PWA'
+            });
+        }
     }
 }
 
