@@ -48,7 +48,7 @@
     "name": "UAE Team Emirate",
     "displayName": "UAE TEAM EMIRATES XRG",
     "country": "🇦🇪",
-    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png?t=1757264722998",
+    "jerseyPath": "images/jerseys/emirates.png",
     "riders": [
       {
         "number": 11,
@@ -577,7 +577,7 @@
     "name": "Arkéa-B&B Hotels",
     "displayName": "ARKEA-B&B HOTELS",
     "country": "🇫🇷",
-    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/arkea.png?t=1757264722998",
+    "jerseyPath": "images/jerseys/arkea.png",
     "riders": [
       {
         "number": 171,
@@ -841,7 +841,7 @@
     "name": "IPT",
     "displayName": "IPT",
     "country": "🇮🇱",
-    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/ipt.png?t=1757264722998",
+    "jerseyPath": "images/jerseys/ipt.png",
     "riders": [
       {
         "number": 191,
