@@ -1055,6 +1055,9 @@ function updateLanguage() {
     if (langToggle) {
         langToggle.textContent = currentLanguage === 'fr' ? 'EN' : 'FR';
     }
+    
+    // Update auction section
+    updateAuctionSection();
 
     // Highlight specific phrase for Quebec results (FR only)
     const quebecTitle = document.querySelector('h2[data-lang="quebecResults"]');
@@ -1252,6 +1255,30 @@ function closeInstallPrompt() {
 }
 
 // Functions are now exported immediately in exportCriticalFunctions()
+
+function updateAuctionSection() {
+    // Update auction image based on language
+    const auctionImage = document.getElementById('auctionBigboxImage');
+    if (auctionImage) {
+        const auctionImageSrc = currentLanguage === 'fr' ? 
+            'images/encan_FR.png' : 
+            'images/encan_EN.png';
+        auctionImage.src = auctionImageSrc;
+        auctionImage.alt = currentLanguage === 'fr' ? 'Encan silencieux' : 'Silent Auction';
+    }
+    
+    // Update auction links
+    const auctionLink = document.getElementById('auctionLink');
+    const auctionBtn = document.getElementById('auctionBtn');
+    
+    if (currentLanguage === 'en') {
+        if (auctionLink) auctionLink.href = 'https://www.zeffy.com/en-CA/ticketing/silent-auction-3';
+        if (auctionBtn) auctionBtn.href = 'https://www.zeffy.com/en-CA/ticketing/silent-auction-3';
+    } else {
+        if (auctionLink) auctionLink.href = 'https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3';
+        if (auctionBtn) auctionBtn.href = 'https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3';
+    }
+}
 
 // Lazy load third-party content for mobile performance
 if (navigator.onLine && !APP_CONFIG.isMobile) {
