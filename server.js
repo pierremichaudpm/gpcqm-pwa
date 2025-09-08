@@ -122,7 +122,7 @@ app.get('/cms', (req, res) => {
 });
 
 // CMS API endpoints  
-const TEAMS_FILE = path.join(__dirname, 'teams-data.json');
+const TEAMS_FILE = path.join(__dirname, 'cms', 'teams-data.json');
 const RIDERS_FILE = path.join(__dirname, 'riders.json');
 
 // Get teams
