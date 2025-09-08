@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPCM CMS - Gestion des Équipes et Coureurs</title>
+    <link rel="stylesheet" href="/cms/cms-styles.css?v=20250906">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cms-container">
+        <!-- Header -->
+        <header class="cms-header">
+            <div class="header-content">
+                <h1>🚴 GPCM CMS</h1>
+                <p>Gestion des Équipes et Coureurs</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-success" id="saveBtn">
+                    💾 Sauvegarder
+                </button>
+                <!-- Boutons export/import retirés -->
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="cms-main">
+            <!-- Sidebar -->
+            <aside class="cms-sidebar">
+                <div class="sidebar-header">
+                    <h2>Équipes</h2>
+                    <button class="btn btn-primary btn-sm" id="addTeamBtn">
+                        ➕ Ajouter une équipe
+                    </button>
+                </div>
+                <div class="teams-list" id="teamsList">
+                    <!-- Teams will be loaded here -->
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="cms-content">
+                <div id="welcomeMessage" class="welcome-message">
+                    <h2>Bienvenue dans le CMS GPCM</h2>
+                    <p>Sélectionnez une équipe dans la liste de gauche pour commencer à éditer.</p>
+                    <div class="quick-stats" id="quickStats">
+                        <!-- Stats will be loaded here -->
+                    </div>
+                </div>
+
+                <div id="teamEditor" class="team-editor" style="display: none;">
+                    <!-- Team editor will be loaded here -->
+                </div>
+            </main>
+        </div>
+
+        <!-- Modals -->
+        <!-- Add Team Modal -->
+        <div id="addTeamModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Ajouter une nouvelle équipe</h2>
+                    <button class="modal-close" id="addTeamCloseBtn">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nom de l'équipe *</label>
+                        <input type="text" id="newTeamName" placeholder="Ex: UAE Team Emirates">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom d'affichage</label>
+                        <input type="text" id="newTeamDisplayName" placeholder="Ex: UAE TEAM EMIRATES XRG">
+                    </div>
+                    <div class="form-group">
+                        <label>Drapeau du pays (emoji ou vide)</label>
+                        <input type="text" id="newTeamCountry" placeholder="Ex: 🇦🇪" maxlength="4">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="addTeamCancelBtn">Annuler</button>
+                    <button class="btn btn-primary" id="addTeamConfirmBtn">Ajouter l'équipe</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Rider Modal -->
+        <div id="addRiderModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Ajouter un coureur</h2>
+                    <button class="modal-close" id="addRiderCloseBtn">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Numéro de dossard</label>
+                        <input type="number" id="newRiderNumber" placeholder="Ex: 11" min="1" max="999">
+                    </div>
+                    <div class="form-group">
+                        <label>Nom du coureur *</label>
+                        <input type="text" id="newRiderName" placeholder="Ex: Tadej POGACAR">
+                    </div>
+                    <div class="form-group">
+                        <label>Drapeau du pays (emoji ou vide)</label>
+                        <input type="text" id="newRiderCountry" placeholder="Ex: 🇸🇮" maxlength="4">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="addRiderCancelBtn">Annuler</button>
+                    <button class="btn btn-primary" id="addRiderConfirmBtn">Ajouter le coureur</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Les maillots sont maintenant gérés depuis le dossier officiel -->
+        <!-- Flag Picker Modal -->
+        <div id="flagModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Sélectionner un drapeau</h2>
+                    <button class="modal-close" id="flagCloseBtn">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="flag-search">
+                        <input type="text" id="flagSearch" placeholder="Rechercher un pays...">
+                    </div>
+                    <div class="flags-grid" id="flagsGrid">
+                        <!-- Flags will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" id="flagCancelBtn">Annuler</button>
+                    <button class="btn btn-danger" id="flagRemoveBtn">Supprimer le drapeau</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="/cms/cms-app-clean.js?v=20250907"></script>
+</body>
+<script>
+// Désactiver le Service Worker sur la page CMS pour éviter les interférences de cache/CSP
+try {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(regs){
+            regs.forEach(function(reg){ try { reg.unregister(); } catch(_){} });
+        });
+    }
+} catch(_){}
+</script>
+</html>

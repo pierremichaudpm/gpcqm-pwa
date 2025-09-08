@@ -109,10 +109,17 @@ self.addEventListener('fetch', (event) => {
     }
     
     // Handle API requests differently (network first)
+    // IMPORTANT: Don't cache weather API calls to avoid stale data on Safari
     if (url.pathname.includes('/api/') || 
+        url.pathname.includes('/weather') ||
         url.hostname.includes('api.') ||
         url.hostname.includes('instagram.com') ||
         url.hostname.includes('openweathermap.org')) {
+        
+        // For Safari iOS, bypass service worker completely for API calls
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            return; // Let the browser handle it directly
+        }
         
         event.respondWith(
             networkFirstStrategy(request)
