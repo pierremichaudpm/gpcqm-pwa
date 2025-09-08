@@ -577,37 +577,53 @@ function initModalBindings() {
         addSafeTapListener(ridersCard, openRidersModal);
     }
     
-    // CRITICAL FIX: TVA Sports / CBC Gem button - FORCE binding
+    // CRITICAL FIX: Force binding for problematic buttons
     setTimeout(() => {
+        // TVA Sports / CBC Gem button
         const broadcastAppBtn = document.getElementById('broadcastAppBtn');
-        if (broadcastAppBtn) {
-            broadcastAppBtn.removeAttribute('onclick');
+        if (broadcastAppBtn && !broadcastAppBtn.hasAttribute('data-listener-added')) {
+            broadcastAppBtn.setAttribute('data-listener-added', 'true');
             broadcastAppBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
                 openBroadcastApp(e);
-                return false;
             });
         }
         
-        // CRITICAL FIX: English/French toggle - FORCE binding
+        // English/French toggle - only add if not working
         const langBtnEn = document.getElementById('langBtnEn');
         const langBtnFr = document.getElementById('langBtnFr');
-        if (langBtnEn) {
-            langBtnEn.removeAttribute('onclick');
-            langBtnEn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                setLanguage('en');
-            });
+        if (langBtnEn && typeof window.setLanguage === 'function') {
+            // Test if onclick works, if not add listener
+            if (!langBtnEn.onclick) {
+                langBtnEn.addEventListener('click', () => setLanguage('en'));
+            }
         }
-        if (langBtnFr) {
-            langBtnFr.removeAttribute('onclick');
-            langBtnFr.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                setLanguage('fr');
-            });
+        if (langBtnFr && typeof window.setLanguage === 'function') {
+            if (!langBtnFr.onclick) {
+                langBtnFr.addEventListener('click', () => setLanguage('fr'));
+            }
+        }
+        
+        // Menu toggle - ensure it works
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const menuCloseBtn = document.getElementById('menuCloseBtn');
+        if (menuToggleBtn && typeof window.toggleMenu === 'function') {
+            if (!menuToggleBtn.onclick) {
+                menuToggleBtn.addEventListener('click', () => toggleMenu());
+            }
+        }
+        if (menuCloseBtn && typeof window.toggleMenu === 'function') {
+            if (!menuCloseBtn.onclick) {
+                menuCloseBtn.addEventListener('click', () => toggleMenu());
+            }
+        }
+        
+        // Install prompt close button
+        const installCloseBtn = document.getElementById('installCloseBtn');
+        if (installCloseBtn && typeof window.closeInstallPrompt === 'function') {
+            if (!installCloseBtn.onclick) {
+                installCloseBtn.addEventListener('click', () => closeInstallPrompt());
+            }
         }
     }, 100); // Small delay to ensure DOM is ready
 
