@@ -207,7 +207,8 @@
                     <a href="#social" onclick="toggleMenu()" data-lang="socialMedia">Instagram</a>
                     <a href="#fanvillage" onclick="toggleMenu()" data-lang="fanVillageInfo">Village des Fans</a>
                     <a href="https://gpcqm.ca" onclick="toggleMenu()" target="_blank" rel="noopener" data-lang="officialWebsite">Site officiel</a>
-                    <a href="#quebec" onclick="toggleMenu()" data-lang="quebecMenu">Grand Prix Cycliste de Québec</a>
+                    <a href="#quebec" onclick="toggleMenu()" data-lang="quebecResults">Résultats Québec</a>
+                    <a href="https://gpcqm-qc.ca" onclick="toggleMenu()" target="_blank" rel="noopener" data-lang="quebecApp">Appli Québec</a>
                 </div>
             </div>
         </nav>
@@ -784,12 +785,11 @@
         <div class="modal-overlay" onclick="closeTransportModal()"></div>
         <div class="modal-content">
             <button class="modal-close" onclick="closeTransportModal()" aria-label="Fermer">×</button>
-            <h3 id="transportModalTitle" class="modal-title" data-lang="transportTitle">Comment s'y rendre</h3>
+            <h3 id="transportModalTitle" class="modal-title" data-lang="siteAccessTitle">Accès au site</h3>
             <div class="modal-body">
-                <!-- Embedded Map -->
+                <!-- Site Access Map -->
                 <div class="transport-section">
-                    <h4 data-lang="mapEmbedTitle">Carte interactive</h4>
-                    <iframe id="transportMapFrame" src="" style="width:100%;height:380px;border:0;" loading="eager" allowfullscreen title="Carte interactive"></iframe>
+                    <img id="siteAccessImage" src="images/GPC-11938-CarteGPC-2025_MTL-FR_VF_13août.png" alt="Carte d'accès au site GPCQM 2025" class="modal-image" loading="lazy" decoding="async"/>
                 </div>
                 <div class="transport-content lang-fr">
                     <div class="transport-section">
@@ -1000,8 +1000,8 @@
                     </div>
 
                     <div class="fv-cta">
-                        <button class="getting-there-btn" type="button" onclick="openTransportModal()" aria-describedby="transport-desc">
-                            <span class="cta-text" data-lang="gettingThere">Comment s'y rendre</span>
+                        <button class="getting-there-btn" type="button" onclick="openTransportModal()" aria-describedby="site-access-desc">
+                            <span class="cta-text" data-lang="siteAccess">Accès au site</span>
                         </button>
                     </div>
                 </div>

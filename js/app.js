@@ -184,13 +184,15 @@ const translations = {
         
         // PWA
         installTitle: 'Installer l\'application',
-        installText: 'Ajoutez GPCM à votre écran d\'accueil pour un accès rapide',
+        installText: 'Ajoutez GPCQM à votre écran d\'accueil pour un accès rapide',
         installButton: 'Installer',
-        iosInstallTitle: 'Installer GPCM 2025',
-        iosInstallText: 'Pour installer cette app sur votre iPhone :',
-        iosStep1: 'Appuyez sur le bouton Partager',
-        iosStep2: 'Sélectionnez "Sur l\'écran d\'accueil"',
-        offlineMode: 'Mode hors ligne'
+        offlineMode: 'Mode hors ligne',
+        
+        // New translations
+        quebecResults: 'Résultats Québec',
+        quebecApp: 'Appli Québec',
+        siteAccess: 'Accès au site',
+        siteAccessTitle: 'Accès au site'
     },
     en: {
         // Header
@@ -367,13 +369,15 @@ const translations = {
         
         // PWA
         installTitle: 'Install App',
-        installText: 'Add GPCM to your home screen for quick access',
+        installText: 'Add GPCQM to your home screen for quick access',
         installButton: 'Install',
-        iosInstallTitle: 'Install GPCM 2025',
-        iosInstallText: 'To install this app on your iPhone:',
-        iosStep1: 'Tap the Share button',
-        iosStep2: 'Select "Add to Home Screen"',
-        offlineMode: 'Offline Mode'
+        offlineMode: 'Offline Mode',
+        
+        // New translations
+        quebecResults: 'Québec Results',
+        quebecApp: 'Québec App',
+        siteAccess: 'Site Access',
+        siteAccessTitle: 'Site Access'
     },
     // Extra keys for shop
     _extra: {}
@@ -455,102 +459,6 @@ function initializeApp() {
     
     // Export critical functions immediately for onclick handlers
     exportCriticalFunctions();
-    console.log('Critical functions exported:', window.toggleMenu ? 'toggleMenu OK' : 'toggleMenu MISSING');
-    
-    // Add direct event listeners for menu
-    const menuToggleBtn = document.getElementById('menuToggleBtn');
-    const menuCloseBtn = document.getElementById('menuCloseBtn');
-    const installCloseBtn = document.querySelector('.install-close');
-    const langBtnFr = document.getElementById('langBtnFr');
-    const langBtnEn = document.getElementById('langBtnEn');
-    
-    if (menuToggleBtn) {
-        menuToggleBtn.addEventListener('click', function() {
-            const menu = document.getElementById('mobileMenu');
-            if (menu) {
-                menu.classList.toggle('active');
-                document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
-            }
-        });
-    }
-    
-    if (menuCloseBtn) {
-        menuCloseBtn.addEventListener('click', function() {
-            const menu = document.getElementById('mobileMenu');
-            if (menu) {
-                menu.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-    }
-    
-    if (installCloseBtn) {
-        installCloseBtn.addEventListener('click', function() {
-            const prompt = document.getElementById('installPrompt');
-            if (prompt) {
-                prompt.classList.add('hidden');
-            }
-        });
-    }
-    
-    // Language buttons avec protection
-    if (langBtnFr) {
-        langBtnFr.removeEventListener('click', langBtnFr._handler);
-        langBtnFr._handler = function() { setLanguage('fr'); };
-        langBtnFr.addEventListener('click', langBtnFr._handler);
-    }
-    
-    if (langBtnEn) {
-        langBtnEn.removeEventListener('click', langBtnEn._handler);
-        langBtnEn._handler = function() { setLanguage('en'); };
-        langBtnEn.addEventListener('click', langBtnEn._handler);
-    }
-    
-    // Broadcast app button (TVA Sports FR / CBC Gem EN)
-    const broadcastAppBtn = document.getElementById('broadcastAppBtn');
-    if (broadcastAppBtn) {
-        broadcastAppBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            openBroadcastApp(e);
-        });
-    }
-    
-    // iOS Install Prompt Logic
-    const iosInstallCloseBtn = document.getElementById('iosInstallCloseBtn');
-    if (iosInstallCloseBtn) {
-        iosInstallCloseBtn.addEventListener('click', function() {
-            const prompt = document.getElementById('iosInstallPrompt');
-            if (prompt) {
-                prompt.classList.add('hidden');
-                localStorage.setItem('iosInstallPromptDismissed', 'true');
-                localStorage.setItem('iosInstallPromptDismissedTime', Date.now());
-            }
-        });
-    }
-    
-    // Detect iOS and show install prompt
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isInStandaloneMode = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-    
-    if (isIOS && !isInStandaloneMode) {
-        const dismissed = localStorage.getItem('iosInstallPromptDismissed');
-        const dismissedTime = localStorage.getItem('iosInstallPromptDismissedTime');
-        
-        let shouldShow = true;
-        if (dismissed && dismissedTime) {
-            const daysSinceDismissed = (Date.now() - parseInt(dismissedTime)) / (1000 * 60 * 60 * 24);
-            shouldShow = daysSinceDismissed > 7; // Show again after 7 days
-        }
-        
-        if (shouldShow) {
-            setTimeout(() => {
-                const iosPrompt = document.getElementById('iosInstallPrompt');
-                if (iosPrompt) {
-                    iosPrompt.classList.remove('hidden');
-                }
-            }, 4000); // Show after 4 seconds
-        }
-    }
     
     // Lazy load non-critical functionality with fallback
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(() => {
@@ -604,18 +512,6 @@ function exportCriticalFunctions() {
     window.openWatchModal = openWatchModal;
     window.closeWatchModal = closeWatchModal;
     window.openPrivacyModal = openPrivacyModal;
-    
-    // Force immediate availability for menu
-    if (!window.toggleMenu) {
-        console.error('toggleMenu function missing, creating fallback');
-        window.toggleMenu = function() {
-            const menu = document.getElementById('mobileMenu');
-            if (menu) {
-                menu.classList.toggle('active');
-                document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
-            }
-        };
-    }
     window.closePrivacyModal = closePrivacyModal;
     window.openTermsModal = openTermsModal;
     window.closeTermsModal = closeTermsModal;
@@ -815,10 +711,16 @@ function openTransportModal() {
     const m = document.getElementById('transportModal');
     if (!m) return;
     m.classList.remove('hidden');
-    // Ensure the embedded Google My Maps iframe is initialized when the modal becomes visible
-    const transportMapFrame = document.getElementById('transportMapFrame');
-    if (transportMapFrame && (!transportMapFrame.getAttribute('src') || transportMapFrame.getAttribute('src') === '')) {
-        transportMapFrame.setAttribute('src', buildTransportMapEmbedUrl());
+    // Update site access image based on current language
+    const siteAccessImage = document.getElementById('siteAccessImage');
+    if (siteAccessImage) {
+        const imagePath = currentLanguage === 'fr' 
+            ? 'images/GPC-11938-CarteGPC-2025_MTL-FR_VF_13août.png'
+            : 'images/GPC-11938-CarteGPC-2025_MTL-EN_VF_13août.png';
+        siteAccessImage.setAttribute('src', imagePath);
+        siteAccessImage.setAttribute('alt', currentLanguage === 'fr' 
+            ? 'Carte d\'accès au site GPCQM 2025'
+            : 'GPCQM 2025 Site Access Map');
     }
     const closeBtn = m.querySelector('.modal-close');
     if (closeBtn) {
@@ -848,19 +750,20 @@ function openWatchModal() {
     if (!m) return;
     const img = document.getElementById('watchModalImage');
     if (img) {
-        // Simplifier : toujours utiliser l'image française qui existe
-        img.src = 'images/meilleurs_endroits_mtl_fr.png';
-        img.style.display = 'block';
-        img.style.width = '100%';
-        img.style.height = 'auto';
-        
+        const frBase = 'images/meilleurs_endroits_mtl_fr.png';
+        const enBase = 'images/meilleurs_endroits_mtl_en.png';
+        const base = currentLanguage === 'en' ? enBase : frBase;
+        const desiredSrc = `${base}?t=${Date.now()}`;
+        if (img.getAttribute('src') !== desiredSrc) {
+            img.setAttribute('src', desiredSrc);
+        }
+        img.style.display = '';
         img.onerror = function() {
-            console.error('Failed to load watch modal image');
-            this.style.display = 'none';
-        };
-        
-        img.onload = function() {
-            console.log('Watch modal image loaded successfully');
+            const altBase = base === frBase ? enBase : frBase;
+            const altSrc = `${altBase}?t=${Date.now()}`;
+            if (img.getAttribute('src') !== altSrc) {
+                img.setAttribute('src', altSrc);
+            }
         };
     }
     m.classList.remove('hidden');
@@ -893,21 +796,41 @@ function openBroadcastApp(e) {
     const tvPlayStore = 'https://play.google.com/store/apps/details?id=com.nurun.tva_sports';
 
     const gemDeepLink = 'cbcgem://';
-    const gemAppStore = 'https://apps.apple.com/ca/app/cbc-gem-shows-live-tv/id422191503';
+    const gemAppStore = 'https://apps.apple.com/ca/app/cbc-gem/id422689480';
     const gemPlayStore = 'https://play.google.com/store/apps/details?id=ca.cbc.android.cbctv';
 
     const deepLink = isFrench ? tvDeepLink : gemDeepLink;
     const appStoreUrl = isFrench ? tvAppStore : gemAppStore;
     const playStoreUrl = isFrench ? tvPlayStore : gemPlayStore;
 
-    // Aller directement vers l'App Store sans deep link
-    if (isIOS) {
-        window.open(appStoreUrl, '_blank', 'noopener');
-    } else if (isAndroid) {
-        window.open(playStoreUrl, '_blank', 'noopener');
-    } else {
-        // Desktop fallback: app landing pages
-        window.open(isFrench ? 'https://www.tvasports.ca/application' : 'https://gem.cbc.ca/', '_blank', 'noopener');
+    // Prefer opening app via deep link; if it fails, fallback to store
+    let fallbackTimer = null;
+    const fallback = () => {
+        if (isIOS) {
+            window.location.href = appStoreUrl;
+        } else if (isAndroid) {
+            window.location.href = playStoreUrl;
+        } else {
+            // Desktop fallback: app landing pages
+            window.open(isFrench ? 'https://www.tvasports.ca/application' : 'https://gem.cbc.ca/', '_blank', 'noopener');
+        }
+    };
+
+    try {
+        // Heuristic: if app doesn't open within 1200ms, go to store
+        fallbackTimer = setTimeout(fallback, 1200);
+        // Use hidden iframe trick for older Android browsers; else set location
+        if (isAndroid) {
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = deepLink;
+            document.body.appendChild(iframe);
+            setTimeout(() => { try { document.body.removeChild(iframe); } catch(_){} }, 1500);
+        } else {
+            window.location.href = deepLink;
+        }
+    } catch(_) {
+        fallback();
     }
 }
 
@@ -991,20 +914,13 @@ function toggleMenu() {
 
 // Set Language
 function setLanguage(lang) {
-    console.log('setLanguage called with:', lang);
     currentLanguage = lang;
     localStorage.setItem('language', lang);
     updateLanguage();
     if (typeof updateWeatherLanguage === 'function') {
         updateWeatherLanguage();
     }
-    
-    // Fermer le menu
-    const menu = document.getElementById('mobileMenu');
-    if (menu) {
-        menu.classList.remove('active');
-        document.body.style.overflow = '';
-    }
+    toggleMenu(); // Close menu after language change
     
     // Update active language button
     document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1055,9 +971,6 @@ function updateLanguage() {
     if (langToggle) {
         langToggle.textContent = currentLanguage === 'fr' ? 'EN' : 'FR';
     }
-    
-    // Update auction section
-    updateAuctionSection();
 
     // Highlight specific phrase for Quebec results (FR only)
     const quebecTitle = document.querySelector('h2[data-lang="quebecResults"]');
@@ -1255,30 +1168,6 @@ function closeInstallPrompt() {
 }
 
 // Functions are now exported immediately in exportCriticalFunctions()
-
-function updateAuctionSection() {
-    // Update auction image based on language
-    const auctionImage = document.getElementById('auctionBigboxImage');
-    if (auctionImage) {
-        const auctionImageSrc = currentLanguage === 'fr' ? 
-            'images/encan_FR.png' : 
-            'images/encan_EN.png';
-        auctionImage.src = auctionImageSrc;
-        auctionImage.alt = currentLanguage === 'fr' ? 'Encan silencieux' : 'Silent Auction';
-    }
-    
-    // Update auction links
-    const auctionLink = document.getElementById('auctionLink');
-    const auctionBtn = document.getElementById('auctionBtn');
-    
-    if (currentLanguage === 'en') {
-        if (auctionLink) auctionLink.href = 'https://www.zeffy.com/en-CA/ticketing/silent-auction-3';
-        if (auctionBtn) auctionBtn.href = 'https://www.zeffy.com/en-CA/ticketing/silent-auction-3';
-    } else {
-        if (auctionLink) auctionLink.href = 'https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3';
-        if (auctionBtn) auctionBtn.href = 'https://www.zeffy.com/fr-CA/ticketing/encan-silencieux-3';
-    }
-}
 
 // Lazy load third-party content for mobile performance
 if (navigator.onLine && !APP_CONFIG.isMobile) {
