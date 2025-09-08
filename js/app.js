@@ -954,6 +954,9 @@ function setLanguage(lang) {
     }
 }
 
+// Make setLanguage globally available immediately
+window.setLanguage = setLanguage;
+
 // Update Language
 function updateLanguage() {
     const elements = document.querySelectorAll('[data-lang]');

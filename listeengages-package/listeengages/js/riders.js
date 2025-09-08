@@ -478,16 +478,11 @@ function loadTeamsView() {
 
     // Fonction pour obtenir le nom du fichier de maillot
     function getJerseyFile(team) {
-        // Si l'équipe a un jerseyPath défini, l'utiliser
-        if (team.jerseyPath) {
-            // Extraire juste le nom du fichier du chemin
-            const parts = team.jerseyPath.split('/');
-            return parts[parts.length - 1];
-        }
-        
-        // Sinon, utiliser le mapping par nom d'équipe
+        // Mapping complet par nom d'équipe - toujours utiliser ceci en priorité
         const jerseyMap = {
             'UAE Team Emirate': 'emirates.png',
+            'UAE Team Emirates': 'emirates.png',
+            'UAE': 'emirates.png',
             'Lotto Dstny': 'lotto.png',
             'Team Visma | Lease a Bike': 'visma.png',
             'INEOS Grenadiers': 'ineos.png',
@@ -502,12 +497,14 @@ function loadTeamsView() {
             'Movistar Team': 'movistar.png',
             'Team Jayco AlUla': 'jayco.png',
             'Arkéa-B&B Hotels': 'arkea.png',
+            'Arkea-B&B Hotels': 'arkea.png',
             'Team DSM-Firmenich PostNL': 'picnic.png',
             'Intermarché - Wanty': 'intermarchewanty.png',
             'Cofidis': 'cofidis.png',
             'Astana Qazaqstan Team': 'astana.png',
             'IPT': 'ipt.png',
             'Israel - Premier Tech': 'ipt.png',
+            'Israel Premier Tech': 'ipt.png',
             'Uno-X Mobility': 'uno.png',
             'Tudor Pro Cycling Team': 'tudor.png',
             'Équipe Canada': 'canada.png'
@@ -516,6 +513,13 @@ function loadTeamsView() {
         // Essayer avec le nom exact de l'équipe
         if (jerseyMap[team.name]) {
             return jerseyMap[team.name];
+        }
+        
+        // Si l'équipe a un jerseyPath défini, l'utiliser comme fallback
+        if (team.jerseyPath) {
+            // Extraire juste le nom du fichier du chemin
+            const parts = team.jerseyPath.split('/');
+            return parts[parts.length - 1];
         }
         
         // Sinon, essayer de déduire depuis le nom de l'équipe
