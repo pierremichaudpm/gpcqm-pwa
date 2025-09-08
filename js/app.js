@@ -576,6 +576,40 @@ function initModalBindings() {
     if (ridersCard) {
         addSafeTapListener(ridersCard, openRidersModal);
     }
+    
+    // CRITICAL FIX: TVA Sports / CBC Gem button - FORCE binding
+    setTimeout(() => {
+        const broadcastAppBtn = document.getElementById('broadcastAppBtn');
+        if (broadcastAppBtn) {
+            broadcastAppBtn.removeAttribute('onclick');
+            broadcastAppBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                openBroadcastApp(e);
+                return false;
+            });
+        }
+        
+        // CRITICAL FIX: English/French toggle - FORCE binding
+        const langBtnEn = document.getElementById('langBtnEn');
+        const langBtnFr = document.getElementById('langBtnFr');
+        if (langBtnEn) {
+            langBtnEn.removeAttribute('onclick');
+            langBtnEn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                setLanguage('en');
+            });
+        }
+        if (langBtnFr) {
+            langBtnFr.removeAttribute('onclick');
+            langBtnFr.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                setLanguage('fr');
+            });
+        }
+    }, 100); // Small delay to ensure DOM is ready
 
     const mapButtons = document.querySelectorAll('#map .map-actions button');
     mapButtons.forEach(btn => {
