@@ -392,6 +392,69 @@ translations.en.shopCta = 'Discover';
 // Current language
 let currentLanguage = localStorage.getItem('language') || APP_CONFIG.defaultLanguage;
 
+// Export critical functions immediately when script loads - CRITICAL FIX
+window.toggleMenu = function() {
+    const menu = document.getElementById('mobileMenu');
+    const menuButton = document.querySelector('.menu-toggle');
+    
+    if (menu) {
+        const isActive = menu.classList.contains('active');
+        menu.classList.toggle('active');
+        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        
+        // Update aria-expanded for accessibility
+        if (menuButton) {
+            menuButton.setAttribute('aria-expanded', (!isActive).toString());
+        }
+    }
+};
+
+window.setLanguage = function(lang) {
+    currentLanguage = lang;
+    localStorage.setItem('language', lang);
+    if (typeof updateLanguage === 'function') {
+        updateLanguage();
+    }
+    if (typeof updateWeatherLanguage === 'function') {
+        updateWeatherLanguage();
+    }
+    if (typeof toggleMenu === 'function') {
+        toggleMenu();
+    }
+    
+    // Update active language button
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if ((lang === 'fr' && btn.textContent === 'Français') || 
+            (lang === 'en' && btn.textContent === 'English')) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Track language change
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'language_change', {
+            language: lang
+        });
+    }
+};
+
+window.closeInstallPrompt = function() {
+    const prompt = document.getElementById('installPrompt');
+    if (prompt) {
+        prompt.classList.add('hidden');
+        localStorage.setItem('installPromptDismissed', 'true');
+        localStorage.setItem('installPromptDismissedTime', Date.now().toString());
+        
+        // Track dismissal
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'install_prompt_dismissed', {
+                event_category: 'PWA'
+            });
+        }
+    }
+};
+
 // DOM Ready
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();

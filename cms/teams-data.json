@@ -1,58 +1,58 @@
 [
   {
-    "id": 2,
-    "name": "Lotto Dstny",
-    "displayName": "LOTTO",
-    "country": "🇧🇪",
-    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png?t=1757264722998",
+    "id": 14,
+    "name": "Team Jayco AlUla",
+    "displayName": "TEAM JAYCO ALULA",
+    "country": "🇦🇺",
+    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png?t=1757264722998",
     "riders": [
       {
-        "number": 181,
-        "name": "DE LIE, Arnaud",
-        "country": "🇧🇪"
-      },
-      {
-        "number": 182,
-        "name": "BERCKMOES, Jenno",
-        "country": "🇧🇪"
-      },
-      {
-        "number": 183,
-        "name": "DRIZNERS, Jarrad",
+        "number": 1,
+        "name": "Michael MATTHEWS",
         "country": "🇦🇺"
       },
       {
-        "number": 184,
-        "name": "GRIGNARD, Sébastien",
-        "country": "🇧🇪"
+        "number": 2,
+        "name": "Luke DURBRIDGE",
+        "country": "🇦🇺"
       },
       {
-        "number": 185,
-        "name": "THOMPSON, Reuben",
-        "country": "🇳🇿"
+        "number": 3,
+        "name": "Asbjørn HELLEMOSE",
+        "country": "🇩🇰"
       },
       {
-        "number": 186,
-        "name": "CURRIE, Logan",
-        "country": "🇳🇿"
+        "number": 4,
+        "name": "Michael HEPBURN",
+        "country": "🇦🇺"
       },
       {
-        "number": 187,
-        "name": "VANDENABEELE, Henri",
-        "country": "🇧🇪"
+        "number": 5,
+        "name": "Mauro SCHMID",
+        "country": "🇨🇭"
+      },
+      {
+        "number": 6,
+        "name": "DONALDSON, Robert Edward",
+        "country": "🇬🇧"
+      },
+      {
+        "number": 7,
+        "name": "Filippo ZANA",
+        "country": "🇮🇹"
       }
     ]
   },
   {
     "id": 1,
     "name": "UAE Team Emirate",
-    "displayName": "UAE TEAM EMIRATES XRG test",
+    "displayName": "UAE TEAM EMIRATES XRG",
     "country": "🇦🇪",
     "jerseyPath": "/listeengages-package/listeengages/images/jerseys/emirates.png?t=1757264722998",
     "riders": [
       {
         "number": 11,
-        "name": "Tadej Pogacar test",
+        "name": "Tadej Pogacar",
         "country": "🇸🇮"
       },
       {
@@ -573,50 +573,6 @@
     ]
   },
   {
-    "id": 14,
-    "name": "Team Jayco AlUla",
-    "displayName": "TEAM JAYCO ALULA",
-    "country": "🇦🇺",
-    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/jayco.png?t=1757264722998",
-    "riders": [
-      {
-        "number": 1,
-        "name": "Michael MATTHEWS",
-        "country": "🇦🇺"
-      },
-      {
-        "number": 2,
-        "name": "Luke DURBRIDGE",
-        "country": "🇦🇺"
-      },
-      {
-        "number": 3,
-        "name": "Asbjørn HELLEMOSE",
-        "country": "🇩🇰"
-      },
-      {
-        "number": 4,
-        "name": "Michael HEPBURN",
-        "country": "🇦🇺"
-      },
-      {
-        "number": 5,
-        "name": "Mauro SCHMID",
-        "country": "🇨🇭"
-      },
-      {
-        "number": 6,
-        "name": "DONALDSON, Robert Edward",
-        "country": "🇬🇧"
-      },
-      {
-        "number": 7,
-        "name": "Filippo ZANA",
-        "country": "🇮🇹"
-      }
-    ]
-  },
-  {
     "id": 15,
     "name": "Arkéa-B&B Hotels",
     "displayName": "ARKEA-B&B HOTELS",
@@ -789,6 +745,50 @@
         "number": 167,
         "name": "TOUZE, Damien",
         "country": "🇫🇷"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Lotto Dstny",
+    "displayName": "LOTTO",
+    "country": "🇧🇪",
+    "jerseyPath": "/listeengages-package/listeengages/images/jerseys/lotto.png?t=1757264722998",
+    "riders": [
+      {
+        "number": 181,
+        "name": "DE LIE, Arnaud",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 182,
+        "name": "BERCKMOES, Jenno",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 183,
+        "name": "DRIZNERS, Jarrad",
+        "country": "🇦🇺"
+      },
+      {
+        "number": 184,
+        "name": "GRIGNARD, Sébastien",
+        "country": "🇧🇪"
+      },
+      {
+        "number": 185,
+        "name": "THOMPSON, Reuben",
+        "country": "🇳🇿"
+      },
+      {
+        "number": 186,
+        "name": "CURRIE, Logan",
+        "country": "🇳🇿"
+      },
+      {
+        "number": 187,
+        "name": "VANDENABEELE, Henri",
+        "country": "🇧🇪"
       }
     ]
   },
