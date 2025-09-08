@@ -3,7 +3,7 @@
 // Données officielles des équipes et coureurs GPCQM 2025
 // Team colors and jersey mapping
 const teamStyles = {
-    "UAE Team Emirates": { color: "#000000", bg: "#FFD700", jersey: "uae-team-emirates.png" },
+    "UAE Team Emirate": { color: "#000000", bg: "#FFD700", jersey: "emirates.png" },
     "Lotto Dstny": { color: "#ED1C24", bg: "#FFFFFF", jersey: "lotto-dstny.png" },
     "Team Visma | Lease a Bike": { color: "#FFD700", bg: "#000000", jersey: "team-visma-lease-a-bike.png" },
     "INEOS Grenadiers": { color: "#E30613", bg: "#001E3A", jersey: "ineos-grenadiers.png" },
@@ -17,7 +17,7 @@ const teamStyles = {
     "Bahrain Victorious": { color: "#ED1C24", bg: "#FFD700", jersey: "bahrain-victorious.png" },
     "Movistar Team": { color: "#003D7C", bg: "#00B4E6", jersey: "movistar-team.png" },
     "Team Jayco AlUla": { color: "#FFD700", bg: "#000080", jersey: "team-jayco-alula.png" },
-    "Arkéa-B&B Hotels": { color: "#E30613", bg: "#FFFFFF", jersey: "arkea-bb-hotels.png" },
+    "Arkéa-B&B Hotels": { color: "#E30613", bg: "#FFFFFF", jersey: "arkea.png" },
     "Team DSM-Firmenich PostNL": { color: "#000000", bg: "#FF6600", jersey: "team-dsm.png" },
     "Intermarché - Wanty": { color: "#00A9E0", bg: "#FFFFFF", jersey: "intermarche-wanty.png" },
     "Cofidis": { color: "#ED1C24", bg: "#FFFFFF", jersey: "cofidis.png" },
@@ -396,7 +396,7 @@ let ridersData = {
 
 // Filename overrides for jersey images present in the package
 const jerseySlugOverrides = {
-    "UAE Team Emirates": "emirates",
+    "UAE Team Emirate": "emirates",
     "Lotto Dstny": "lotto",
     "Team Visma | Lease a Bike": "visma",
     "INEOS Grenadiers": "ineos",
