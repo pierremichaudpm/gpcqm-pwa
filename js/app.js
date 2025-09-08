@@ -393,117 +393,19 @@ translations.en.shopCta = 'Discover';
 let currentLanguage = localStorage.getItem('language') || APP_CONFIG.defaultLanguage;
 
 // Export critical functions immediately when script loads - CRITICAL FIX
-window.toggleMenu = function() {
-    const menu = document.getElementById('mobileMenu');
-    const menuButton = document.querySelector('.menu-toggle');
-    
-    if (menu) {
-        const isActive = menu.classList.contains('active');
-        menu.classList.toggle('active');
-        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
-        
-        // Update aria-expanded for accessibility
-        if (menuButton) {
-            menuButton.setAttribute('aria-expanded', (!isActive).toString());
-        }
-    }
-};
-
-window.setLanguage = function(lang) {
-    currentLanguage = lang;
-    localStorage.setItem('language', lang);
-    if (typeof updateLanguage === 'function') {
-        updateLanguage();
-    }
-    if (typeof updateWeatherLanguage === 'function') {
-        updateWeatherLanguage();
-    }
-    if (typeof toggleMenu === 'function') {
-        toggleMenu();
-    }
-    
-    // Update active language button
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if ((lang === 'fr' && btn.textContent === 'Français') || 
-            (lang === 'en' && btn.textContent === 'English')) {
-            btn.classList.add('active');
-        }
-    });
-    
-    // Track language change
-    if (typeof gtag !== 'undefined') {
-        gtag('event', 'language_change', {
-            language: lang
-        });
-    }
-};
-
-window.closeInstallPrompt = function() {
-    const prompt = document.getElementById('installPrompt');
-    if (prompt) {
-        prompt.classList.add('hidden');
-        localStorage.setItem('installPromptDismissed', 'true');
-        localStorage.setItem('installPromptDismissedTime', Date.now().toString());
-        
-        // Track dismissal
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'install_prompt_dismissed', {
-                event_category: 'PWA'
-            });
-        }
-    }
-};
+// Removed to avoid duplication - functions are defined later and exported
 
 // DOM Ready
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
     
-    // Backup event listeners for menu and install prompt (Android/iOS fix)
-    // In case inline onclick doesn't work properly
-    setTimeout(() => {
-        const menuToggleBtn = document.getElementById('menuToggleBtn');
-        const menuCloseBtn = document.getElementById('menuCloseBtn');
-        const installCloseBtn = document.getElementById('installCloseBtn');
-        
-        // Remove existing onclick and add event listener for menu toggle
-        if (menuToggleBtn) {
-            menuToggleBtn.onclick = null;
-            menuToggleBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (window.toggleMenu) {
-                    window.toggleMenu();
-                }
-            }, { passive: false });
-        }
-        
-        // Remove existing onclick and add event listener for menu close
-        if (menuCloseBtn) {
-            menuCloseBtn.onclick = null;
-            menuCloseBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (window.toggleMenu) {
-                    window.toggleMenu();
-                }
-            }, { passive: false });
-        }
-        
-        // Remove existing onclick and add event listener for install prompt close
-        if (installCloseBtn) {
-            installCloseBtn.onclick = null;
-            installCloseBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (window.closeInstallPrompt) {
-                    window.closeInstallPrompt();
-                }
-            }, { passive: false });
-        }
-        
-        console.log('Critical button event listeners attached');
-    }, 100); // Small delay to ensure DOM is fully ready
+    // Ensure critical functions are available globally (Android/iOS fix)
+    // Functions are already exported via exportCriticalFunctions()
+    console.log('Critical functions exported to window:', {
+        toggleMenu: typeof window.toggleMenu === 'function',
+        setLanguage: typeof window.setLanguage === 'function',
+        closeInstallPrompt: typeof window.closeInstallPrompt === 'function'
+    });
 });
 
 // Mobile-Optimized Touch Handler
@@ -569,11 +471,6 @@ function initializeApp() {
     
     // Export critical functions immediately for onclick handlers
     exportCriticalFunctions();
-    
-    // Double-ensure critical functions are available (Android/iOS fix)
-    window.toggleMenu = window.toggleMenu || toggleMenu;
-    window.closeInstallPrompt = window.closeInstallPrompt || closeInstallPrompt;
-    window.setLanguage = window.setLanguage || setLanguage;
     
     // Lazy load non-critical functionality with fallback
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(() => {
@@ -1030,17 +927,6 @@ function toggleMenu() {
 // Make toggleMenu globally available immediately
 window.toggleMenu = toggleMenu;
 
-// Ensure it's available even if called very early
-if (typeof window.toggleMenu === 'undefined') {
-    window.toggleMenu = function() {
-        const menu = document.getElementById('mobileMenu');
-        if (menu) {
-            menu.classList.toggle('active');
-            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
-        }
-    };
-}
-
 // Set Language
 function setLanguage(lang) {
     currentLanguage = lang;
@@ -1306,16 +1192,6 @@ function closeInstallPrompt() {
 
 // Make closeInstallPrompt globally available immediately
 window.closeInstallPrompt = closeInstallPrompt;
-
-// Ensure it's available even if called very early
-if (typeof window.closeInstallPrompt === 'undefined') {
-    window.closeInstallPrompt = function() {
-        const prompt = document.getElementById('installPrompt');
-        if (prompt) {
-            prompt.classList.add('hidden');
-        }
-    };
-}
 
 // Functions are now exported immediately in exportCriticalFunctions()
 

@@ -4,28 +4,29 @@
 // Team colors and jersey mapping
 const teamStyles = {
     "UAE Team Emirate": { color: "#000000", bg: "#FFD700", jersey: "emirates.png" },
-    "Lotto Dstny": { color: "#ED1C24", bg: "#FFFFFF", jersey: "lotto-dstny.png" },
-    "Team Visma | Lease a Bike": { color: "#FFD700", bg: "#000000", jersey: "team-visma-lease-a-bike.png" },
-    "INEOS Grenadiers": { color: "#E30613", bg: "#001E3A", jersey: "ineos-grenadiers.png" },
-    "Soudal Quick-Step": { color: "#003189", bg: "#FFFFFF", jersey: "soudal-quick-step.png" },
-    "Lidl-Trek": { color: "#E30613", bg: "#000000", jersey: "lidl-trek.png" },
-    "Decathlon AG2R La Mondiale Team": { color: "#8B4513", bg: "#87CEEB", jersey: "decathlon-ag2r.png" },
-    "Red Bull - BORA - hansgrohe": { color: "#00A551", bg: "#FFFFFF", jersey: "red-bull-bora.png" },
-    "Alpecin-Deceuninck": { color: "#00A9E0", bg: "#FFFFFF", jersey: "alpecin-deceuninck.png" },
-    "Groupama-FDJ": { color: "#003DA5", bg: "#FFFFFF", jersey: "groupama-fdj.png" },
-    "EF Education - EasyPost": { color: "#EF3340", bg: "#003D7C", jersey: "ef-education.png" },
-    "Bahrain Victorious": { color: "#ED1C24", bg: "#FFD700", jersey: "bahrain-victorious.png" },
-    "Movistar Team": { color: "#003D7C", bg: "#00B4E6", jersey: "movistar-team.png" },
-    "Team Jayco AlUla": { color: "#FFD700", bg: "#000080", jersey: "team-jayco-alula.png" },
+    "Lotto Dstny": { color: "#ED1C24", bg: "#FFFFFF", jersey: "lotto.png" },
+    "Team Visma | Lease a Bike": { color: "#FFD700", bg: "#000000", jersey: "visma.png" },
+    "INEOS Grenadiers": { color: "#E30613", bg: "#001E3A", jersey: "ineos.png" },
+    "Soudal Quick-Step": { color: "#003189", bg: "#FFFFFF", jersey: "soudal.png" },
+    "Lidl-Trek": { color: "#E30613", bg: "#000000", jersey: "lidltrek.png" },
+    "Decathlon AG2R La Mondiale Team": { color: "#8B4513", bg: "#87CEEB", jersey: "decathlon.png" },
+    "Red Bull - BORA - hansgrohe": { color: "#00A551", bg: "#FFFFFF", jersey: "redbullbora.png" },
+    "Alpecin-Deceuninck": { color: "#00A9E0", bg: "#FFFFFF", jersey: "alpecin.png" },
+    "Groupama-FDJ": { color: "#003DA5", bg: "#FFFFFF", jersey: "groupama.png" },
+    "EF Education - EasyPost": { color: "#EF3340", bg: "#003D7C", jersey: "ef.png" },
+    "Bahrain Victorious": { color: "#ED1C24", bg: "#FFD700", jersey: "bahrain.png" },
+    "Movistar Team": { color: "#003D7C", bg: "#00B4E6", jersey: "movistar.png" },
+    "Team Jayco AlUla": { color: "#FFD700", bg: "#000080", jersey: "jayco.png" },
     "Arkéa-B&B Hotels": { color: "#E30613", bg: "#FFFFFF", jersey: "arkea.png" },
-    "Team DSM-Firmenich PostNL": { color: "#000000", bg: "#FF6600", jersey: "team-dsm.png" },
-    "Intermarché - Wanty": { color: "#00A9E0", bg: "#FFFFFF", jersey: "intermarche-wanty.png" },
+    "Team DSM-Firmenich PostNL": { color: "#000000", bg: "#FF6600", jersey: "picnic.png" },
+    "Intermarché - Wanty": { color: "#00A9E0", bg: "#FFFFFF", jersey: "intermarchewanty.png" },
     "Cofidis": { color: "#ED1C24", bg: "#FFFFFF", jersey: "cofidis.png" },
-    "Astana Qazaqstan Team": { color: "#00BFFF", bg: "#FFD700", jersey: "astana-qazaqstan.png" },
+    "Astana Qazaqstan Team": { color: "#00BFFF", bg: "#FFD700", jersey: "astana.png" },
+    "IPT": { color: "#0038A8", bg: "#FFFFFF", jersey: "ipt.png" },
     "Israel - Premier Tech": { color: "#0038A8", bg: "#FFFFFF", jersey: "ipt.png" },
-    "Uno-X Mobility": { color: "#FFD700", bg: "#E30613", jersey: "uno-x-mobility.png" },
-    "Tudor Pro Cycling Team": { color: "#E30613", bg: "#000000", jersey: "tudor-pro-cycling.png" },
-    "Équipe Canada": { color: "#FF0000", bg: "#FFFFFF", jersey: "equipe-canada.png" }
+    "Uno-X Mobility": { color: "#FFD700", bg: "#E30613", jersey: "uno.png" },
+    "Tudor Pro Cycling Team": { color: "#E30613", bg: "#000000", jersey: "tudor.png" },
+    "Équipe Canada": { color: "#FF0000", bg: "#FFFFFF", jersey: "canada.png" }
 };
 
 let ridersData = {
@@ -406,7 +407,7 @@ const jerseySlugOverrides = {
     "Red Bull - BORA - hansgrohe": "redbullbora",
     "Alpecin-Deceuninck": "alpecin",
     "Groupama-FDJ": "groupama",
-    "EF Education - EasyPost": "EF",
+    "EF Education - EasyPost": "ef",
     "Bahrain Victorious": "bahrain",
     "Movistar Team": "movistar",
     "Team Jayco AlUla": "jayco",
@@ -415,6 +416,7 @@ const jerseySlugOverrides = {
     "Intermarché - Wanty": "intermarchewanty",
     "Cofidis": "cofidis",
     "Astana Qazaqstan Team": "astana",
+    "IPT": "ipt",
     "Israel - Premier Tech": "ipt",
     "Uno-X Mobility": "uno",
     "Tudor Pro Cycling Team": "tudor",
@@ -476,37 +478,44 @@ function loadTeamsView() {
 
     // Fonction pour obtenir le nom du fichier de maillot
     function getJerseyFile(team) {
-        // Essayer d'abord avec le code de l'équipe
+        // Si l'équipe a un jerseyPath défini, l'utiliser
+        if (team.jerseyPath) {
+            // Extraire juste le nom du fichier du chemin
+            const parts = team.jerseyPath.split('/');
+            return parts[parts.length - 1];
+        }
+        
+        // Sinon, utiliser le mapping par nom d'équipe
         const jerseyMap = {
-            'UAE': 'emirates.png',
-            'LTD': 'lotto.png',
-            'TJV': 'visma.png',
-            'IGD': 'ineos.png',
-            'SOQ': 'soudal.png',
-            'LTK': 'lidltrek.png',
-            'DEC': 'decathlon.png',
-            'RBH': 'redbullbora.png',
-            'ALP': 'alpecin.png',
-            'GFC': 'groupama.png',
-            'EF': 'ef.png',
-            'BAH': 'bahrain.png',
-            'MOV': 'movistar.png',
-            'JAY': 'jayco.png',
-            'ARK': 'arkea.png',
-            'DSM': 'picnic.png',
-            'IWA': 'intermarchewanty.png',
-            'COF': 'cofidis.png',
-            'AST': 'astana.png',
+            'UAE Team Emirate': 'emirates.png',
+            'Lotto Dstny': 'lotto.png',
+            'Team Visma | Lease a Bike': 'visma.png',
+            'INEOS Grenadiers': 'ineos.png',
+            'Soudal Quick-Step': 'soudal.png',
+            'Lidl-Trek': 'lidltrek.png',
+            'Decathlon AG2R La Mondiale Team': 'decathlon.png',
+            'Red Bull - BORA - hansgrohe': 'redbullbora.png',
+            'Alpecin-Deceuninck': 'alpecin.png',
+            'Groupama-FDJ': 'groupama.png',
+            'EF Education - EasyPost': 'ef.png',
+            'Bahrain Victorious': 'bahrain.png',
+            'Movistar Team': 'movistar.png',
+            'Team Jayco AlUla': 'jayco.png',
+            'Arkéa-B&B Hotels': 'arkea.png',
+            'Team DSM-Firmenich PostNL': 'picnic.png',
+            'Intermarché - Wanty': 'intermarchewanty.png',
+            'Cofidis': 'cofidis.png',
+            'Astana Qazaqstan Team': 'astana.png',
             'IPT': 'ipt.png',
-            'UNO': 'uno.png',
-            'TUD': 'tudor.png',
-            'CAN': 'canada.png',
-            'PNP': 'picnic.png'
+            'Israel - Premier Tech': 'ipt.png',
+            'Uno-X Mobility': 'uno.png',
+            'Tudor Pro Cycling Team': 'tudor.png',
+            'Équipe Canada': 'canada.png'
         };
         
-        // Si on a un code, l'utiliser
-        if (team.code && jerseyMap[team.code]) {
-            return jerseyMap[team.code];
+        // Essayer avec le nom exact de l'équipe
+        if (jerseyMap[team.name]) {
+            return jerseyMap[team.name];
         }
         
         // Sinon, essayer de déduire depuis le nom de l'équipe
