@@ -361,13 +361,51 @@ app.get('/api/race-status', (req, res) => {
     });
 });
 
-// Health check endpoint for Railway
-app.get('/health', (req, res) => {
-    res.status(200).json({ 
+// Database (optional) - PostgreSQL pooling; enable only if env provided
+let dbPool = null;
+const dbType = (process.env.DB_TYPE || '').toLowerCase();
+if (dbType === 'postgres' || process.env.DATABASE_URL) {
+    try {
+        const { Pool } = require('pg');
+        dbPool = new Pool({
+            connectionString: process.env.DATABASE_URL,
+            max: Number(process.env.DB_POOL_MAX || 10),
+            idleTimeoutMillis: Number(process.env.DB_POOL_IDLE_MS || 30000),
+            connectionTimeoutMillis: Number(process.env.DB_POOL_CONN_MS || 5000),
+            ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : undefined
+        });
+        dbPool.on('error', (err) => console.error('PG pool error', err));
+        console.log('PostgreSQL pool initialized');
+    } catch (e) {
+        console.warn('PostgreSQL not available, continuing without DB pool');
+    }
+}
+
+// Health check endpoint for Railway (enhanced)
+app.get('/health', async (req, res) => {
+    const mem = process.memoryUsage();
+    const payload = {
         status: 'healthy',
         timestamp: new Date().toISOString(),
-        uptime: process.uptime()
-    });
+        uptime: process.uptime(),
+        memory: {
+            rss: mem.rss,
+            heapTotal: mem.heapTotal,
+            heapUsed: mem.heapUsed,
+            external: mem.external
+        },
+        db: { available: false }
+    };
+    try {
+        if (dbPool) {
+            const r = await dbPool.query('SELECT 1 as ok');
+            payload.db.available = true;
+            payload.db.result = r.rows[0];
+        }
+    } catch (e) {
+        payload.db.error = e.message;
+    }
+    res.status(200).json(payload);
 });
 
 // Metrics endpoint
