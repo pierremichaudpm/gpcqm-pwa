@@ -582,6 +582,7 @@ function exportCriticalFunctions() {
     window.openTermsModal = openTermsModal;
     window.closeTermsModal = closeTermsModal;
     window.openBroadcastApp = openBroadcastApp;
+    window.loadAnimatedVideo = loadAnimatedVideo;
 }
 
 // Mobile-optimized loader hiding
@@ -1150,13 +1151,13 @@ function updateLanguage() {
 
     // Update Animated Course Vimeo video per language
     try {
-        const vimeoIframe = document.querySelector('.animated-course-section .video-embed iframe');
-        if (vimeoIframe) {
-            const frVideo = 'https://player.vimeo.com/video/1110556490?title=0&byline=0&portrait=0';
-            const enVideo = 'https://player.vimeo.com/video/1112334365?title=0&byline=0&portrait=0';
-            const desiredVideo = currentLanguage === 'en' ? enVideo : frVideo;
-            if (vimeoIframe.getAttribute('src') !== desiredVideo) {
-                vimeoIframe.setAttribute('src', desiredVideo);
+        const cover = document.getElementById('animatedVideoCover');
+        if (cover) {
+            const frCover = 'images/225318gpcmtlparcours.png';
+            const enCover = 'images/225318gpcmtlparcours_en.png';
+            const desiredCover = currentLanguage === 'en' ? enCover : frCover;
+            if (cover.getAttribute('src') !== desiredCover) {
+                cover.setAttribute('src', desiredCover);
             }
         }
     } catch(_) {}
@@ -1276,6 +1277,18 @@ function smoothScrollWithOffset(targetElement, extraOffset = 8) {
     const headerHeight = header ? header.offsetHeight : 0;
     const targetY = targetElement.getBoundingClientRect().top + window.scrollY - headerHeight - extraOffset;
     window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+}
+
+// Replace animated course placeholder with Vimeo iframe (language-aware)
+function loadAnimatedVideo() {
+    try {
+        const embed = document.getElementById('animatedVideoEmbed');
+        if (!embed) return;
+        const frVideo = 'https://player.vimeo.com/video/1110556490?title=0&byline=0&portrait=0';
+        const enVideo = 'https://player.vimeo.com/video/1112334365?title=0&byline=0&portrait=0';
+        const src = (currentLanguage === 'en') ? enVideo : frVideo;
+        embed.innerHTML = '<iframe src="' + src + '" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Video"></iframe>';
+    } catch(_) {}
 }
 
 // Online/Offline Status

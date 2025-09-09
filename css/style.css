@@ -1461,6 +1461,9 @@ a:hover {
     border-radius: var(--radius-lg); 
     box-shadow: var(--shadow-lg);
 }
+.video-embed .video-placeholder { position: absolute; inset: 0; display: block; padding: 0; border: 0; background: none; cursor: pointer; }
+.video-embed .video-placeholder img { width: 100%; height: 100%; object-fit: cover; display: block; border: 0; }
+.video-embed .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.55); color: #fff; border-radius: 50%; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; font-size: 28px; line-height: 1; }
 .video-embed iframe { 
     position: absolute; 
     top: 0; left: 0; 
