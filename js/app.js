@@ -1150,19 +1150,7 @@ function updateLanguage() {
     }
 
     // Update Animated Course placeholder using Vimeo thumbnail (with local fallback)
-    (function updateAnimatedPoster(){
-        try {
-            const cover = document.getElementById('animatedVideoCover');
-            if (!cover) return;
-            // Strictly use local images only (user-provided later), language-aware
-            const localPoster = currentLanguage === 'en'
-                ? 'images/225318gpcmtlparcours_en.png'
-                : 'images/225318gpcmtlparcours.png';
-            if (cover.getAttribute('src') !== localPoster) {
-                cover.setAttribute('src', localPoster);
-            }
-        } catch(_) {}
-    })();
+    // No poster to update when iframe is used by default
 
     // Update elevation value formatting per language
     try {
