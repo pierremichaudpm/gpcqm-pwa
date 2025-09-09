@@ -1628,6 +1628,14 @@ a:hover {
     color: var(--white);
 }
 
+/* Ensure bullet list in Giant Screens card is left-aligned */
+.broadcast-card .broadcast-location {
+    text-align: left;
+    padding-left: 1.25rem; /* space for bullets */
+    margin-top: var(--spacing-xs);
+    list-style: disc;
+}
+
 .broadcast-cta {
     display: inline-block;
     margin-top: var(--spacing-lg);
