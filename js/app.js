@@ -186,7 +186,7 @@ const translations = {
         
         // PWA
         installTitle: 'Installer l\'application',
-        installText: 'Ajoutez GPCQM à votre écran d\'accueil pour un accès rapide',
+        installText: 'Ajoutez GPCM à votre écran d\'accueil pour un accès rapide',
         installButton: 'Installer',
         offlineMode: 'Mode hors ligne',
         
@@ -252,7 +252,7 @@ const translations = {
         edikaContest: 'Edika',
         silentAuction: 'Silent Auction',
         socialMedia: 'Instagram',
-        fanVillageInfo: 'Animated aera',
+        fanVillageInfo: 'Animation aera',
         officialWebsite: 'Official Website',
         quebecResults: 'Québec Results',
 
@@ -324,7 +324,7 @@ const translations = {
         onSiteOnly: 'On site only',
         
         // Fan Zones (new section)
-        animatedZonesTitle: 'Animated aera',
+        animatedZonesTitle: 'Animation aera',
         zonesVillageTitle: 'Fans Village',
         zonesVillageLocationValue: 'Jeanne-Mance Park',
         zonesVillageAct1: 'Exhibitor booths',
@@ -375,7 +375,7 @@ const translations = {
         
         // PWA
         installTitle: 'Install App',
-        installText: 'Add GPCQM to your home screen for quick access',
+        installText: 'Add GPCM to your home screen for quick access',
         installButton: 'Install',
         offlineMode: 'Offline Mode',
         

@@ -1,6 +1,6 @@
 // === GPCQM 2025 - Service Worker - Mobile Optimized ===
 
-const CACHE_NAME = 'gpcqm-v4.1';
+const CACHE_NAME = 'gpcm-v4.1';
 const RUNTIME_CACHE = 'gpcqm-runtime-v4.1';
 const IMAGE_CACHE = 'gpcqm-images-v4.1';
 const API_CACHE = 'gpcqm-api-v4.1';
@@ -303,7 +303,7 @@ self.addEventListener('push', (event) => {
     console.log('[Service Worker] Push received');
     
     const options = {
-        body: event.data ? event.data.text() : 'Nouvelle notification GPCQM',
+        body: event.data ? event.data.text() : 'Nouvelle notification GPCM',
         icon: '/images/icons/icon-192x192.png',
         badge: '/images/icons/badge-72x72.png',
         vibrate: [100, 50, 100],
