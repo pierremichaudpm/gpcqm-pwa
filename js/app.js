@@ -54,7 +54,7 @@ const translations = {
         fanVillageOpening: 'Ouverture du Village des Fans',
         
         // Quick Links
-        ridersList: 'Liste des Partants',
+        ridersList: 'Liste des partants',
         ridersListTitle: 'Découvrez les coureurs',
         viewRiders: 'Liste complète',
         quebecResults: 'Résultats du Grand Prix Cycliste de Québec',
@@ -1104,7 +1104,7 @@ function updateLanguage() {
     if (ridersTitle) {
         if (currentLanguage === 'fr') {
             const fullTextRiders = translations.fr.ridersList;
-            const ridersPhrase = 'Liste des Partants';
+            const ridersPhrase = 'Liste des partants';
             ridersTitle.innerHTML = fullTextRiders.replace(
                 ridersPhrase,
                 '<span class="riders-highlight">' + ridersPhrase + '</span>'

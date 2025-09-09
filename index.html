@@ -41,7 +41,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preconnect" href="https://snapwidget.com">
+    
     <link rel="preconnect" href="https://player.vimeo.com">
     
     <!-- Critical CSS First - Mobile Optimized -->
@@ -207,7 +207,7 @@
                     <a href="#map" onclick="toggleMenu()" data-lang="viewCourse">Parcours</a>
                     <a href="#contest" onclick="toggleMenu()" data-lang="contestTitle">Concours</a>
                     <a href="#auction" onclick="toggleMenu()" data-lang="silentAuction">Encan silencieux</a>
-                    <a href="#social" onclick="toggleMenu()" data-lang="socialMedia">Instagram</a>
+                    
                     <a href="#fanvillage" onclick="toggleMenu()" data-lang="fanVillageInfo">Village des Fans</a>
                     <a href="https://gpcqm.ca" onclick="toggleMenu()" target="_blank" rel="noopener" data-lang="officialWebsite">Site officiel</a>
                     <a href="#quebec" onclick="toggleMenu()" data-lang="quebecResults">Résultats Québec</a>
@@ -1023,36 +1023,7 @@
         </div>
     </section>
     
-    <!-- Instagram Feed (SnapWidget) -->
-    <section id="social" class="instagram-section">
-        <div class="container">
-            <h2 data-lang="socialTitle">Suivez-nous sur Instagram</h2>
-            <div class="instagram-embed">
-                <script src="https://snapwidget.com/js/snapwidget.js"></script>
-                <iframe src="https://snapwidget.com/embed/1106271" class="snapwidget-widget" allowtransparency="true" frameborder="0" scrolling="no" title="Grands prix cyclistes de Québec et Montréal" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                <div class="instagram-fallback" id="instagramFallback" style="display:none;">
-                    <p data-lang="instagramBlocked">Le flux Instagram ne peut pas se charger ici.</p>
-                    <p>
-                        <a class="btn-secondary" href="https://instagram.com/grandsprixcyclistes" target="_blank" rel="noopener" aria-label="Ouvrir Instagram">Ouvrir notre Instagram</a>
-                    </p>
-                </div>
-                <script>
-                (function(){
-                  try {
-                    var iframe = document.querySelector('#social .snapwidget-widget');
-                    var fb = document.getElementById('instagramFallback');
-                    if (!iframe || !fb) return;
-                    var loaded = false;
-                    var showFallback = function(){ if (!loaded) { fb.style.display = 'block'; } };
-                    iframe.addEventListener('load', function(){ loaded = true; fb.style.display = 'none'; });
-                    // Si rien ne charge après 5s (ad-block/shields), afficher fallback
-                    setTimeout(showFallback, 5000);
-                  } catch(e) { /* no-op */ }
-                })();
-                </script>
-            </div>
-        </div>
-    </section>
+    
     
 
     <!-- Footer -->
@@ -1113,7 +1084,7 @@
     <script src="js/countdown.js?v=3.1" defer></script>
     
     <script src="js/weather.js?v=3.6" defer></script>
-    <script src="js/instagram.js?v=3.1" defer></script>
+    
     <script src="js/pwa.js?v=4.1" defer></script>
     <!-- FIX RAILWAY - Solution simple pour les clics -->
     <script src="js/fix-teams-click.js?v=1.0"></script>
