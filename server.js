@@ -54,10 +54,11 @@ app.use('/api/', limiter);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Logging middleware
+// Logging middleware (include worker id)
 app.use((req, res, next) => {
     const url = req.originalUrl || req.url || req.path;
-    console.log(`${new Date().toISOString()} - ${req.method} ${url}`);
+    const wid = process.env.WORKER_ID || 'primary';
+    console.log(`${new Date().toISOString()} [worker:${wid}] ${req.method} ${url}`);
     next();
 });
 
@@ -388,6 +389,7 @@ app.get('/health', async (req, res) => {
         status: 'healthy',
         timestamp: new Date().toISOString(),
         uptime: process.uptime(),
+        worker: process.env.WORKER_ID || 'primary',
         memory: {
             rss: mem.rss,
             heapTotal: mem.heapTotal,
@@ -406,6 +408,11 @@ app.get('/health', async (req, res) => {
         payload.db.error = e.message;
     }
     res.status(200).json(payload);
+});
+
+// Worker info endpoint
+app.get('/worker', (req, res) => {
+    res.json({ worker: process.env.WORKER_ID || 'primary', pid: process.pid, timestamp: new Date().toISOString() });
 });
 
 // Metrics endpoint
@@ -438,7 +445,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
     ========================================
     🚴 GPCQ 2025 PWA Server
     ========================================
-    Server running on port ${PORT}
+    Server running on port ${PORT} (worker=${process.env.WORKER_ID || 'primary'})
     Environment: ${process.env.NODE_ENV || 'production'}
     URL: http://localhost:${PORT}
     ========================================

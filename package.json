@@ -4,7 +4,7 @@
   "description": "Grand Prix Cycliste de Montréal 2025 - Progressive Web Application",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node cluster.js",
     "dev": "node server.js",
     "cms": "node cms-server.js",
     "build": "echo 'No build step required for static site'",
