@@ -129,6 +129,7 @@ const translations = {
         giantScreensDesc: 'Belvédère Camillien-Houde, Parc Jeanne-Mance, Avenue du Parc',
         tvaApp: 'Application TVA Sports',
         tvaAppDesc: 'Télécharger',
+        onSiteOnly: 'Sur site seulement',
         
         // Contest
         contestTitle: 'Concours',
@@ -307,13 +308,14 @@ const translations = {
         diffusionCta: 'Broadcast',
         tvBroadcast: 'Live broadcast from 10:00 AM to 4:00 PM',
         streamBroadcast: 'International streaming',
-        webStreamTitle: 'Broadcast',
+        webStreamTitle: 'Webcast',
         giantScreen: 'Giant Screen',
         giantScreenDesc: 'At Camillien-Houde Lookout',
         giantScreens: 'Giant Screens',
         giantScreensDesc: 'Camillien-Houde Lookout, Jeanne-Mance Park, Park Avenue',
         tvaApp: 'CBC Gem',
         tvaAppDesc: 'Download',
+        onSiteOnly: 'On site only',
         
         // Fan Zones (new section)
         animatedZonesTitle: 'Animated aera',
