@@ -254,7 +254,7 @@ const translations = {
         socialMedia: 'Instagram',
         fanVillageInfo: 'Animation aera',
         officialWebsite: 'Official Website',
-        quebecResults: 'Québec Results',
+        quebecResults: 'Québec City Results',
 
         // Riders Modal
         ridersTitle: 'Riders List - 2025',
