@@ -541,12 +541,16 @@ function initMenuAutoClose() {
                 }
             });
         });
-        // Also close when clicking the overlay area, if any future overlay is added
+        // Also close when clicking outside the menu, but never when pressing the burger button
         document.addEventListener('click', (e) => {
             const target = e.target;
             if (!menu.classList.contains('active')) return;
-            if (menu.contains(target)) return; // clicks inside handled above
-            closeMenu();
+            // Ignore clicks on the burger toggler
+            if (target && (target.closest && target.closest('.menu-toggle'))) return;
+            // If click is outside of the menu content, close
+            if (!menu.contains(target)) {
+                closeMenu();
+            }
         });
     } catch (_) {}
 }
