@@ -244,7 +244,7 @@ const translations = {
         ridersList: 'Start list',
         ridersListTitle: 'Discover the Teams',
         viewRiders: 'Complete list',
-        quebecResults: 'Québec City Race Results',
+        quebecResults: 'Quebec city results',
         quebecMenu: 'Grand Prix Cycliste de Québec',
         liveStream: 'Live Stream',
         watchStream: 'Watch',
