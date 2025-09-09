@@ -478,6 +478,7 @@ function initializeApp() {
         initHeroButtons();
         initSmoothScroll();
         initModalBindings();
+        initMenuAutoClose();
         
         // Ensure RidersModal is ready after a delay
         setTimeout(() => {
@@ -507,6 +508,47 @@ function initializeApp() {
             });
         }
     });
+}
+// Close mobile menu whenever a link/button inside it is activated
+function initMenuAutoClose() {
+    try {
+        const menu = document.getElementById('mobileMenu');
+        if (!menu) return;
+        const closeMenu = () => {
+            const m = document.getElementById('mobileMenu');
+            if (!m) return;
+            // Prefer the official toggler for aria handling
+            if (typeof window.toggleMenu === 'function' && m.classList.contains('active')) {
+                window.toggleMenu();
+            } else {
+                // Fallback hard close
+                m.classList.remove('active');
+                document.body.style.overflow = '';
+                const btn = document.querySelector('.menu-toggle');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            }
+        };
+        // Attach to all actionable elements in the menu
+        const selectors = 'a, button';
+        menu.querySelectorAll(selectors).forEach(el => {
+            el.addEventListener('click', () => {
+                // Use a microdelay to allow navigation/hash scroll to process
+                setTimeout(closeMenu, 0);
+            }, { passive: true });
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    setTimeout(closeMenu, 0);
+                }
+            });
+        });
+        // Also close when clicking the overlay area, if any future overlay is added
+        document.addEventListener('click', (e) => {
+            const target = e.target;
+            if (!menu.classList.contains('active')) return;
+            if (menu.contains(target)) return; // clicks inside handled above
+            closeMenu();
+        });
+    } catch (_) {}
 }
 
 // Export critical functions immediately
