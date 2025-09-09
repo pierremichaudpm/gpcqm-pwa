@@ -1148,6 +1148,19 @@ function updateLanguage() {
         };
     }
 
+    // Update Animated Course Vimeo video per language
+    try {
+        const vimeoIframe = document.querySelector('.animated-course-section .video-embed iframe');
+        if (vimeoIframe) {
+            const frVideo = 'https://player.vimeo.com/video/1110556490?title=0&byline=0&portrait=0';
+            const enVideo = 'https://player.vimeo.com/video/1112334365?title=0&byline=0&portrait=0';
+            const desiredVideo = currentLanguage === 'en' ? enVideo : frVideo;
+            if (vimeoIframe.getAttribute('src') !== desiredVideo) {
+                vimeoIframe.setAttribute('src', desiredVideo);
+            }
+        }
+    } catch(_) {}
+
     // Update elevation value formatting per language
     try {
         const elevationValueEl = document.querySelector('.course-stats .stat-card-4 .stat-value');
