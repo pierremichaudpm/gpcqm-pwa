@@ -20,6 +20,9 @@
   UV_THREADPOOL_SIZE = 64
   # Keep-Alive for many concurrent sockets
   NODE_OPTIONS = "--max-old-space-size=28672 --heapsnapshot-near-heap-limit=1 --enable-source-maps"
+  # Weather caching TTL (seconds)
+  WEATHER_TTL_SECONDS = 900
+  # REDIS_URL will be injected by Railway Redis service
   # Uncomment and set if using Postgres
   # DB_TYPE = "postgres"
   # DATABASE_URL = "postgresql://user:pass@host:5432/dbname"

@@ -201,12 +201,29 @@ app.get('/api/weather/current', async (req, res) => {
             'Expires': '0'
         });
         
-        // Fetch real data from OpenWeatherMap
+        // Weather caching key per lang/coords
+        const cacheKey = `wx:current:${lat},${lon}:${units}:${lang}`;
+        const TTL_SECONDS = Number(process.env.WEATHER_TTL_SECONDS || 900); // 15 minutes default
+
         const fetch = require('node-fetch');
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&appid=${apiKey}`;
-        
+
+        // Try Redis cache first (do not alter Safari iOS handling; only storage layer)
+        if (redis) {
+            try {
+                const cached = await redis.get(cacheKey);
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    parsed.__cache = true;
+                    return res.json(parsed);
+                }
+            } catch (e) {
+                console.warn('Redis get error (weather)', e.message);
+            }
+        }
+
         console.log('Fetching from OpenWeather:', url);
-        const response = await fetch(url);
+        const response = await fetch(url, { timeout: 8000 });
         const data = await response.json();
         
         if (!response.ok) {
@@ -220,7 +237,16 @@ app.get('/api/weather/current', async (req, res) => {
             lang: lang
         });
         
-        // Support JSONP for Safari iOS fallback
+        // Cache successful responses to reduce external calls
+        if (redis) {
+            try {
+                await redis.set(cacheKey, JSON.stringify(data), 'EX', TTL_SECONDS);
+            } catch (e) {
+                console.warn('Redis set error (weather)', e.message);
+            }
+        }
+
+        // Support JSONP for Safari iOS fallback (unchanged behavior)
         if (req.query.callback) {
             res.type('application/javascript');
             res.send(`${req.query.callback}(${JSON.stringify(data)})`);
@@ -274,9 +300,25 @@ app.get('/api/weather/forecast', async (req, res) => {
         
         const fetch = require('node-fetch');
         const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&lang=${lang}&cnt=${cnt}&appid=${apiKey}`;
-        
+
+        // Cache per lang/coords
+        const cacheKey = `wx:forecast:${lat},${lon}:${units}:${lang}:cnt:${cnt}`;
+        const TTL_SECONDS = Number(process.env.WEATHER_TTL_SECONDS || 900);
+        if (redis) {
+            try {
+                const cached = await redis.get(cacheKey);
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    parsed.__cache = true;
+                    return res.json(parsed);
+                }
+            } catch (e) {
+                console.warn('Redis get error (forecast)', e.message);
+            }
+        }
+
         console.log('Fetching forecast from OpenWeather:', url);
-        const response = await fetch(url);
+        const response = await fetch(url, { timeout: 8000 });
         const data = await response.json();
         
         if (!response.ok) {
@@ -293,6 +335,14 @@ app.get('/api/weather/forecast', async (req, res) => {
             weather: item.weather
         }));
         
+        // Cache successful simplified forecast
+        if (redis) {
+            try {
+                await redis.set(cacheKey, JSON.stringify(simplified), 'EX', TTL_SECONDS);
+            } catch (e) {
+                console.warn('Redis set error (forecast)', e.message);
+            }
+        }
         res.json(simplified);
     } catch (error) {
         console.error('Forecast API error:', error);
@@ -370,7 +420,9 @@ if (dbType === 'postgres' || process.env.DATABASE_URL) {
         const { Pool } = require('pg');
         dbPool = new Pool({
             connectionString: process.env.DATABASE_URL,
-            max: Number(process.env.DB_POOL_MAX || 10),
+            // High concurrency: allow 200+ pooled connections across workers
+            // Tune per Railway PG plan limits
+            max: Number(process.env.DB_POOL_MAX || 200),
             idleTimeoutMillis: Number(process.env.DB_POOL_IDLE_MS || 30000),
             connectionTimeoutMillis: Number(process.env.DB_POOL_CONN_MS || 5000),
             ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : undefined
@@ -414,6 +466,23 @@ app.get('/health', async (req, res) => {
 app.get('/worker', (req, res) => {
     res.json({ worker: process.env.WORKER_ID || 'primary', pid: process.pid, timestamp: new Date().toISOString() });
 });
+
+// ===== Redis (Weather caching only) =====
+let redis = null;
+try {
+    if (process.env.REDIS_URL) {
+        const IORedis = require('ioredis');
+        redis = new IORedis(process.env.REDIS_URL, {
+            maxRetriesPerRequest: 3,
+            enableAutoPipelining: true,
+            lazyConnect: false
+        });
+        redis.on('error', (e) => console.error('Redis error', e.message));
+        redis.on('connect', () => console.log('Redis connected'));
+    }
+} catch (e) {
+    console.warn('Redis client not available');
+}
 
 // Metrics endpoint
 app.get('/metrics', (req, res) => {
