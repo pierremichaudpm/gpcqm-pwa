@@ -1173,8 +1173,8 @@ function updateLanguage() {
     // Update Silent Auction bigbox image per language with safe fallback
     const auctionImg = document.getElementById('auctionBigboxImage');
     if (auctionImg) {
-        const frAuctionSrc = 'images/encanfr.jpg';
-        const enAuctionSrc = 'images/encanfr.jpg'; // same asset unless EN provided later
+        const frAuctionSrc = 'images/encan_FR.png';
+        const enAuctionSrc = 'images/encan_EN.png';
         const desiredAuction = currentLanguage === 'en' ? enAuctionSrc : frAuctionSrc;
         if (auctionImg.getAttribute('src') !== desiredAuction) {
             auctionImg.setAttribute('src', desiredAuction);
