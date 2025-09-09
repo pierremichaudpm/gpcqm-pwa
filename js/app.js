@@ -252,7 +252,7 @@ const translations = {
         edikaContest: 'Edika',
         silentAuction: 'Silent Auction',
         socialMedia: 'Instagram',
-        fanVillageInfo: 'Animation aera',
+        fanVillageInfo: 'Animation area',
         officialWebsite: 'Official Website',
         quebecResults: 'Québec City Results',
 
@@ -324,7 +324,7 @@ const translations = {
         onSiteOnly: 'On site only',
         
         // Fan Zones (new section)
-        animatedZonesTitle: 'Animation aera',
+        animatedZonesTitle: 'Animation area',
         zonesVillageTitle: 'Fans Village',
         zonesVillageLocationValue: 'Jeanne-Mance Park',
         zonesVillageAct1: 'Exhibitor booths',
