@@ -16,6 +16,12 @@ const PWA_CONFIG = {
     ]
 };
 
+// Platform detection (iOS Safari vs Chrome iOS)
+const UA = navigator.userAgent || navigator.vendor || window.opera || '';
+const IS_IOS = /iP(hone|od|ad)/.test(UA);
+const IS_IOS_CHROME = IS_IOS && /CriOS/i.test(UA);
+const IS_IOS_SAFARI = IS_IOS && /Safari/i.test(UA) && !/CriOS|FxiOS|EdgiOS/i.test(UA);
+
 // Service Worker Registration
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -82,6 +88,10 @@ let deferredPrompt;
 let installPromptShown = false;
 
 window.addEventListener('beforeinstallprompt', (e) => {
+    // Never show Chromium install prompt on iOS (including Chrome iOS)
+    if (IS_IOS) {
+        return;
+    }
     // Prevent Chrome 67 and earlier from automatically showing the prompt
     e.preventDefault();
     
@@ -150,6 +160,35 @@ function showInstallPrompt() {
         deferredPrompt = null;
     });
 }
+
+// iOS custom install prompt (only Safari on iOS)
+(function initIOSInstallPrompt(){
+    // Do not run in standalone/PWA mode
+    if (IS_IOS && IS_IOS_SAFARI && !isPWA()) {
+        const dismissed = localStorage.getItem('iosInstallPromptDismissed') === 'true';
+        const iosPrompt = document.getElementById('iosInstallPrompt');
+        const closeBtn = document.getElementById('iosInstallCloseBtn');
+        if (!iosPrompt) return;
+
+        if (!dismissed) {
+            // Small delay to avoid flashing on load
+            setTimeout(() => {
+                iosPrompt.classList.remove('hidden');
+            }, 2000);
+        }
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                iosPrompt.classList.add('hidden');
+                localStorage.setItem('iosInstallPromptDismissed', 'true');
+            }, { passive: true });
+        }
+    } else {
+        // Ensure hidden on non-Safari iOS (Chrome iOS, Firefox iOS, Edge iOS) and other platforms
+        const iosPrompt = document.getElementById('iosInstallPrompt');
+        if (iosPrompt) iosPrompt.classList.add('hidden');
+    }
+})();
 
 // Handle app installed
 window.addEventListener('appinstalled', () => {

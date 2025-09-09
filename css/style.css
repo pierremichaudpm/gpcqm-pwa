@@ -1996,6 +1996,22 @@ a:hover {
     width: 400px;
     animation: slideUp var(--transition-slow);
 }
+.install-app-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+.install-content .install-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
 
 @keyframes slideUp {
     from {
