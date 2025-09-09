@@ -280,7 +280,7 @@ const translations = {
         fanVillageDesc: 'Jeanne-Mance Park – Entertainment, activities and exhibitor booths',
         
         // Map
-        courseTitle: 'Course',
+        courseTitle: 'Circuit',
         animatedCourseTitle: 'Animated Circuit',
         lapDistance: 'Per lap',
         totalLaps: 'Laps',
