@@ -182,10 +182,11 @@ class WeatherWidget {
                 console.log(`Safari iOS detected - using XHR for forecast (lang: ${this.lang})`);
                 // Pour Safari iOS, utiliser XMLHttpRequest
                 const proxyUrl = `/api/weather/forecast?lang=${this.lang}`;
-                return await this.fetchWithXHR(proxyUrl);
+                const raw = await this.fetchWithXHR(proxyUrl);
+                return this._normalizeSixHourly(raw);
             } else {
                 // Pour les autres navigateurs, appel direct à OpenWeather
-                const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&cnt=8&appid=${this.apiKey}`;
+                const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${this.lat}&lon=${this.lon}&units=${this.units}&lang=${this.lang}&cnt=12&appid=${this.apiKey}`;
                 const response = await fetch(url);
                 
                 if (!response.ok) {
@@ -193,12 +194,7 @@ class WeatherWidget {
                 }
                 
                 const data = await response.json();
-                // Transformer en format simplifié
-                return data.list.slice(0, 6).map(item => ({
-                    dt: item.dt,
-                    main: item.main,
-                    weather: item.weather
-                }));
+                return this._normalizeSixHourly(data);
             }
         } catch (error) {
             console.error('Weather forecast failed:', error);
@@ -599,6 +595,66 @@ class WeatherWidget {
         document.head.appendChild(style);
     }
 }
+
+// Normalise une prévision vers 6 points horaires (1h d’intervalle),
+// à partir d'une liste OpenWeather (3h) ou d'un tableau déjà simplifié.
+WeatherWidget.prototype._normalizeSixHourly = function(raw) {
+    try {
+        // Source peut être { list: [...] } (OWM 3h) ou déjà un tableau de {dt, main, weather}
+        const source = Array.isArray(raw) ? raw : (Array.isArray(raw?.list) ? raw.list : []);
+        const points = source
+            .map(it => ({ dt: it.dt, main: it.main, weather: it.weather }))
+            .filter(it => Number.isFinite(it.dt) && it.main);
+        if (points.length === 0) return [];
+
+        // S’assurer d’être trié par temps croissant (UTC)
+        points.sort((a, b) => a.dt - b.dt);
+
+        const nowUtc = Math.floor(Date.now() / 1000);
+        const result = [];
+        for (let i = 1; i <= 6; i++) {
+            const target = nowUtc + i * 3600;
+            // Trouver bornes
+            let p0 = null, p1 = null;
+            for (let j = 0; j < points.length; j++) {
+                const p = points[j];
+                if (p.dt <= target) p0 = p;
+                if (p.dt >= target) { p1 = p; break; }
+            }
+            if (!p0) p0 = points[0];
+            if (!p1) p1 = points[points.length - 1];
+
+            let temp, feels;
+            if (p0 === p1 || p0.dt === p1.dt) {
+                temp = p0.main?.temp;
+                feels = p0.main?.feels_like ?? p0.main?.temp;
+            } else {
+                const r = (target - p0.dt) / (p1.dt - p0.dt);
+                const t0 = Number(p0.main?.temp);
+                const t1 = Number(p1.main?.temp);
+                const f0 = Number(p0.main?.feels_like ?? t0);
+                const f1 = Number(p1.main?.feels_like ?? t1);
+                temp = (Number.isFinite(t0) && Number.isFinite(t1)) ? (t0 + (t1 - t0) * r) : (p0.main?.temp);
+                feels = (Number.isFinite(f0) && Number.isFinite(f1)) ? (f0 + (f1 - f0) * r) : (p0.main?.feels_like ?? temp);
+            }
+
+            // Choisir météo la plus proche
+            const chooseP = (!p0 || Math.abs(target - p0.dt) <= Math.abs(p1.dt - target)) ? p0 : p1;
+            const weather = Array.isArray(chooseP.weather) ? chooseP.weather : (Array.isArray(p0.weather) ? p0.weather : []);
+
+            result.push({
+                dt: target,
+                main: { temp, feels_like: feels },
+                weather
+            });
+        }
+        return result;
+    } catch (e) {
+        console.warn('Normalize forecast failed, returning first 6 items as-is', e);
+        const arr = Array.isArray(raw) ? raw : (Array.isArray(raw?.list) ? raw.list : []);
+        return arr.slice(0, 6).map(it => ({ dt: it.dt, main: it.main, weather: it.weather }));
+    }
+};
 
 // Instance globale
 let __gpcqmWeatherWidget = null;
