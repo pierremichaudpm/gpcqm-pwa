@@ -210,7 +210,7 @@ const translations = {
         seconds: 'Seconds',
         viewCourse: 'Circuit',
         viewMap: 'View Map',
-        whereToWatch: 'Where to watch the race',
+        whereToWatch: 'Best spectator zones',
         viewSchedule: 'Schedule',
         gettingThere: 'Getting there',
         getThereShort: 'How to get there',
@@ -1156,7 +1156,15 @@ function updateLanguage() {
     try {
         const elevationValueEl = document.querySelector('.course-stats .stat-card-4 .stat-value');
         if (elevationValueEl) {
-            elevationValueEl.textContent = (currentLanguage === 'en') ? '4,573 m' : '4 573 m';
+            elevationValueEl.textContent = (currentLanguage === 'en') ? '4573 m' : '4 573 m';
+        }
+        const lapValueEl = document.querySelector('.course-stats .stat-card-1 .stat-value');
+        if (lapValueEl) {
+            lapValueEl.textContent = (currentLanguage === 'en') ? '12.3 km' : '12,3 km';
+        }
+        const totalDistanceEl = document.querySelector('.course-stats .stat-card-3 .stat-value');
+        if (totalDistanceEl) {
+            totalDistanceEl.textContent = (currentLanguage === 'en') ? '209.1 km' : '209,1 km';
         }
     } catch (_) {}
 
