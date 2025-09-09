@@ -1149,18 +1149,29 @@ function updateLanguage() {
         };
     }
 
-    // Update Animated Course Vimeo video per language
-    try {
-        const cover = document.getElementById('animatedVideoCover');
-        if (cover) {
-            const frCover = 'images/225318gpcmtlparcours.png';
-            const enCover = 'images/225318gpcmtlparcours_en.png';
-            const desiredCover = currentLanguage === 'en' ? enCover : frCover;
-            if (cover.getAttribute('src') !== desiredCover) {
-                cover.setAttribute('src', desiredCover);
+    // Update Animated Course placeholder using Vimeo thumbnail (with local fallback)
+    (async () => {
+        try {
+            const cover = document.getElementById('animatedVideoCover');
+            if (!cover) return;
+            const videoId = currentLanguage === 'en' ? '1112334365' : '1110556490';
+            const resp = await fetch(`https://vimeo.com/api/v2/video/${videoId}.json`, { method: 'GET', mode: 'cors' });
+            if (resp.ok) {
+                const data = await resp.json();
+                const thumb = data && data[0] && (data[0].thumbnail_large || data[0].thumbnail_medium || data[0].thumbnail_small);
+                if (thumb && cover.getAttribute('src') !== thumb) {
+                    cover.setAttribute('src', thumb);
+                }
             }
+            // Fallback to local image if fetch failed or no thumb
+            if (!cover.getAttribute('src') || cover.getAttribute('src') === '') {
+                cover.setAttribute('src', currentLanguage === 'en' ? 'images/225318gpcmtlparcours_en.png' : 'images/225318gpcmtlparcours.png');
+            }
+        } catch (_) {
+            const cover = document.getElementById('animatedVideoCover');
+            if (cover) cover.setAttribute('src', currentLanguage === 'en' ? 'images/225318gpcmtlparcours_en.png' : 'images/225318gpcmtlparcours.png');
         }
-    } catch(_) {}
+    })();
 
     // Update elevation value formatting per language
     try {
