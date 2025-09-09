@@ -79,16 +79,16 @@ const translations = {
         close: 'Fermer',
         
         // Schedule
-        scheduleTitle: 'Programme',
+        scheduleTitle: 'Programmation',
         teamPresentation: 'Présentation des équipes',
         teamPresentationDesc: 'Parc Jeanne-Mance – Découvrez les équipes participantes',
         raceStart: 'Départ du Grand Prix Cycliste de Montréal',
         raceStartDesc: 'Avenue du Parc / Monument à sir George-Étienne Cartier – 209,1 km • 17 tours',
         raceFinish: 'Arrivée de la course',
         raceFinishDesc: 'Avenue du Parc / Monument à sir George-Étienne Cartier',
-        ceremonies: 'Cérémonies Protocolaires',
+        ceremonies: 'Cérémonies protocolaires',
         ceremoniesDesc: 'Parc Jeanne-Mance – Remise des prix',
-        fanVillageDesc: 'Parc Jeanne-Mance – Animation, activité et kiosques d’exposants',
+        fanVillageDesc: 'Parc Jeanne-Mance – Animation, activités et kiosques d’exposants',
         
         // Map
         courseTitle: 'Parcours',
@@ -118,8 +118,8 @@ const translations = {
         loadingPosts: 'Chargement des publications...',
         
         // Broadcast
-        broadcastTitle: 'Diffusions',
-        diffusionCta: 'Diffusions',
+        broadcastTitle: 'Diffusion',
+        diffusionCta: 'Diffusion',
         tvBroadcast: 'de 10 h à 16 h',
         streamBroadcast: 'Streaming international',
         giantScreen: 'Écran Géant',
@@ -127,6 +127,9 @@ const translations = {
         giantScreenDesc: 'Au Belvédère Camillien-Houde',
         giantScreens: 'Écrans Géants',
         giantScreensDesc: 'Belvédère Camillien-Houde, Parc Jeanne-Mance, Avenue du Parc',
+        giantScreensItem1: 'Belvédère Camillien-Houde',
+        giantScreensItem2: 'Parc Jeanne-Mance',
+        giantScreensItem3: 'Avenue du Parc',
         tvaApp: 'Application TVA Sports',
         tvaAppDesc: 'Télécharger',
         onSiteOnly: 'Sur site seulement',
@@ -205,7 +208,7 @@ const translations = {
         hours: 'Hours',
         minutes: 'Minutes',
         seconds: 'Seconds',
-        viewCourse: 'Course',
+        viewCourse: 'Circuit',
         viewMap: 'View Map',
         whereToWatch: 'Where to watch the race',
         viewSchedule: 'Schedule',
@@ -238,7 +241,7 @@ const translations = {
         fanVillageOpening: 'Fans Village Opening',
         
         // Quick Links
-        ridersList: 'Riders List',
+        ridersList: 'Start list',
         ridersListTitle: 'Discover the Teams',
         viewRiders: 'Complete list',
         quebecResults: 'Québec City Race Results',
@@ -265,12 +268,12 @@ const translations = {
         close: 'Close',
         
         // Schedule
-        scheduleTitle: 'Schedule',
+        scheduleTitle: 'Program',
         teamPresentation: 'Team Presentation',
         teamPresentationDesc: 'Jeanne-Mance Park – Meet the participating teams',
         raceStart: 'Start of the Montréal Cycling Grand Prix',
         raceStartDesc: 'Park Avenue / Sir George-Étienne Cartier Monument – 209.1 km • 17 laps',
-        raceFinish: 'Race Finish',
+        raceFinish: 'End of the race',
         raceFinishDesc: 'Park Avenue / Sir George-Étienne Cartier Monument',
         ceremonies: 'Award Ceremonies',
         ceremoniesDesc: 'Jeanne-Mance Park – Prize giving',
@@ -278,7 +281,7 @@ const translations = {
         
         // Map
         courseTitle: 'Course',
-        animatedCourseTitle: 'Animated Course',
+        animatedCourseTitle: 'Animated Circuit',
         lapDistance: 'Per lap',
         totalLaps: 'Laps',
         totalDistance: 'Total distance',
@@ -313,6 +316,9 @@ const translations = {
         giantScreenDesc: 'At Camillien-Houde Lookout',
         giantScreens: 'Giant Screens',
         giantScreensDesc: 'Camillien-Houde Lookout, Jeanne-Mance Park, Park Avenue',
+        giantScreensItem1: 'Camillien-Houde Lookout',
+        giantScreensItem2: 'Jeanne-Mance Park',
+        giantScreensItem3: 'Park Avenue',
         tvaApp: 'CBC Gem',
         tvaAppDesc: 'Download',
         onSiteOnly: 'On site only',
@@ -604,9 +610,9 @@ function initLanguageButtons() {
 function initHeroButtons() {
     const buttons = document.querySelectorAll('.quick-actions button');
     buttons.forEach(btn => {
-        if (btn.textContent.includes('parcours') || btn.textContent.includes('Course')) {
+        if (btn.textContent.includes('parcours') || btn.textContent.includes('Course') || btn.textContent.includes('Circuit')) {
             btn.onclick = (e) => smoothScrollToSection(e, 'map');
-        } else if (btn.textContent.includes('Partants') || btn.textContent.includes('Riders')) {
+        } else if (btn.textContent.includes('Partants') || btn.textContent.includes('Riders') || btn.textContent.includes('Start list')) {
             btn.onclick = (e) => smoothScrollToSection(e, 'riders');
         } else if (
             btn.textContent.includes('Diffusion') ||
@@ -1111,7 +1117,7 @@ function updateLanguage() {
             );
         } else if (currentLanguage === 'en') {
             const fullTextRidersEn = translations.en.ridersList;
-            const ridersPhraseEn = 'Riders List';
+            const ridersPhraseEn = 'Start list';
             ridersTitle.innerHTML = fullTextRidersEn.replace(
                 ridersPhraseEn,
                 '<span class="riders-highlight">' + ridersPhraseEn + '</span>'
