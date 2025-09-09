@@ -1150,34 +1150,16 @@ function updateLanguage() {
     }
 
     // Update Animated Course placeholder using Vimeo thumbnail (with local fallback)
-    (async () => {
+    (function updateAnimatedPoster(){
         try {
             const cover = document.getElementById('animatedVideoCover');
             if (!cover) return;
-            const videoId = currentLanguage === 'en' ? '1112334365' : '1110556490';
-            const oembedUrl = 'https://vimeo.com/api/oembed.json?url=' + encodeURIComponent('https://vimeo.com/' + videoId) + '&width=1280';
-            const resp = await fetch(oembedUrl, { method: 'GET' });
-            if (resp.ok) {
-                const data = await resp.json();
-                const thumb = (data.thumbnail_url_with_play_button || data.thumbnail_url);
-                if (thumb) {
-                    const withBust = thumb + (thumb.includes('?') ? '&' : '?') + 'cb=' + Date.now();
-                    if (cover.getAttribute('src') !== withBust) {
-                        cover.setAttribute('src', withBust);
-                    }
-                    return;
-                }
-            }
-        } catch (_) {
-            /* noop - fallback below */
-        }
-        // Robust fallback
-        try {
-            const cover = document.getElementById('animatedVideoCover');
-            if (cover) {
-                const local = currentLanguage === 'en' ? 'images/225318gpcmtlparcours_en.png' : 'images/225318gpcmtlparcours.png';
-                const withBust = local + '?cb=' + Date.now();
-                cover.setAttribute('src', withBust);
+            // Strictly use local images only (user-provided later), language-aware
+            const localPoster = currentLanguage === 'en'
+                ? 'images/225318gpcmtlparcours_en.png'
+                : 'images/225318gpcmtlparcours.png';
+            if (cover.getAttribute('src') !== localPoster) {
+                cover.setAttribute('src', localPoster);
             }
         } catch(_) {}
     })();
