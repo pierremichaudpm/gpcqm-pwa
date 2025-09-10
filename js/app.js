@@ -1137,25 +1137,29 @@ function updateLanguage() {
         }
     }
     
-    // Update shop bigbox image per language with safe fallback
+    // Update shop bigbox image per language with WebP first, then PNG fallback
     const shopImg = document.getElementById('shopBigboxImage');
     if (shopImg) {
-        const frSrc = 'images/bannieres web - boutique_boutique-bigbox-fr_qc.png';
-        const enSrc = 'images/bannieres web - boutique_boutique-bigbox-en_qc.png';
-        const desired = currentLanguage === 'en' ? enSrc : frSrc;
-        if (shopImg.getAttribute('src') !== desired) {
-            shopImg.setAttribute('src', desired);
+        const frPng = 'images/bannieres web - boutique_boutique-bigbox-fr_qc.png';
+        const enPng = 'images/bannieres web - boutique_boutique-bigbox-en_qc.png';
+        const basePng = currentLanguage === 'en' ? enPng : frPng;
+        const baseWebp = basePng.replace('.png', '.webp');
+        if (shopImg.getAttribute('src') !== baseWebp) {
+            shopImg.setAttribute('src', baseWebp);
         }
         // Ensure a working fallback if an asset fails to load
-        shopImg.onerror = function() {
-            // Try the other language as a quick fallback
-            const alt = desired === frSrc ? enSrc : frSrc;
-            if (shopImg.getAttribute('src') !== alt) {
-                shopImg.setAttribute('src', alt);
-            } else {
-                // As a last resort, hide the image container to avoid broken UI
-                const container = shopImg.closest('.shop-bigbox');
-                if (container) container.style.display = 'none';
+        shopImg.onerror = function onShopErrFirst() {
+            shopImg.onerror = function onShopErrSecond() {
+                const altPng = basePng === frPng ? enPng : frPng;
+                if (shopImg.getAttribute('src') !== altPng) {
+                    shopImg.setAttribute('src', altPng);
+                } else {
+                    const container = shopImg.closest('.shop-bigbox');
+                    if (container) container.style.display = 'none';
+                }
+            };
+            if (shopImg.getAttribute('src') !== basePng) {
+                shopImg.setAttribute('src', basePng);
             }
         };
     }
