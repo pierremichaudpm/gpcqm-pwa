@@ -19,6 +19,12 @@ const targets = [
   'encan_FR.png',
   'encan_EN.png',
   'concoursedika__1500x500 - fr.png',
+  // Concours (Edika 300x250, EN/FR)
+  'concoursedika__300x250-fr.png',
+  'concoursedika__300x250-en.png',
+  // Concours (EKOI EN/FR)
+  'concours_ekoi_fr.jpg',
+  'concours_ekoi_en.jpg',
 ];
 
 async function toWebp(inputPath, outputPath) {

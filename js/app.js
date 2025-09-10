@@ -1179,62 +1179,80 @@ function updateLanguage() {
         }
     } catch (_) {}
 
-    // Update EKOI contest bigbox image per language with safe fallback
+    // Update EKOI contest bigbox image per language with WebP first, then JPG fallback
     const ekoiImg = document.getElementById('ekoiBigboxImage');
     if (ekoiImg) {
-        const frEkoiSrc = 'images/concours_ekoi_fr.jpg';
-        const enEkoiSrc = 'images/concours_ekoi_en.jpg';
-        const desiredEkoi = currentLanguage === 'en' ? enEkoiSrc : frEkoiSrc;
-        if (ekoiImg.getAttribute('src') !== desiredEkoi) {
-            ekoiImg.setAttribute('src', desiredEkoi);
+        const frEkoiJpg = 'images/concours_ekoi_fr.jpg';
+        const enEkoiJpg = 'images/concours_ekoi_en.jpg';
+        const baseJpg = currentLanguage === 'en' ? enEkoiJpg : frEkoiJpg;
+        const baseWebp = baseJpg.replace('.jpg', '.webp');
+        if (ekoiImg.getAttribute('src') !== baseWebp) {
+            ekoiImg.setAttribute('src', baseWebp);
         }
-        ekoiImg.onerror = function() {
-            const altEkoi = desiredEkoi === frEkoiSrc ? enEkoiSrc : frEkoiSrc;
-            if (ekoiImg.getAttribute('src') !== altEkoi) {
-                ekoiImg.setAttribute('src', altEkoi);
-            } else {
-                const container = ekoiImg.closest('.edika-bigbox');
-                if (container) container.style.display = 'none';
+        ekoiImg.onerror = function onEkoiErrFirst() {
+            ekoiImg.onerror = function onEkoiErrSecond() {
+                const altJpg = baseJpg === frEkoiJpg ? enEkoiJpg : frEkoiJpg;
+                if (ekoiImg.getAttribute('src') !== altJpg) {
+                    ekoiImg.setAttribute('src', altJpg);
+                } else {
+                    const container = ekoiImg.closest('.edika-bigbox');
+                    if (container) container.style.display = 'none';
+                }
+            };
+            if (ekoiImg.getAttribute('src') !== baseJpg) {
+                ekoiImg.setAttribute('src', baseJpg);
             }
         };
     }
 
-    // Update Silent Auction bigbox image per language with safe fallback
+    // Update Silent Auction bigbox image per language with WebP first, then PNG fallback
     const auctionImg = document.getElementById('auctionBigboxImage');
     if (auctionImg) {
-        const frAuctionSrc = 'images/encan_FR.png';
-        const enAuctionSrc = 'images/encan_EN.png';
-        const desiredAuction = currentLanguage === 'en' ? enAuctionSrc : frAuctionSrc;
-        if (auctionImg.getAttribute('src') !== desiredAuction) {
-            auctionImg.setAttribute('src', desiredAuction);
+        const frAuctionPng = 'images/encan_FR.png';
+        const enAuctionPng = 'images/encan_EN.png';
+        const basePng = currentLanguage === 'en' ? enAuctionPng : frAuctionPng;
+        const baseWebp = basePng.replace('.png', '.webp');
+        if (auctionImg.getAttribute('src') !== baseWebp) {
+            auctionImg.setAttribute('src', baseWebp);
         }
-        auctionImg.onerror = function() {
-            const altAuction = desiredAuction === frAuctionSrc ? enAuctionSrc : frAuctionSrc;
-            if (auctionImg.getAttribute('src') !== altAuction) {
-                auctionImg.setAttribute('src', altAuction);
-            } else {
-                const container = auctionImg.closest('.edika-bigbox');
-                if (container) container.style.display = 'none';
+        auctionImg.onerror = function onAuctionErrFirst() {
+            auctionImg.onerror = function onAuctionErrSecond() {
+                const altPng = basePng === frAuctionPng ? enAuctionPng : frAuctionPng;
+                if (auctionImg.getAttribute('src') !== altPng) {
+                    auctionImg.setAttribute('src', altPng);
+                } else {
+                    const container = auctionImg.closest('.edika-bigbox');
+                    if (container) container.style.display = 'none';
+                }
+            };
+            if (auctionImg.getAttribute('src') !== basePng) {
+                auctionImg.setAttribute('src', basePng);
             }
         };
     }
 
-    // Update Edika contest bigbox image per language with safe fallback
+    // Update Edika contest bigbox image per language with WebP first, then PNG fallback
     const edikaImg = document.getElementById('edikaBigboxImage');
     if (edikaImg) {
-        const frEdikaSrc = 'images/concoursedika__300x250-fr.png';
-        const enEdikaSrc = 'images/concoursedika__300x250-en.png';
-        const desiredEdika = currentLanguage === 'en' ? enEdikaSrc : frEdikaSrc;
-        if (edikaImg.getAttribute('src') !== desiredEdika) {
-            edikaImg.setAttribute('src', desiredEdika);
+        const frEdikaPng = 'images/concoursedika__300x250-fr.png';
+        const enEdikaPng = 'images/concoursedika__300x250-en.png';
+        const basePng = currentLanguage === 'en' ? enEdikaPng : frEdikaPng;
+        const baseWebp = basePng.replace('.png', '.webp');
+        if (edikaImg.getAttribute('src') !== baseWebp) {
+            edikaImg.setAttribute('src', baseWebp);
         }
-        edikaImg.onerror = function() {
-            const altEdika = desiredEdika === frEdikaSrc ? enEdikaSrc : frEdikaSrc;
-            if (edikaImg.getAttribute('src') !== altEdika) {
-                edikaImg.setAttribute('src', altEdika);
-            } else {
-                const container = edikaImg.closest('.edika-bigbox');
-                if (container) container.style.display = 'none';
+        edikaImg.onerror = function onEdikaErrFirst() {
+            edikaImg.onerror = function onEdikaErrSecond() {
+                const altPng = basePng === frEdikaPng ? enEdikaPng : frEdikaPng;
+                if (edikaImg.getAttribute('src') !== altPng) {
+                    edikaImg.setAttribute('src', altPng);
+                } else {
+                    const container = edikaImg.closest('.edika-bigbox');
+                    if (container) container.style.display = 'none';
+                }
+            };
+            if (edikaImg.getAttribute('src') !== basePng) {
+                edikaImg.setAttribute('src', basePng);
             }
         };
     }
