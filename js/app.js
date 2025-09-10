@@ -271,7 +271,7 @@ const translations = {
         scheduleTitle: 'Program',
         teamPresentation: 'Team Presentation',
         teamPresentationDesc: 'Jeanne-Mance Park – Meet the participating teams',
-        raceStart: 'Start of the Montréal Cycling Grand Prix',
+        raceStart: 'Start of the Grand Prix Cycliste de Montréal',
         raceStartDesc: 'Park Avenue / Sir George-Étienne Cartier Monument – 209.1 km • 17 laps',
         raceFinish: 'End of the race',
         raceFinishDesc: 'Park Avenue / Sir George-Étienne Cartier Monument',
