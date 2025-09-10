@@ -10,6 +10,8 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+// Early import for file checks
+const fsEarly = require('fs');
 
 // Security middleware - adjusted for Safari iOS compatibility
 app.use(helmet({
@@ -61,6 +63,22 @@ app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} [worker:${wid}] ${req.method} ${url}`);
     next();
 });
+
+// EARLY OVERRIDE: always serve persisted riders.json BEFORE static
+try {
+    const isRailwayEarly = !!process.env.RAILWAY_PUBLIC_DOMAIN || !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RAILWAY_STATIC_URL;
+    const cmsBaseDirEarly = process.env.CMS_DATA_DIR || (isRailwayEarly ? '/data/cms' : path.join(__dirname, 'cms-data'));
+    const ridersFileEarly = path.join(cmsBaseDirEarly, 'riders.json');
+    app.get('/riders.json', (req, res, next) => {
+        try {
+            if (fsEarly.existsSync(ridersFileEarly)) {
+                res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+                return res.sendFile(ridersFileEarly);
+            }
+        } catch(_) { /* fallthrough to static/late route */ }
+        return next();
+    });
+} catch(_) {}
 
 // Cache control for static assets
 const setCache = (req, res, next) => {
@@ -123,7 +141,8 @@ function basicAuth(req, res, next) {
 }
 
 // Persistent CMS data directory (supports Railway volume via CMS_DATA_DIR)
-const CMS_BASE_DIR = process.env.CMS_DATA_DIR || path.join(__dirname, 'cms-data');
+const IS_RAILWAY = !!process.env.RAILWAY_PUBLIC_DOMAIN || !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RAILWAY_STATIC_URL;
+const CMS_BASE_DIR = process.env.CMS_DATA_DIR || (IS_RAILWAY ? '/data/cms' : path.join(__dirname, 'cms-data'));
 try { fsSync.mkdirSync(CMS_BASE_DIR, { recursive: true }); } catch(_) {}
 
 // Initial data seeding if empty
