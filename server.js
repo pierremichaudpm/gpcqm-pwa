@@ -102,6 +102,7 @@ app.use(express.static(path.join(__dirname), {
 
 // === CMS Integration ===
 const fs = require('fs').promises;
+const fsSync = require('fs');
 
 // CMS Authentication
 const CMS_USER = process.env.CMS_USER || 'admin';
@@ -121,14 +122,39 @@ function basicAuth(req, res, next) {
     next();
 }
 
+// Persistent CMS data directory (supports Railway volume via CMS_DATA_DIR)
+const CMS_BASE_DIR = process.env.CMS_DATA_DIR || path.join(__dirname, 'cms-data');
+try { fsSync.mkdirSync(CMS_BASE_DIR, { recursive: true }); } catch(_) {}
+
+// Initial data seeding if empty
+const DEFAULT_TEAMS_FILE = path.join(__dirname, 'cms', 'teams-data.json');
+const DEFAULT_RIDERS_FILE = path.join(__dirname, 'riders.json');
+
+// Effective data files (persisted)
+const TEAMS_FILE = path.join(CMS_BASE_DIR, 'teams-data.json');
+const RIDERS_FILE = path.join(CMS_BASE_DIR, 'riders.json');
+
+try {
+    if (!fsSync.existsSync(TEAMS_FILE) && fsSync.existsSync(DEFAULT_TEAMS_FILE)) {
+        fsSync.copyFileSync(DEFAULT_TEAMS_FILE, TEAMS_FILE);
+    } else if (!fsSync.existsSync(TEAMS_FILE)) {
+        fsSync.writeFileSync(TEAMS_FILE, JSON.stringify({ teams: [] }, null, 2));
+    }
+    if (!fsSync.existsSync(RIDERS_FILE) && fsSync.existsSync(DEFAULT_RIDERS_FILE)) {
+        fsSync.copyFileSync(DEFAULT_RIDERS_FILE, RIDERS_FILE);
+    } else if (!fsSync.existsSync(RIDERS_FILE)) {
+        fsSync.writeFileSync(RIDERS_FILE, JSON.stringify({ teams: [] }, null, 2));
+    }
+} catch (e) {
+    console.warn('CMS data init warning:', e.message);
+}
+
 // Serve CMS interface
 app.get('/cms', (req, res) => {
     res.sendFile(path.join(__dirname, 'cms.html'));
 });
 
 // CMS API endpoints  
-const TEAMS_FILE = path.join(__dirname, 'cms', 'teams-data.json');
-const RIDERS_FILE = path.join(__dirname, 'riders.json');
 
 // Get teams
 app.get('/api/teams', async (req, res) => {
@@ -166,6 +192,16 @@ app.post('/api/teams', basicAuth, async (req, res) => {
     } catch (error) {
         console.error('Error saving teams:', error);
         res.status(500).json({ error: 'Failed to save teams' });
+    }
+});
+
+// Dynamic riders.json (always serve persisted CMS version, bypass static)
+app.get('/riders.json', (req, res) => {
+    try {
+        res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        return res.sendFile(RIDERS_FILE);
+    } catch (e) {
+        return res.status(404).json({ error: 'Riders not found' });
     }
 });
 
