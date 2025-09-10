@@ -198,6 +198,27 @@ app.post('/api/teams', basicAuth, async (req, res) => {
         const ridersData = { teams };
         await fs.writeFile(RIDERS_FILE, JSON.stringify(ridersData, null, 2));
         
+        // === BACKUP AUTO (horodaté) ===
+        try {
+            const backupDir = path.join(CMS_BASE_DIR, 'backups');
+            await fs.mkdir(backupDir, { recursive: true });
+            const ts = new Date().toISOString().replace(/[:.]/g, '-');
+            const teamsBackup = path.join(backupDir, `teams-${ts}.json`);
+            const ridersBackup = path.join(backupDir, `riders-${ts}.json`);
+            await fs.writeFile(teamsBackup, JSON.stringify(teams, null, 2));
+            await fs.writeFile(ridersBackup, JSON.stringify(ridersData, null, 2));
+            // Optionnel: limiter la rétention aux 25 dernières sauvegardes
+            try {
+                const files = (await fs.readdir(backupDir)).filter(f => f.endsWith('.json')).sort();
+                const excess = files.length - 25;
+                if (excess > 0) {
+                    await Promise.all(files.slice(0, excess).map(f => fs.unlink(path.join(backupDir, f))));
+                }
+            } catch(_) {}
+        } catch (e) {
+            console.warn('CMS backup warning:', e.message);
+        }
+        
         // Copy to listeengages directory for the UI
         const listeEngagesPath = path.join(__dirname, 'listeengages-package', 'listeengages', 'riders.json');
         await fs.writeFile(listeEngagesPath, JSON.stringify(ridersData, null, 2));
