@@ -93,6 +93,10 @@ app.use(express.static(path.join(__dirname), {
         if (path.endsWith('sw.js')) {
             res.setHeader('Cache-Control', 'no-cache');
         }
+        // Strong caching for images (immutable)
+        if (path.match(/\.(?:png|jpg|jpeg|gif|webp|svg|ico)$/i)) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        }
     }
 }));
 

@@ -2,7 +2,7 @@
 
 const CACHE_NAME = 'gpcm-v4.1';
 const RUNTIME_CACHE = 'gpcqm-runtime-v4.1';
-const IMAGE_CACHE = 'gpcqm-images-v4.1';
+const IMAGE_CACHE = 'gpcqm-images-v4.2';
 const API_CACHE = 'gpcqm-api-v4.1';
 
 // Mobile-specific configurations
@@ -132,7 +132,7 @@ self.addEventListener('fetch', (event) => {
         url.pathname.match(/\.(jpg|jpeg|png|gif|svg|ico|webp)$/i)) {
         
         event.respondWith(
-            mobileOptimizedImageCache(request)
+            staleWhileRevalidateImage(request)
         );
         return;
     }
@@ -378,31 +378,28 @@ async function updateRaceStatus() {
     }
 }
 
-// Mobile-optimized image caching
-async function mobileOptimizedImageCache(request) {
+// Stale-while-revalidate for images (faster first paint, background refresh)
+async function staleWhileRevalidateImage(request) {
     try {
         const cache = await caches.open(IMAGE_CACHE);
-        const cachedResponse = await cache.match(request);
-        
-        if (cachedResponse) {
-            return cachedResponse;
-        }
-        
-        const networkResponse = await fetch(request);
-        
-        if (networkResponse.ok) {
-            // Limit cache size on mobile
-            const keys = await cache.keys();
-            if (keys.length >= MOBILE_CACHE_CONFIG.maxImageCacheSize) {
-                // Remove oldest entries
-                const oldestKey = keys[0];
-                await cache.delete(oldestKey);
-            }
-            
-            cache.put(request, networkResponse.clone());
-        }
-        
-        return networkResponse;
+        const cached = await cache.match(request);
+        const fetchPromise = fetch(request)
+            .then(async (networkResponse) => {
+                if (networkResponse && networkResponse.ok) {
+                    // Limit cache size on mobile
+                    const keys = await cache.keys();
+                    if (keys.length >= (MOBILE_CACHE_CONFIG.maxImageCacheSize * 3)) {
+                        // Conserver les plus récentes entrées
+                        const keysToDelete = keys.slice(0, keys.length - (MOBILE_CACHE_CONFIG.maxImageCacheSize * 2));
+                        await Promise.all(keysToDelete.map(key => cache.delete(key)));
+                    }
+                    await cache.put(request, networkResponse.clone());
+                }
+                return networkResponse;
+            })
+            .catch(() => cached);
+
+        return cached || fetchPromise;
     } catch (error) {
         console.error('[Service Worker] Image cache failed:', error);
         
