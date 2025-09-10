@@ -488,7 +488,10 @@ a:hover {
 .hero {
     position: relative;
     min-height: 500px;
-    background: url('../images/gpcmq-30-1030x687.jpg') center center/cover;
+    background: image-set(
+        url('../images/gpcmq-30-1030x687.webp') type('image/webp'),
+        url('../images/gpcmq-30-1030x687.jpg') type('image/jpeg')
+    ) center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -735,7 +738,10 @@ a:hover {
 .riders-tile {
     background: 
         linear-gradient(135deg, rgba(31, 110, 114, 0.7), rgba(31, 110, 114, 0.6)),
-        url('../images/fond_liste.jpg?v=1') center/cover no-repeat;
+        image-set(
+            url('../images/fond_liste.webp?v=1') type('image/webp'),
+            url('../images/fond_liste.jpg?v=1') type('image/jpeg')
+        ) center/cover no-repeat;
     border: none !important;
     border-radius: var(--radius-xl);
     padding: var(--spacing-md);
@@ -751,7 +757,10 @@ a:hover {
     box-shadow: var(--shadow-lg);
     background: 
         linear-gradient(135deg, rgba(31, 110, 114, 0.75), rgba(31, 110, 114, 0.65)),
-        url('../images/fond_liste.jpg?v=1') center/cover no-repeat;
+        image-set(
+            url('../images/fond_liste.webp?v=1') type('image/webp'),
+            url('../images/fond_liste.jpg?v=1') type('image/jpeg')
+        ) center/cover no-repeat;
 }
 
 .riders-tile-content {

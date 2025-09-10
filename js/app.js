@@ -767,25 +767,29 @@ function openRidersModal() {
 function openMapModal() {
     const m = document.getElementById('mapModal');
     if (!m) return;
-    // Swap map image by language
+    // Swap map image by language (try WebP first, then PNG fallback)
     try {
         const img = document.getElementById('mapModalImage');
         if (img) {
-            const frMap = 'images/225318gpcmtlparcours.png';
-            const enMap = 'images/225318gpcmtlparcours_en.png';
-            const base = currentLanguage === 'en' ? enMap : frMap;
-            const desired = `${base}?t=${Date.now()}`;
-            if (img.getAttribute('src') !== desired) {
-                img.setAttribute('src', desired);
+            const frPng = 'images/225318gpcmtlparcours.png';
+            const enPng = 'images/225318gpcmtlparcours_en.png';
+            const basePng = currentLanguage === 'en' ? enPng : frPng;
+            const baseWebp = basePng.replace('.png', '.webp');
+            const desiredWebp = `${baseWebp}?t=${Date.now()}`;
+            const desiredPng = `${basePng}?t=${Date.now()}`;
+            if (img.getAttribute('src') !== desiredWebp) {
+                img.setAttribute('src', desiredWebp);
             }
-            img.onerror = function() {
-                const altBase = base === frMap ? enMap : frMap;
-                const alt = `${altBase}?t=${Date.now()}`;
-                if (img.getAttribute('src') !== alt) img.setAttribute('src', alt);
+            img.onerror = function onFirstError() {
+                img.onerror = function onSecondError() {
+                    const altPng = `${(basePng === frPng ? enPng : frPng)}?t=${Date.now()}`;
+                    if (img.getAttribute('src') !== altPng) img.setAttribute('src', altPng);
+                };
+                if (img.getAttribute('src') !== desiredPng) img.setAttribute('src', desiredPng);
             };
             img.style.display = '';
         }
-    } catch(_){}
+    } catch(_){ }
     m.classList.remove('hidden');
     const closeBtn = m.querySelector('.modal-close');
     if (closeBtn) {
@@ -831,10 +835,15 @@ function openTransportModal() {
     // Update site access image based on current language
     const siteAccessImage = document.getElementById('siteAccessImage');
     if (siteAccessImage) {
-        const imagePath = currentLanguage === 'fr' 
+        const pngPath = currentLanguage === 'fr' 
             ? 'images/GPC-11938-CarteGPC-2025_MTL-FR_VF_13août.png'
             : 'images/GPC-11938-CarteGPC-2025_MTL-EN_VF_13août.png';
-        siteAccessImage.setAttribute('src', imagePath);
+        const webpPath = pngPath.replace('.png', '.webp');
+        siteAccessImage.setAttribute('src', `${webpPath}`);
+        siteAccessImage.onerror = function onErr() {
+            siteAccessImage.onerror = null;
+            siteAccessImage.setAttribute('src', `${pngPath}`);
+        };
         siteAccessImage.setAttribute('alt', currentLanguage === 'fr' 
             ? 'Carte d\'accès au site GPCQM 2025'
             : 'GPCQM 2025 Site Access Map');
@@ -867,20 +876,22 @@ function openWatchModal() {
     if (!m) return;
     const img = document.getElementById('watchModalImage');
     if (img) {
-        const frBase = 'images/meilleurs_endroits_mtl_fr.png';
-        const enBase = 'images/meilleurs_endroits_mtl_en.png';
-        const base = currentLanguage === 'en' ? enBase : frBase;
-        const desiredSrc = `${base}?t=${Date.now()}`;
-        if (img.getAttribute('src') !== desiredSrc) {
-            img.setAttribute('src', desiredSrc);
+        const frPng = 'images/meilleurs_endroits_mtl_fr.png';
+        const enPng = 'images/meilleurs_endroits_mtl_en.png';
+        const basePng = currentLanguage === 'en' ? enPng : frPng;
+        const baseWebp = basePng.replace('.png', '.webp');
+        const desiredWebp = `${baseWebp}?t=${Date.now()}`;
+        const desiredPng = `${basePng}?t=${Date.now()}`;
+        if (img.getAttribute('src') !== desiredWebp) {
+            img.setAttribute('src', desiredWebp);
         }
         img.style.display = '';
-        img.onerror = function() {
-            const altBase = base === frBase ? enBase : frBase;
-            const altSrc = `${altBase}?t=${Date.now()}`;
-            if (img.getAttribute('src') !== altSrc) {
-                img.setAttribute('src', altSrc);
-            }
+        img.onerror = function onErrFirst() {
+            img.onerror = function onErrSecond() {
+                const altPng = `${(basePng === frPng ? enPng : frPng)}?t=${Date.now()}`;
+                if (img.getAttribute('src') !== altPng) img.setAttribute('src', altPng);
+            };
+            if (img.getAttribute('src') !== desiredPng) img.setAttribute('src', desiredPng);
         };
     }
     m.classList.remove('hidden');
