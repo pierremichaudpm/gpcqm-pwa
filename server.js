@@ -122,22 +122,33 @@ app.use(express.static(path.join(__dirname), {
 const fs = require('fs').promises;
 const fsSync = require('fs');
 
-// CMS Authentication
+// CMS Authentication (password-only support)
 const CMS_USER = process.env.CMS_USER || 'admin';
 const CMS_PASS = process.env.CMS_PASS || 'Quebec2025';
+const CMS_PASSWORD_ONLY = process.env.CMS_PASSWORD_ONLY || process.env.CMS_PASSWORD || 'Axelle20';
 
-function basicAuth(req, res, next) {
-    const auth = req.headers.authorization;
-    if (!auth || !auth.startsWith('Basic ')) {
-        return res.status(401).set('WWW-Authenticate', 'Basic realm="CMS"').send('Authentication required');
+function parseBasicAuth(req) {
+    const header = req.headers.authorization || '';
+    if (!header.startsWith('Basic ')) return null;
+    const decoded = Buffer.from(header.slice(6), 'base64').toString();
+    // Accept both "user:pass" and just "pass" (no colon)
+    if (decoded.includes(':')) {
+        const [user, pass] = decoded.split(':');
+        return { user, pass };
     }
-    
-    const credentials = Buffer.from(auth.slice(6), 'base64').toString().split(':');
-    if (credentials[0] !== CMS_USER || credentials[1] !== CMS_PASS) {
-        return res.status(401).send('Invalid credentials');
+    return { user: '', pass: decoded };
+}
+
+function cmsAuth(req, res, next) {
+    const creds = parseBasicAuth(req);
+    if (!creds) {
+        return res.status(401).set('WWW-Authenticate', 'Basic realm="CMS"').send('Password required');
     }
-    
-    next();
+    // Password-only mode (username ignored)
+    if (creds.pass === CMS_PASSWORD_ONLY) return next();
+    // Backward-compat (until clients sont migrés)
+    if (creds.user === CMS_USER && creds.pass === CMS_PASS) return next();
+    return res.status(401).send('Invalid password');
 }
 
 // Persistent CMS data directory (supports Railway volume via CMS_DATA_DIR)
@@ -168,8 +179,8 @@ try {
     console.warn('CMS data init warning:', e.message);
 }
 
-// Serve CMS interface
-app.get('/cms', (req, res) => {
+// Serve CMS interface (protect with password-only auth)
+app.get('/cms', cmsAuth, (req, res) => {
     res.sendFile(path.join(__dirname, 'cms.html'));
 });
 
@@ -186,8 +197,8 @@ app.get('/api/teams', async (req, res) => {
     }
 });
 
-// Save teams (requires auth)
-app.post('/api/teams', basicAuth, async (req, res) => {
+// Save teams (requires password-only auth)
+app.post('/api/teams', cmsAuth, async (req, res) => {
     try {
         const teams = req.body;
         
