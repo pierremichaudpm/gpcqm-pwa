@@ -1185,6 +1185,8 @@ function updateLanguage() {
 
     // Update EKOI contest bigbox image per language with WebP first, then JPG fallback
     const ekoiImg = document.getElementById('ekoiBigboxImage');
+    const ekoiLink = document.getElementById('ekoiBigboxLink');
+    const ekoiBtn = document.getElementById('ekoiBigboxBtn');
     if (ekoiImg) {
         const frEkoiJpg = 'images/concours_ekoi_fr.jpg';
         const enEkoiJpg = 'images/concours_ekoi_en.jpg';
@@ -1207,6 +1209,19 @@ function updateLanguage() {
                 ekoiImg.setAttribute('src', baseJpg);
             }
         };
+    }
+
+    // Update EKOI links (FR/EN) per language
+    if (ekoiLink || ekoiBtn) {
+        const frEkoiUrl = 'https://www.ekoi.com/fr-ca/content/1267-jeu-concours-ekoi-grand-prix-cyclistes-de-quebec-et-de-montreal?utm_source=ban-grand-prix-quebec&utm_medium=ban&utm_campaign=ads-grand-prix-quebec-jc-0925&utm_id=ads-grand-prix-quebec-jc';
+        const enEkoiUrl = 'https://www.ekoi.com/en-ca/content/1267-contest-game-ekoi-grand-prix-cyclists-of-quebec-and-montreal?utm_source=ban-grand-prix-quebec&utm_medium=ban&utm_campaign=ads-grand-prix-quebec-jc-0925&utm_id=ads-grand-prix-quebec-jc';
+        const targetUrl = currentLanguage === 'en' ? enEkoiUrl : frEkoiUrl;
+        if (ekoiLink && ekoiLink.getAttribute('href') !== targetUrl) {
+            ekoiLink.setAttribute('href', targetUrl);
+        }
+        if (ekoiBtn && ekoiBtn.getAttribute('href') !== targetUrl) {
+            ekoiBtn.setAttribute('href', targetUrl);
+        }
     }
 
     // Update Silent Auction bigbox image per language with WebP first, then PNG fallback
