@@ -190,19 +190,20 @@
                 
             </div>
             </div>
-            <button class="menu-toggle" id="menuToggleBtn" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" type="button">
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-                <span class="hamburger"></span>
-            </button>
+            <div class="header-controls">
+                <button class="lang-toggle-btn" id="langToggleBtn" onclick="toggleLanguage()" aria-label="Change Language">
+                    <span id="langToggleText">Eng</span>
+                </button>
+                <button class="menu-toggle" id="menuToggleBtn" onclick="toggleMenu()" aria-label="Menu" aria-expanded="false" type="button">
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                    <span class="hamburger"></span>
+                </button>
+            </div>
         </div>
         <nav class="mobile-menu" id="mobileMenu">
             <div class="menu-content">
                 <button class="menu-close" id="menuCloseBtn" onclick="toggleMenu()" aria-label="Fermer le menu">×</button>
-                <div class="menu-language">
-                    <button id="langBtnFr" class="lang-btn" onclick="setLanguage('fr')">Français</button>
-                    <button id="langBtnEn" class="lang-btn" onclick="setLanguage('en')">English</button>
-                </div>
                 <div class="menu-links">
                     <a href="#riders" onclick="toggleMenu()" data-lang="ridersList">Liste des Partants</a>
                     <a href="#schedule" onclick="toggleMenu()" data-lang="scheduleTitle">Programmation</a>

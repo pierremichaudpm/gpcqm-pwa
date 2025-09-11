@@ -482,7 +482,7 @@ function initializeApp() {
     
     // Lazy load non-critical functionality with fallback
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(() => {
-        initLanguageButtons();
+        // initLanguageButtons(); // Removed - no longer needed with new toggle
         initHeroButtons();
         initSmoothScroll();
         initModalBindings();
@@ -567,6 +567,7 @@ function initMenuAutoClose() {
 function exportCriticalFunctions() {
     window.toggleMenu = toggleMenu;
     window.setLanguage = setLanguage;
+    window.toggleLanguage = toggleLanguage;
     window.scrollToSection = scrollToSection;
     window.closeInstallPrompt = closeInstallPrompt;
     window.openRidersModal = openRidersModal;
@@ -599,14 +600,15 @@ function hideLoader() {
     }
 }
 
-function initLanguageButtons() {
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        if ((currentLanguage === 'fr' && btn.textContent === 'Français') || 
-            (currentLanguage === 'en' && btn.textContent === 'English')) {
-            btn.classList.add('active');
-        }
-    });
-}
+// Removed - No longer needed with new language toggle
+// function initLanguageButtons() {
+//     document.querySelectorAll('.lang-btn').forEach(btn => {
+//         if ((currentLanguage === 'fr' && btn.textContent === 'Français') || 
+//             (currentLanguage === 'en' && btn.textContent === 'English')) {
+//             btn.classList.add('active');
+//         }
+//     });
+// }
 
 function initHeroButtons() {
     const buttons = document.querySelectorAll('.quick-actions button');
@@ -644,20 +646,7 @@ function initModalBindings() {
             });
         }
         
-        // English/French toggle - only add if not working
-        const langBtnEn = document.getElementById('langBtnEn');
-        const langBtnFr = document.getElementById('langBtnFr');
-        if (langBtnEn && typeof window.setLanguage === 'function') {
-            // Test if onclick works, if not add listener
-            if (!langBtnEn.onclick) {
-                langBtnEn.addEventListener('click', () => setLanguage('en'));
-            }
-        }
-        if (langBtnFr && typeof window.setLanguage === 'function') {
-            if (!langBtnFr.onclick) {
-                langBtnFr.addEventListener('click', () => setLanguage('fr'));
-            }
-        }
+        // Language buttons removed - using new toggle button instead
         
         // Menu toggle - ensure it works
         const menuToggleBtn = document.getElementById('menuToggleBtn');
@@ -1051,16 +1040,6 @@ function setLanguage(lang) {
     if (typeof updateWeatherLanguage === 'function') {
         updateWeatherLanguage();
     }
-    toggleMenu(); // Close menu after language change
-    
-    // Update active language button
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if ((lang === 'fr' && btn.textContent === 'Français') || 
-            (lang === 'en' && btn.textContent === 'English')) {
-            btn.classList.add('active');
-        }
-    });
     
     // Track language change
     if (typeof gtag !== 'undefined') {
@@ -1070,8 +1049,15 @@ function setLanguage(lang) {
     }
 }
 
-// Make setLanguage globally available immediately
+// Toggle Language Function
+function toggleLanguage() {
+    const newLang = currentLanguage === 'fr' ? 'en' : 'fr';
+    setLanguage(newLang);
+}
+
+// Make functions globally available immediately
 window.setLanguage = setLanguage;
+window.toggleLanguage = toggleLanguage;
 
 // Update Language
 function updateLanguage() {
@@ -1100,7 +1086,13 @@ function updateLanguage() {
     // Update HTML lang attribute
     document.documentElement.lang = currentLanguage;
     
-    // Update language toggle button
+    // Update language toggle button text
+    const langToggleText = document.getElementById('langToggleText');
+    if (langToggleText) {
+        langToggleText.textContent = currentLanguage === 'fr' ? 'Eng' : 'Fr';
+    }
+    
+    // Update old language toggle button (if it exists)
     const langToggle = document.getElementById('langToggle');
     if (langToggle) {
         langToggle.textContent = currentLanguage === 'fr' ? 'EN' : 'FR';
