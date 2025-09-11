@@ -179,8 +179,8 @@ try {
     console.warn('CMS data init warning:', e.message);
 }
 
-// Serve CMS interface (protect with password-only auth)
-app.get('/cms', cmsAuth, (req, res) => {
+// Serve CMS interface (auth handled in-page to avoid browser prompt)
+app.get('/cms', (req, res) => {
     res.sendFile(path.join(__dirname, 'cms.html'));
 });
 

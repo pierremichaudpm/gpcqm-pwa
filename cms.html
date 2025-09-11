@@ -41,6 +41,15 @@
     </style>
 </head>
 <body>
+    <div id="authOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; align-items: center; justify-content: center;">
+        <div style="background:#fff; padding: 24px; border-radius: 10px; width: 90%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center;">
+            <h2 style="margin-bottom: 12px;">Accès CMS</h2>
+            <p style="margin-bottom: 16px; color:#555;">Veuillez entrer le mot de passe pour accéder au CMS.</p>
+            <input id="authPassword" type="password" placeholder="Mot de passe" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px; margin-bottom:12px;">
+            <button id="authSubmit" class="btn btn-primary" style="width:100%">Entrer</button>
+            <div id="authError" style="display:none; margin-top:10px; color:#dc3545;">Mot de passe invalide</div>
+        </div>
+    </div>
     <div class="header">
         <h1>🚴‍♂️ CMS GPCM - Gestion des Équipes</h1>
         <p>Gestion des équipes et coureurs</p>
@@ -419,7 +428,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Basic ' + btoa('admin:Quebec2025')
+                        'Authorization': 'Basic ' + btoa(window.__cmsPassword || '')
                     },
                     body: JSON.stringify(teams)
                 });
@@ -480,8 +489,39 @@
         document.getElementById('teamDisplayName').addEventListener('change', updateCurrentTeam);
         document.getElementById('teamCode').addEventListener('change', updateCurrentTeam);
         
-        // Démarrer
-        init();
+        // Auth overlay logic
+        (function setupAuth() {
+            const overlay = document.getElementById('authOverlay');
+            const input = document.getElementById('authPassword');
+            const submit = document.getElementById('authSubmit');
+            const errorEl = document.getElementById('authError');
+
+            function tryAuth() {
+                const pwd = input.value.trim();
+                if (!pwd) return;
+                // Store pass only (password-only mode expected by server)
+                window.__cmsPassword = pwd;
+                // Probe protected endpoint with HEAD to validate quickly
+                fetch('/api/teams', {
+                    method: 'HEAD',
+                    headers: { 'Authorization': 'Basic ' + btoa(pwd) }
+                }).then(r => {
+                    if (r.ok || r.status === 200 || r.status === 204) {
+                        overlay.style.display = 'none';
+                        init();
+                    } else {
+                        errorEl.style.display = '';
+                    }
+                }).catch(() => {
+                    // In case HEAD not allowed, fall back to GET without auth just to proceed UI; save will enforce auth
+                    overlay.style.display = 'none';
+                    init();
+                });
+            }
+
+            submit.addEventListener('click', tryAuth);
+            input.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryAuth(); });
+        })();
     </script>
 </body>
 </html>
