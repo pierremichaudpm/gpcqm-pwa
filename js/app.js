@@ -480,6 +480,12 @@ function initializeApp() {
     // Export critical functions immediately for onclick handlers
     exportCriticalFunctions();
     
+    // Attach language toggle button event listener
+    const langToggleBtn = document.getElementById('langToggleBtn');
+    if (langToggleBtn) {
+        langToggleBtn.addEventListener('click', toggleLanguage);
+    }
+    
     // Lazy load non-critical functionality with fallback
     (window.requestIdleCallback || ((cb) => setTimeout(cb, 1)))(() => {
         // initLanguageButtons(); // Removed - no longer needed with new toggle
@@ -1051,7 +1057,9 @@ function setLanguage(lang) {
 
 // Toggle Language Function
 function toggleLanguage() {
+    console.log('toggleLanguage called, current:', currentLanguage);
     const newLang = currentLanguage === 'fr' ? 'en' : 'fr';
+    console.log('Switching to:', newLang);
     setLanguage(newLang);
 }
 
