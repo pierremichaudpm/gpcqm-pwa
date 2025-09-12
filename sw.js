@@ -1,8 +1,8 @@
 // === GPCQM 2025 - Service Worker - Mobile Optimized ===
 
-const CACHE_NAME = 'gpcm-v4.1';
-const RUNTIME_CACHE = 'gpcqm-runtime-v4.1';
-const IMAGE_CACHE = 'gpcqm-images-v4.2';
+const CACHE_NAME = 'gpcm-v4.2';
+const RUNTIME_CACHE = 'gpcqm-runtime-v4.2';
+const IMAGE_CACHE = 'gpcqm-images-v4.3';
 const API_CACHE = 'gpcqm-api-v4.1';
 
 // Mobile-specific configurations
@@ -383,7 +383,7 @@ async function staleWhileRevalidateImage(request) {
     try {
         const cache = await caches.open(IMAGE_CACHE);
         const cached = await cache.match(request);
-        const fetchPromise = fetch(request)
+        const fetchPromise = fetch(request.url, { cache: 'reload' })
             .then(async (networkResponse) => {
                 if (networkResponse && networkResponse.ok) {
                     // Limit cache size on mobile
