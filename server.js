@@ -155,6 +155,9 @@ function cmsAuth(req, res, next) {
 const IS_RAILWAY = !!process.env.RAILWAY_PUBLIC_DOMAIN || !!process.env.RAILWAY_ENVIRONMENT || !!process.env.RAILWAY_STATIC_URL;
 const CMS_BASE_DIR = process.env.CMS_DATA_DIR || (IS_RAILWAY ? '/data/cms' : path.join(__dirname, 'cms-data'));
 try { fsSync.mkdirSync(CMS_BASE_DIR, { recursive: true }); } catch(_) {}
+// Metrics directory inside persistent CMS dir
+const METRICS_DIR = path.join(CMS_BASE_DIR, 'metrics');
+try { fsSync.mkdirSync(METRICS_DIR, { recursive: true }); } catch(_) {}
 
 // Initial data seeding if empty
 const DEFAULT_TEAMS_FILE = path.join(__dirname, 'cms', 'teams-data.json');
@@ -453,6 +456,107 @@ app.get('/api/weather/forecast', async (req, res) => {
             });
         }
         res.json(fallback);
+    }
+});
+
+// ===== Metrics: visits tracking =====
+// Configurable event window (defaults to race day schedule used in countdown)
+function getEventWindow() {
+    const startIso = process.env.EVENT_START_ISO || '2025-09-14T10:15:00-04:00';
+    const endIso = process.env.EVENT_END_ISO || '2025-09-14T15:45:00-04:00';
+    return { start: new Date(startIso), end: new Date(endIso) };
+}
+
+function bucketPhase(tsMs) {
+    try {
+        const { start, end } = getEventWindow();
+        const t = new Date(tsMs);
+        if (t < start) return 'before';
+        if (t >= start && t <= end) return 'during';
+        return 'after';
+    } catch (_) {
+        return 'unknown';
+    }
+}
+
+// Record a visit (use sendBeacon or POST)
+app.post('/api/metrics/visit', async (req, res) => {
+    try {
+        const now = Date.now();
+        const lang = (req.body && (req.body.lang || req.body.language)) || (req.query.lang) || 'fr';
+        const pathVisited = (req.body && req.body.path) || req.query.path || (req.headers['x-page-path']) || '';
+        const userAgent = req.headers['user-agent'] || '';
+        const referrer = req.headers['referer'] || req.headers['referrer'] || '';
+        const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.ip || '';
+        const phase = bucketPhase(now);
+
+        const entry = { ts: now, lang, phase, path: pathVisited, ua: userAgent, ref: referrer, ip };
+
+        // Append to JSONL file
+        const logFile = path.join(METRICS_DIR, 'visits.jsonl');
+        try {
+            fsSync.appendFileSync(logFile, JSON.stringify(entry) + '\n', { encoding: 'utf8' });
+        } catch (e) {
+            // fallback to async
+            await fs.appendFile(logFile, JSON.stringify(entry) + '\n');
+        }
+
+        // Increment Redis counters if available
+        if (redis) {
+            try {
+                await redis.incr('metrics:visits:total');
+                await redis.incr(`metrics:visits:phase:${phase}`);
+                await redis.incr(`metrics:visits:lang:${lang}`);
+            } catch (e) {
+                console.warn('Redis metrics incr error', e.message);
+            }
+        }
+
+        res.status(204).end();
+    } catch (e) {
+        console.error('Metrics visit error:', e);
+        res.status(200).json({ ok: true }); // never block the client
+    }
+});
+
+// Summarize visits: totals and breakdowns
+app.get('/api/metrics/summary', async (req, res) => {
+    try {
+        const logFile = path.join(METRICS_DIR, 'visits.jsonl');
+        let lines = [];
+        try {
+            const content = fsSync.existsSync(logFile) ? fsSync.readFileSync(logFile, 'utf8') : '';
+            lines = content ? content.trim().split('\n') : [];
+        } catch (_) {
+            lines = [];
+        }
+
+        const now = Date.now();
+        const oneDayMs = 24 * 60 * 60 * 1000;
+        const counters = {
+            total: 0,
+            byPhase: { before: 0, during: 0, after: 0, unknown: 0 },
+            byLang: {},
+            last24h: 0
+        };
+
+        for (const line of lines) {
+            try {
+                const obj = JSON.parse(line);
+                counters.total++;
+                const phase = obj.phase || 'unknown';
+                if (counters.byPhase[phase] == null) counters.byPhase[phase] = 0;
+                counters.byPhase[phase]++;
+                const lang = obj.lang || 'fr';
+                counters.byLang[lang] = (counters.byLang[lang] || 0) + 1;
+                if (Number.isFinite(obj.ts) && (now - obj.ts) <= oneDayMs) counters.last24h++;
+            } catch (_) {}
+        }
+
+        res.json({ ok: true, counters, eventWindow: getEventWindow() });
+    } catch (e) {
+        console.error('Metrics summary error:', e);
+        res.status(200).json({ ok: true, counters: { total: 0, byPhase: {}, byLang: {}, last24h: 0 } });
     }
 });
 

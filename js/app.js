@@ -521,6 +521,25 @@ function initializeApp() {
                 page_location: window.location.href
             });
         }
+        // Send lightweight metrics beacon
+        try {
+            const payload = JSON.stringify({
+                lang: currentLanguage || 'fr',
+                path: window.location.pathname
+            });
+            if (navigator.sendBeacon) {
+                const blob = new Blob([payload], { type: 'application/json' });
+                navigator.sendBeacon('/api/metrics/visit', blob);
+            } else {
+                fetch('/api/metrics/visit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: payload,
+                    keepalive: true,
+                    credentials: 'omit'
+                }).catch(() => {});
+            }
+        } catch(_) {}
     });
 }
 // Close mobile menu whenever a link/button inside it is activated

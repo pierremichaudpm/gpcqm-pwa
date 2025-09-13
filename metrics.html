@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPCM Metrics</title>
+    <link rel="stylesheet" href="css/style.css?v=10.1">
+    <style>
+        .metrics-container { max-width: 900px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 16px; box-shadow: var(--shadow-lg); }
+        .metrics-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        .metric-card { background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px; }
+        .metric-title { font-weight: 700; color: var(--deep-blue); margin-bottom: 8px; }
+        .metric-value { font-size: 2rem; font-weight: 700; }
+        .phase-before { color: #1D5077; }
+        .phase-during { color: #FF4444; }
+        .phase-after { color: #6BA053; }
+        .metric-sub { color: var(--gray-600); font-size: 0.9rem; }
+        .lang-list { display: grid; gap: 6px; }
+        .lang-item { display: flex; justify-content: space-between; }
+    </style>
+    <script>
+    async function loadMetrics() {
+        try {
+            const res = await fetch('/api/metrics/summary', { cache: 'no-store' });
+            const data = await res.json();
+            if (!data || !data.ok) throw new Error('Bad metrics');
+            const c = data.counters || { total:0, byPhase:{}, byLang:{}, last24h:0 };
+            document.getElementById('mTotal').textContent = c.total;
+            document.getElementById('mLast24').textContent = c.last24h;
+            document.getElementById('mBefore').textContent = c.byPhase.before || 0;
+            document.getElementById('mDuring').textContent = c.byPhase.during || 0;
+            document.getElementById('mAfter').textContent = c.byPhase.after || 0;
+            const langWrap = document.getElementById('mLang');
+            langWrap.innerHTML = '';
+            const entries = Object.entries(c.byLang).sort((a,b)=>b[1]-a[1]);
+            entries.forEach(([lang,count]) => {
+                const row = document.createElement('div');
+                row.className = 'lang-item';
+                row.innerHTML = `<span>${lang.toUpperCase()}</span><strong>${count}</strong>`;
+                langWrap.appendChild(row);
+            });
+            // Event window
+            try {
+                const { start, end } = data.eventWindow || {};
+                if (start && end) {
+                    const s = new Date(start); const e = new Date(end);
+                    document.getElementById('mWindow').textContent = `${s.toLocaleString()} → ${e.toLocaleString()}`;
+                }
+            } catch(_) {}
+        } catch (e) {
+            console.error('Metrics load failed', e);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', loadMetrics);
+    </script>
+</head>
+<body>
+    <div class="metrics-container">
+        <h1 style="text-align:center; color: var(--deep-blue); margin-bottom: 16px;">GPCM Metrics</h1>
+        <p class="metric-sub" id="mWindow" style="text-align:center; margin-bottom: 24px;"></p>
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Total visits</div>
+                <div class="metric-value" id="mTotal">0</div>
+                <div class="metric-sub">All-time</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Last 24h</div>
+                <div class="metric-value" id="mLast24">0</div>
+                <div class="metric-sub">Rolling window</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Before event</div>
+                <div class="metric-value phase-before" id="mBefore">0</div>
+                <div class="metric-sub">Pre-event traffic</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">During event</div>
+                <div class="metric-value phase-during" id="mDuring">0</div>
+                <div class="metric-sub">Live traffic</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">After event</div>
+                <div class="metric-value phase-after" id="mAfter">0</div>
+                <div class="metric-sub">Post-event traffic</div>
+            </div>
+        </div>
+        <div class="metric-card" style="margin-top:16px;">
+            <div class="metric-title">By Language</div>
+            <div class="lang-list" id="mLang"></div>
+        </div>
+    </div>
+</body>
+</html>
+
