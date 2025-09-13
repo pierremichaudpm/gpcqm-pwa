@@ -141,27 +141,21 @@ function updateRaceStatus(status) {
     // Add new status class
     statusBadge.classList.add(status);
     
-    // Update text based on language
-    const statusTexts = {
-        upcoming: { fr: 'À venir', en: 'Upcoming' },
-        live: { fr: 'En direct', en: 'Live' },
-        finished: { fr: 'Terminée', en: 'Finished' }
-    };
-    
+    // Update text/markup based on language and status
     const currentLang = localStorage.getItem('language') || 'fr';
-    statusBadge.textContent = statusTexts[status][currentLang];
-    
-    // Add animation for live status
     if (status === 'live') {
+        const text = currentLang === 'fr' ? 'Course en cours' : 'Race in progress';
+        statusBadge.innerHTML = '<span class="live-dot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fff;margin-right:8px;box-shadow:0 0 0 2px rgba(255,255,255,0.4);"></span>' + text;
         statusBadge.style.animation = 'pulse 2s infinite';
-        
-        // Track live status
         if (typeof gtag !== 'undefined') {
-            gtag('event', 'race_status_live', {
-                event_category: 'Race',
-                event_label: 'Race went live'
-            });
+            gtag('event', 'race_status_live', { event_category: 'Race', event_label: 'Race went live' });
         }
+    } else if (status === 'finished') {
+        statusBadge.style.animation = '';
+        statusBadge.textContent = currentLang === 'fr' ? 'Course terminée' : 'Race finished';
+    } else {
+        statusBadge.style.animation = '';
+        statusBadge.textContent = currentLang === 'fr' ? 'À venir' : 'Upcoming';
     }
 }
 
