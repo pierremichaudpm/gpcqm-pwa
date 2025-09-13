@@ -227,8 +227,16 @@
             <h1 class="hero-title" data-lang="heroTitle">GRAND PRIX CYCLISTE DE MONTRÉAL</h1>
             <p class="hero-subtitle" data-lang="heroSubtitle">14 septembre 2025 - Épreuve UCI WorldTour</p>
             
+            <!-- Live Status Badge (hidden by default) -->
+            <div class="status-indicator" id="heroStatusIndicator" style="display:none; margin-bottom: 16px;">
+                <span class="status-badge live" id="heroLiveBadge">
+                    <span class="live-dot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#fff;margin-right:8px;box-shadow:0 0 0 2px rgba(255,255,255,0.4);"></span>
+                    <span data-lang="raceLive">Course en cours</span>
+                </span>
+            </div>
+
             <!-- Countdown Timer -->
-            <div class="countdown-container">
+            <div class="countdown-container" id="heroCountdownContainer">
                 <h2 class="countdown-title" data-lang="countdownTitle">Départ de la course dans :</h2>
                 <div class="countdown" id="mainCountdown">
                     <div class="countdown-item">

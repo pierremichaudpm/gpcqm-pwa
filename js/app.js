@@ -1094,6 +1094,14 @@ function updateLanguage() {
     // Update HTML lang attribute
     document.documentElement.lang = currentLanguage;
     
+    // Update hero live badge text per language
+    try {
+        const liveTextEl = document.querySelector('#heroStatusIndicator [data-lang="raceLive"]');
+        if (liveTextEl) {
+            liveTextEl.textContent = (currentLanguage === 'fr') ? 'Course en cours' : 'Race in progress';
+        }
+    } catch (_) {}
+    
     // Update language toggle button text
     const langToggleText = document.getElementById('langToggleText');
     if (langToggleText) {

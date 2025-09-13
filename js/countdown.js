@@ -103,6 +103,11 @@ function updateCountdownDisplay(elementId, targetTime) {
         
         // Update race status to LIVE
         updateRaceStatus('live');
+        // Hide countdown, show hero live badge
+        const cc = document.getElementById('heroCountdownContainer');
+        const hi = document.getElementById('heroStatusIndicator');
+        if (cc) cc.style.display = 'none';
+        if (hi) hi.style.display = '';
     } else {
         // Race is finished
         if (daysEl) daysEl.textContent = '00';
@@ -112,6 +117,11 @@ function updateCountdownDisplay(elementId, targetTime) {
         
         // Update race status to FINISHED
         updateRaceStatus('finished');
+        // After finish: hide hero live badge, hide countdown title
+        const cc = document.getElementById('heroCountdownContainer');
+        const hi = document.getElementById('heroStatusIndicator');
+        if (hi) hi.style.display = 'none';
+        if (cc) cc.style.display = 'none';
     }
 }
 
