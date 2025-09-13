@@ -187,6 +187,12 @@ app.get('/cms', (req, res) => {
     res.sendFile(path.join(__dirname, 'cms.html'));
 });
 
+// Metrics dashboard (clean URL)
+app.get('/metrics', (req, res) => {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.sendFile(path.join(__dirname, 'metrics.html'));
+});
+
 // CMS API endpoints  
 
 // Get teams
