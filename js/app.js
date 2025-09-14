@@ -416,6 +416,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function sendMetricsVisit() {
+    try {
+        const payload = JSON.stringify({
+            lang: currentLanguage || 'fr',
+            path: window.location.pathname
+        });
+        if (navigator.sendBeacon) {
+            const blob = new Blob([payload], { type: 'application/json' });
+            navigator.sendBeacon('/api/metrics/visit', blob);
+        } else {
+            fetch('/api/metrics/visit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: payload,
+                keepalive: true,
+                credentials: 'omit'
+            }).catch(() => {});
+        }
+    } catch(_) {}
+}
+
 // Mobile-Optimized Touch Handler
 function addSafeTapListener(element, onTap) {
     if (!element) return;
@@ -477,6 +498,9 @@ function initializeApp() {
     updateLanguage();
     hideLoader();
     
+    // Send metrics ASAP
+    sendMetricsVisit();
+
     // Export critical functions immediately for onclick handlers
     exportCriticalFunctions();
     
@@ -521,25 +545,15 @@ function initializeApp() {
                 page_location: window.location.href
             });
         }
-        // Send lightweight metrics beacon
-        try {
-            const payload = JSON.stringify({
-                lang: currentLanguage || 'fr',
-                path: window.location.pathname
-            });
-            if (navigator.sendBeacon) {
-                const blob = new Blob([payload], { type: 'application/json' });
-                navigator.sendBeacon('/api/metrics/visit', blob);
-            } else {
-                fetch('/api/metrics/visit', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: payload,
-                    keepalive: true,
-                    credentials: 'omit'
-                }).catch(() => {});
-            }
-        } catch(_) {}
+        // Send again in idle as a backup
+        sendMetricsVisit();
+    });
+
+    // Backup on tab hide (quick reloads/navigation)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') {
+            sendMetricsVisit();
+        }
     });
 }
 // Close mobile menu whenever a link/button inside it is activated
