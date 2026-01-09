@@ -15,7 +15,17 @@ const APP_CONFIG = {
       return true;
     }
 
-    // For non-mobile user agents, check screen width
+    // Check for touch capability - mobile/tablets have touch
+    const hasTouchScreen = navigator.maxTouchPoints > 0;
+
+    // For devices with touch screens, check if it's a tablet
+    // Tablets might have width > 768 but are still mobile devices
+    if (hasTouchScreen) {
+      // Likely a tablet or touch laptop - treat as mobile
+      return true;
+    }
+
+    // For non-mobile user agents without touch, check screen width
     return window.innerWidth <= 768;
   })(),
 };

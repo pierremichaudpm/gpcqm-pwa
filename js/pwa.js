@@ -23,6 +23,32 @@ const IS_IOS_CHROME = IS_IOS && /CriOS/i.test(UA);
 const IS_IOS_SAFARI =
   IS_IOS && /Safari/i.test(UA) && !/CriOS|FxiOS|EdgiOS/i.test(UA);
 
+// Desktop detection function
+function isDesktopDevice() {
+  // Check user agent for mobile devices
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isMobileUserAgent =
+    /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
+
+  // If it's a mobile user agent, NEVER treat as desktop
+  if (isMobileUserAgent) {
+    return false;
+  }
+
+  // Check for touch capability - mobile/tablets have touch
+  const hasTouchScreen = navigator.maxTouchPoints > 0;
+
+  // For devices with touch screens, check if it's a tablet
+  // Tablets might have width > 768 but are still mobile devices
+  if (hasTouchScreen) {
+    // Likely a tablet or touch laptop - treat as mobile
+    return false;
+  }
+
+  // For non-mobile user agents without touch, check screen width
+  return window.innerWidth > 768;
+}
+
 // Service Worker Registration
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -104,21 +130,6 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
   // DON'T SHOW INSTALL PROMPT ON DESKTOP AT ALL
   // Desktop users will see the desktop warning modal instead
-  function isDesktopDevice() {
-    // Check user agent for mobile devices
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobileUserAgent =
-      /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
-
-    // If it's a mobile user agent, NEVER treat as desktop
-    if (isMobileUserAgent) {
-      return false;
-    }
-
-    // For non-mobile user agents, check screen width
-    return window.innerWidth > 768;
-  }
-
   if (isDesktopDevice()) {
     console.log("PWA: Desktop detected - INSTALL PROMPT COMPLETELY DISABLED");
     // Don't even store the event
@@ -141,16 +152,6 @@ window.addEventListener("beforeinstallprompt", (e) => {
   // But only if not on desktop
   const checkAndShowPrompt = () => {
     // DOUBLE CHECK - NO INSTALL PROMPT ON DESKTOP
-    function isDesktopDevice() {
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isMobileUserAgent =
-        /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(
-          userAgent,
-        );
-      if (isMobileUserAgent) return false;
-      return window.innerWidth > 768;
-    }
-
     if (isDesktopDevice()) {
       console.log("PWA: Still on desktop - NO INSTALL PROMPT");
       deferredPrompt = null;
@@ -173,14 +174,6 @@ function showInstallPrompt() {
   if (!prompt || !deferredPrompt) return;
 
   // TRIPLE CHECK - ABSOLUTELY NO INSTALL PROMPT ON DESKTOP
-  function isDesktopDevice() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobileUserAgent =
-      /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
-    if (isMobileUserAgent) return false;
-    return window.innerWidth > 768;
-  }
-
   if (isDesktopDevice()) {
     console.log("PWA: FINAL CHECK - Desktop detected, ABORTING install prompt");
     prompt.classList.add("hidden");
@@ -237,16 +230,6 @@ function showInstallPrompt() {
   // Do not run in standalone/PWA mode
   if (IS_IOS && IS_IOS_SAFARI && !isPWA()) {
     // ALSO CHECK FOR DESKTOP - NO iOS PROMPT ON DESKTOP EITHER
-    function isDesktopDevice() {
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isMobileUserAgent =
-        /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(
-          userAgent,
-        );
-      if (isMobileUserAgent) return false;
-      return window.innerWidth > 768;
-    }
-
     if (isDesktopDevice()) {
       console.log("PWA: Desktop detected - iOS install prompt disabled");
       const iosPrompt = document.getElementById("iosInstallPrompt");
@@ -264,16 +247,6 @@ function showInstallPrompt() {
       // Small delay to avoid flashing on load
       setTimeout(() => {
         // Check again if still not on desktop
-        function isDesktopDevice() {
-          const userAgent = navigator.userAgent.toLowerCase();
-          const isMobileUserAgent =
-            /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(
-              userAgent,
-            );
-          if (isMobileUserAgent) return false;
-          return window.innerWidth > 768;
-        }
-
         if (isDesktopDevice()) {
           console.log("PWA: Now on desktop - hiding iOS prompt");
           iosPrompt.classList.add("hidden");
