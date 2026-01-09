@@ -596,8 +596,11 @@ function initializeApp() {
 
   // Show desktop warning modal if on desktop
   if (!APP_CONFIG.isMobile) {
+    console.log("Desktop detected, showing warning modal");
     // Small delay to ensure DOM is ready
     setTimeout(showDesktopWarningModal, 1000);
+  } else {
+    console.log("Mobile detected, not showing desktop warning");
   }
 }
 // Close mobile menu whenever a link/button inside it is activated
@@ -1601,21 +1604,35 @@ window.closeInstallPrompt = closeInstallPrompt;
 
 // Desktop Warning Modal Functions
 function showDesktopWarningModal() {
+  console.log("showDesktopWarningModal called");
   const modal = document.getElementById("desktopWarningModal");
+  console.log("Modal element found:", !!modal);
+  console.log("APP_CONFIG.isMobile:", APP_CONFIG.isMobile);
+  console.log("Window width:", window.innerWidth);
+
   if (modal && !APP_CONFIG.isMobile) {
     // Check if user has already dismissed the warning
     const warningDismissed = localStorage.getItem("desktopWarningDismissed");
+    console.log("warningDismissed in localStorage:", warningDismissed);
+
     if (!warningDismissed) {
+      console.log("Showing desktop warning modal");
       modal.classList.remove("hidden");
+    } else {
+      console.log("Warning already dismissed, not showing");
     }
+  } else {
+    console.log("Modal not found or on mobile device");
   }
 }
 
 function closeDesktopWarningModal() {
+  console.log("closeDesktopWarningModal called");
   const modal = document.getElementById("desktopWarningModal");
   if (modal) {
     modal.classList.add("hidden");
     localStorage.setItem("desktopWarningDismissed", "true");
+    console.log("Desktop warning modal closed and dismissed");
   }
 }
 
