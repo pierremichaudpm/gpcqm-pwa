@@ -4,7 +4,20 @@
 const APP_CONFIG = {
   raceDate: "2025-09-14T10:15:00-04:00",
   defaultLanguage: "fr",
-  isMobile: window.innerWidth <= 768,
+  isMobile: (function () {
+    // Better mobile detection - check user agent first
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileUserAgent =
+      /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
+
+    // If it's a mobile user agent, it's definitely mobile
+    if (isMobileUserAgent) {
+      return true;
+    }
+
+    // For non-mobile user agents, check screen width
+    return window.innerWidth <= 768;
+  })(),
 };
 
 // Language translations

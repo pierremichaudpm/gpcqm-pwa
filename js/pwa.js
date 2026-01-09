@@ -104,7 +104,22 @@ window.addEventListener("beforeinstallprompt", (e) => {
 
   // DON'T SHOW INSTALL PROMPT ON DESKTOP AT ALL
   // Desktop users will see the desktop warning modal instead
-  if (window.innerWidth > 768) {
+  function isDesktopDevice() {
+    // Check user agent for mobile devices
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileUserAgent =
+      /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
+
+    // If it's a mobile user agent, NEVER treat as desktop
+    if (isMobileUserAgent) {
+      return false;
+    }
+
+    // For non-mobile user agents, check screen width
+    return window.innerWidth > 768;
+  }
+
+  if (isDesktopDevice()) {
     console.log("PWA: Desktop detected - INSTALL PROMPT COMPLETELY DISABLED");
     // Don't even store the event
     deferredPrompt = null;
@@ -126,7 +141,17 @@ window.addEventListener("beforeinstallprompt", (e) => {
   // But only if not on desktop
   const checkAndShowPrompt = () => {
     // DOUBLE CHECK - NO INSTALL PROMPT ON DESKTOP
-    if (window.innerWidth > 768) {
+    function isDesktopDevice() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobileUserAgent =
+        /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(
+          userAgent,
+        );
+      if (isMobileUserAgent) return false;
+      return window.innerWidth > 768;
+    }
+
+    if (isDesktopDevice()) {
       console.log("PWA: Still on desktop - NO INSTALL PROMPT");
       deferredPrompt = null;
       return;
@@ -148,7 +173,15 @@ function showInstallPrompt() {
   if (!prompt || !deferredPrompt) return;
 
   // TRIPLE CHECK - ABSOLUTELY NO INSTALL PROMPT ON DESKTOP
-  if (window.innerWidth > 768) {
+  function isDesktopDevice() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileUserAgent =
+      /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
+    if (isMobileUserAgent) return false;
+    return window.innerWidth > 768;
+  }
+
+  if (isDesktopDevice()) {
     console.log("PWA: FINAL CHECK - Desktop detected, ABORTING install prompt");
     prompt.classList.add("hidden");
     deferredPrompt = null;
@@ -204,7 +237,17 @@ function showInstallPrompt() {
   // Do not run in standalone/PWA mode
   if (IS_IOS && IS_IOS_SAFARI && !isPWA()) {
     // ALSO CHECK FOR DESKTOP - NO iOS PROMPT ON DESKTOP EITHER
-    if (window.innerWidth > 768) {
+    function isDesktopDevice() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobileUserAgent =
+        /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(
+          userAgent,
+        );
+      if (isMobileUserAgent) return false;
+      return window.innerWidth > 768;
+    }
+
+    if (isDesktopDevice()) {
       console.log("PWA: Desktop detected - iOS install prompt disabled");
       const iosPrompt = document.getElementById("iosInstallPrompt");
       if (iosPrompt) iosPrompt.classList.add("hidden");
@@ -221,7 +264,17 @@ function showInstallPrompt() {
       // Small delay to avoid flashing on load
       setTimeout(() => {
         // Check again if still not on desktop
-        if (window.innerWidth > 768) {
+        function isDesktopDevice() {
+          const userAgent = navigator.userAgent.toLowerCase();
+          const isMobileUserAgent =
+            /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(
+              userAgent,
+            );
+          if (isMobileUserAgent) return false;
+          return window.innerWidth > 768;
+        }
+
+        if (isDesktopDevice()) {
           console.log("PWA: Now on desktop - hiding iOS prompt");
           iosPrompt.classList.add("hidden");
           return;

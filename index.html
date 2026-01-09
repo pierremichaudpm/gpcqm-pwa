@@ -4,7 +4,26 @@
         <script>
             // IMMEDIATE DESKTOP DETECTION - SHOW WARNING ON LOAD
             (function () {
-                if (window.innerWidth > 768) {
+                // BETTER DESKTOP DETECTION - NEVER SHOW ON MOBILE
+                function isDesktopDevice() {
+                    // Check user agent for mobile devices
+                    const userAgent = navigator.userAgent.toLowerCase();
+                    const isMobileUserAgent =
+                        /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(
+                            userAgent,
+                        );
+
+                    // If it's a mobile user agent, NEVER show desktop warning
+                    if (isMobileUserAgent) {
+                        return false;
+                    }
+
+                    // For non-mobile user agents, check screen width
+                    // Only show on actual desktop/laptop screens
+                    return window.innerWidth > 768;
+                }
+
+                if (isDesktopDevice()) {
                     // Desktop detected - hide install prompts immediately
                     window.addEventListener("DOMContentLoaded", function () {
                         // Hide install prompts
