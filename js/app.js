@@ -596,8 +596,8 @@ function initializeApp() {
 
   // Show desktop warning modal if on desktop
   if (!APP_CONFIG.isMobile) {
-    // Small delay to ensure DOM is ready
-    setTimeout(showDesktopWarningModal, 1000);
+    // Show immediately - no delay
+    showDesktopWarningModal();
   }
 }
 // Close mobile menu whenever a link/button inside it is activated
@@ -1601,14 +1601,32 @@ window.closeInstallPrompt = closeInstallPrompt;
 
 // Desktop Warning Modal Functions
 function showDesktopWarningModal() {
-  const modal = document.getElementById("desktopWarningModal");
-  if (modal && !APP_CONFIG.isMobile) {
-    // Check if user has already dismissed the warning
-    const warningDismissed = localStorage.getItem("desktopWarningDismissed");
-    if (!warningDismissed) {
-      modal.classList.remove("hidden");
-    }
+  // Force check current window width (not just initial load)
+  const isDesktopNow = window.innerWidth > 768;
+
+  if (!isDesktopNow) {
+    return; // Don't show on mobile
   }
+
+  const modal = document.getElementById("desktopWarningModal");
+  if (!modal) {
+    console.error("Desktop warning modal not found in DOM");
+    return;
+  }
+
+  // Check if user has already dismissed the warning
+  const warningDismissed = localStorage.getItem("desktopWarningDismissed");
+  if (warningDismissed) {
+    return; // Already dismissed
+  }
+
+  // Show the modal
+  modal.classList.remove("hidden");
+  console.log(
+    "Desktop warning modal shown (window width:",
+    window.innerWidth,
+    "px)",
+  );
 }
 
 function closeDesktopWarningModal() {
@@ -1616,12 +1634,37 @@ function closeDesktopWarningModal() {
   if (modal) {
     modal.classList.add("hidden");
     localStorage.setItem("desktopWarningDismissed", "true");
+    console.log("Desktop warning modal closed and dismissed");
   }
 }
 
 // Make functions globally available immediately
 window.showDesktopWarningModal = showDesktopWarningModal;
 window.closeDesktopWarningModal = closeDesktopWarningModal;
+
+// Test function to manually show desktop warning (for debugging)
+window.testDesktopWarning = function () {
+  console.log("=== MANUAL DESKTOP WARNING TEST ===");
+  console.log("Window width:", window.innerWidth, "px");
+  console.log("APP_CONFIG.isMobile:", APP_CONFIG.isMobile);
+  console.log(
+    "localStorage.desktopWarningDismissed:",
+    localStorage.getItem("desktopWarningDismissed"),
+  );
+
+  // Clear dismissal for testing
+  localStorage.removeItem("desktopWarningDismissed");
+  console.log("Cleared localStorage dismissal");
+
+  // Force show modal
+  const modal = document.getElementById("desktopWarningModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    console.log("Modal shown manually");
+  } else {
+    console.error("Modal not found!");
+  }
+};
 
 // Functions are now exported immediately in exportCriticalFunctions()
 

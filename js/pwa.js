@@ -107,6 +107,8 @@ window.addEventListener("beforeinstallprompt", (e) => {
   const isDesktop = window.innerWidth > 768;
   if (isDesktop) {
     console.log("PWA: Desktop detected, not showing install prompt");
+    // Clear deferred prompt to prevent any chance of showing
+    deferredPrompt = null;
     return;
   }
 
@@ -122,11 +124,15 @@ window.addEventListener("beforeinstallprompt", (e) => {
   localStorage.removeItem("installPromptDismissedTime");
 
   // Show install prompt immediately (no delay for testing)
-  setTimeout(() => {
-    if (!installPromptShown) {
+  // But only if not on desktop
+  const checkAndShowPrompt = () => {
+    const isStillDesktop = window.innerWidth > 768;
+    if (!isStillDesktop && !installPromptShown && deferredPrompt) {
       showInstallPrompt();
     }
-  }, 3000); // Réduit à 3 secondes pour test
+  };
+
+  setTimeout(checkAndShowPrompt, 3000); // Réduit à 3 secondes pour test
 });
 
 // Show install prompt
@@ -135,6 +141,12 @@ function showInstallPrompt() {
   const installBtn = document.getElementById("installBtn");
 
   if (!prompt || !deferredPrompt) return;
+
+  // Double-check we're not on desktop
+  if (window.innerWidth > 768) {
+    console.log("PWA: Aborting install prompt - now on desktop");
+    return;
+  }
 
   // Show the prompt
   prompt.classList.remove("hidden");
