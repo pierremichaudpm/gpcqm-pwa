@@ -598,6 +598,16 @@ function initializeApp() {
   if (!APP_CONFIG.isMobile) {
     // Show immediately - no delay
     showDesktopWarningModal();
+
+    // FORCE HIDE INSTALL PROMPT ON DESKTOP
+    const installPrompt = document.getElementById("installPrompt");
+    if (installPrompt) {
+      installPrompt.classList.add("hidden");
+    }
+    const iosInstallPrompt = document.getElementById("iosInstallPrompt");
+    if (iosInstallPrompt) {
+      iosInstallPrompt.classList.add("hidden");
+    }
   }
 }
 // Close mobile menu whenever a link/button inside it is activated
@@ -1618,6 +1628,16 @@ function showDesktopWarningModal() {
   const warningDismissed = localStorage.getItem("desktopWarningDismissed");
   if (warningDismissed) {
     return; // Already dismissed
+  }
+
+  // FORCE: Hide any install prompts first
+  const installPrompt = document.getElementById("installPrompt");
+  if (installPrompt) {
+    installPrompt.classList.add("hidden");
+  }
+  const iosInstallPrompt = document.getElementById("iosInstallPrompt");
+  if (iosInstallPrompt) {
+    iosInstallPrompt.classList.add("hidden");
   }
 
   // Show the modal

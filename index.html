@@ -1,6 +1,35 @@
 <!doctype html>
 <html lang="fr">
     <head>
+        <script>
+            // IMMEDIATE DESKTOP DETECTION - SHOW WARNING ON LOAD
+            (function () {
+                if (window.innerWidth > 768) {
+                    // Desktop detected - hide install prompts immediately
+                    window.addEventListener("DOMContentLoaded", function () {
+                        // Hide install prompts
+                        var installPrompt =
+                            document.getElementById("installPrompt");
+                        if (installPrompt)
+                            installPrompt.classList.add("hidden");
+
+                        var iosPrompt =
+                            document.getElementById("iosInstallPrompt");
+                        if (iosPrompt) iosPrompt.classList.add("hidden");
+
+                        // Show desktop warning if not dismissed
+                        if (!localStorage.getItem("desktopWarningDismissed")) {
+                            var desktopWarning = document.getElementById(
+                                "desktopWarningModal",
+                            );
+                            if (desktopWarning) {
+                                desktopWarning.classList.remove("hidden");
+                            }
+                        }
+                    });
+                }
+            })();
+        </script>
         <meta charset="UTF-8" />
         <meta
             name="viewport"

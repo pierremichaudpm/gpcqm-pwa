@@ -102,12 +102,11 @@ window.addEventListener("beforeinstallprompt", (e) => {
     return;
   }
 
-  // Don't show install prompt on desktop (window width > 768px)
+  // DON'T SHOW INSTALL PROMPT ON DESKTOP AT ALL
   // Desktop users will see the desktop warning modal instead
-  const isDesktop = window.innerWidth > 768;
-  if (isDesktop) {
-    console.log("PWA: Desktop detected, not showing install prompt");
-    // Clear deferred prompt to prevent any chance of showing
+  if (window.innerWidth > 768) {
+    console.log("PWA: Desktop detected - INSTALL PROMPT COMPLETELY DISABLED");
+    // Don't even store the event
     deferredPrompt = null;
     return;
   }
@@ -126,8 +125,14 @@ window.addEventListener("beforeinstallprompt", (e) => {
   // Show install prompt immediately (no delay for testing)
   // But only if not on desktop
   const checkAndShowPrompt = () => {
-    const isStillDesktop = window.innerWidth > 768;
-    if (!isStillDesktop && !installPromptShown && deferredPrompt) {
+    // DOUBLE CHECK - NO INSTALL PROMPT ON DESKTOP
+    if (window.innerWidth > 768) {
+      console.log("PWA: Still on desktop - NO INSTALL PROMPT");
+      deferredPrompt = null;
+      return;
+    }
+
+    if (!installPromptShown && deferredPrompt) {
       showInstallPrompt();
     }
   };
@@ -142,9 +147,12 @@ function showInstallPrompt() {
 
   if (!prompt || !deferredPrompt) return;
 
-  // Double-check we're not on desktop
+  // TRIPLE CHECK - ABSOLUTELY NO INSTALL PROMPT ON DESKTOP
   if (window.innerWidth > 768) {
-    console.log("PWA: Aborting install prompt - now on desktop");
+    console.log("PWA: FINAL CHECK - Desktop detected, ABORTING install prompt");
+    prompt.classList.add("hidden");
+    deferredPrompt = null;
+    installPromptShown = false;
     return;
   }
 
@@ -195,6 +203,14 @@ function showInstallPrompt() {
 (function initIOSInstallPrompt() {
   // Do not run in standalone/PWA mode
   if (IS_IOS && IS_IOS_SAFARI && !isPWA()) {
+    // ALSO CHECK FOR DESKTOP - NO iOS PROMPT ON DESKTOP EITHER
+    if (window.innerWidth > 768) {
+      console.log("PWA: Desktop detected - iOS install prompt disabled");
+      const iosPrompt = document.getElementById("iosInstallPrompt");
+      if (iosPrompt) iosPrompt.classList.add("hidden");
+      return;
+    }
+
     const dismissed =
       localStorage.getItem("iosInstallPromptDismissed") === "true";
     const iosPrompt = document.getElementById("iosInstallPrompt");
@@ -204,6 +220,12 @@ function showInstallPrompt() {
     if (!dismissed) {
       // Small delay to avoid flashing on load
       setTimeout(() => {
+        // Check again if still not on desktop
+        if (window.innerWidth > 768) {
+          console.log("PWA: Now on desktop - hiding iOS prompt");
+          iosPrompt.classList.add("hidden");
+          return;
+        }
         iosPrompt.classList.remove("hidden");
       }, 2000);
     }
