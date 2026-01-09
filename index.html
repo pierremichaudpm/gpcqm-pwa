@@ -6,6 +6,10 @@
             (function () {
                 // BETTER DESKTOP DETECTION - NEVER SHOW ON MOBILE
                 function isDesktopDevice() {
+                    // DEBUG: Log detection process
+                    console.log("=== DESKTOP DETECTION DEBUG ===");
+                    console.log("User Agent:", navigator.userAgent);
+
                     // Check user agent for mobile devices
                     const userAgent = navigator.userAgent.toLowerCase();
                     const isMobileUserAgent =
@@ -13,38 +17,75 @@
                             userAgent,
                         );
 
+                    console.log("Is Mobile User Agent?", isMobileUserAgent);
+                    console.log(
+                        "User Agent contains 'android':",
+                        userAgent.includes("android"),
+                    );
+
                     // If it's a mobile user agent, NEVER show desktop warning
                     if (isMobileUserAgent) {
+                        console.log(
+                            "❌ MOBILE DETECTED: No desktop warning will show",
+                        );
+                        console.log("=== END DEBUG ===");
                         return false;
                     }
 
                     // Check for touch capability - mobile/tablets have touch
                     const hasTouchScreen = navigator.maxTouchPoints > 0;
+                    console.log("maxTouchPoints:", navigator.maxTouchPoints);
+                    console.log("Has touch screen?", hasTouchScreen);
 
                     // For devices with touch screens, check if it's a tablet
                     // Tablets might have width > 768 but are still mobile devices
                     if (hasTouchScreen) {
+                        console.log(
+                            "❌ TOUCH SCREEN DETECTED: Likely tablet/mobile",
+                        );
+                        console.log("=== END DEBUG ===");
                         // Likely a tablet or touch laptop - treat as mobile
                         return false;
                     }
 
                     // For non-mobile user agents without touch, check screen width
                     // Only show on actual desktop/laptop screens
-                    return window.innerWidth > 768;
+                    const windowWidth = window.innerWidth;
+                    const isDesktopWidth = windowWidth > 768;
+
+                    console.log("Window width:", windowWidth, "px");
+                    console.log("Width > 768px?", isDesktopWidth);
+                    console.log("✅ DESKTOP DETECTED:", isDesktopWidth);
+                    console.log("=== END DEBUG ===");
+
+                    return isDesktopWidth;
                 }
 
-                if (isDesktopDevice()) {
+                console.log("🔍 Starting desktop detection on page load...");
+                const isDesktop = isDesktopDevice();
+                console.log("Final result - Is desktop?", isDesktop);
+
+                if (isDesktop) {
+                    console.log(
+                        "🖥️ Desktop detected - setting up warning modal",
+                    );
                     // Desktop detected - hide install prompts immediately
                     window.addEventListener("DOMContentLoaded", function () {
+                        console.log("DOM loaded - hiding install prompts");
                         // Hide install prompts
                         var installPrompt =
                             document.getElementById("installPrompt");
-                        if (installPrompt)
+                        if (installPrompt) {
                             installPrompt.classList.add("hidden");
+                            console.log("✅ Chrome install prompt hidden");
+                        }
 
                         var iosPrompt =
                             document.getElementById("iosInstallPrompt");
-                        if (iosPrompt) iosPrompt.classList.add("hidden");
+                        if (iosPrompt) {
+                            iosPrompt.classList.add("hidden");
+                            console.log("✅ iOS install prompt hidden");
+                        }
 
                         // Show desktop warning if not dismissed
                         if (!localStorage.getItem("desktopWarningDismissed")) {
@@ -53,9 +94,16 @@
                             );
                             if (desktopWarning) {
                                 desktopWarning.classList.remove("hidden");
+                                console.log("✅ Desktop warning modal shown");
                             }
+                        } else {
+                            console.log("ℹ️ Desktop warning already dismissed");
                         }
                     });
+                } else {
+                    console.log(
+                        "📱 Mobile/tablet detected - NO desktop warning",
+                    );
                 }
             })();
         </script>

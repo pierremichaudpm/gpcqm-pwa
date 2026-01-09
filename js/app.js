@@ -1697,8 +1697,87 @@ window.testDesktopWarning = function () {
 
   // Clear dismissal for testing
   localStorage.removeItem("desktopWarningDismissed");
-  console.log("Cleared localStorage dismissal");
 
+  // Force show desktop warning
+  showDesktopWarningModal();
+};
+
+// Comprehensive device detection test
+window.testDeviceDetection = function () {
+  console.log("=== COMPREHENSIVE DEVICE DETECTION TEST ===");
+  console.log("📱 Testing on Pixel 9/Android/Mobile");
+
+  // 1. User Agent Analysis
+  const userAgent = navigator.userAgent;
+  const userAgentLower = userAgent.toLowerCase();
+  console.log("📋 User Agent:", userAgent);
+  console.log("📋 User Agent (lowercase):", userAgentLower);
+
+  // Mobile detection patterns
+  const mobilePatterns = [
+    'android', 'webos', 'iphone', 'ipad', 'ipod',
+    'blackberry', 'windows phone', 'mobile'
+  ];
+
+  console.log("🔍 Checking for mobile patterns:");
+  mobilePatterns.forEach(pattern => {
+    const hasPattern = userAgentLower.includes(pattern);
+    console.log(`  ${pattern}: ${hasPattern ? '✅ FOUND' : '❌ NOT FOUND'}`);
+  });
+
+  const isMobileUserAgent = /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgentLower);
+  console.log("📱 Is Mobile User Agent?", isMobileUserAgent);
+
+  // 2. Touch Screen Detection
+  console.log("👆 Touch Screen Detection:");
+  console.log("  maxTouchPoints:", navigator.maxTouchPoints);
+  console.log("  hasTouchScreen?", navigator.maxTouchPoints > 0);
+
+  // 3. Screen Dimensions
+  console.log("📐 Screen Dimensions:");
+  console.log("  window.innerWidth:", window.innerWidth, "px");
+  console.log("  window.innerHeight:", window.innerHeight, "px");
+  console.log("  screen.width:", screen.width, "px");
+  console.log("  screen.height:", screen.height, "px");
+
+  // 4. Our Detection Logic
+  console.log("🤖 Our Detection Logic Results:");
+  console.log("  APP_CONFIG.isMobile:", APP_CONFIG.isMobile);
+
+  // 5. Desktop Warning Status
+  console.log("⚠️ Desktop Warning Status:");
+  console.log("  Should show warning?", !APP_CONFIG.isMobile);
+  console.log("  Already dismissed?", localStorage.getItem("desktopWarningDismissed") === "true");
+
+  // 6. Test isDesktopDevice() from pwa.js
+  console.log("💻 Testing isDesktopDevice() function:");
+  if (typeof isDesktopDevice === 'function') {
+    console.log("  isDesktopDevice():", isDesktopDevice());
+  } else {
+    console.log("  ❌ isDesktopDevice() function not found in pwa.js");
+  }
+
+  // 7. Manual Test: Should Pixel 9 see warning?
+  console.log("🎯 FINAL VERDICT for Pixel 9:");
+  if (userAgentLower.includes('android')) {
+    console.log("  ✅ CORRECT: Pixel 9 (Android) should NEVER see desktop warning");
+    console.log("  ❌ BUG: If warning appears, detection logic is broken");
+  } else {
+    console.log("  ⚠️ WARNING: Not detected as Android - check user agent");
+  }
+
+  console.log("=== END TEST ===");
+
+  // Quick action buttons for testing
+  console.log("\n🔧 Quick Test Commands:");
+  console.log("  testDeviceDetection() - Run this test again");
+  console.log("  testDesktopWarning() - Force show desktop warning");
+  console.log("  localStorage.removeItem('desktopWarningDismissed') - Reset dismissal");
+  console.log("  location.reload() - Reload page to test from scratch");
+};
+
+// Make test function available immediately
+window.testDeviceDetection = window.testDeviceDetection;
   // Force show modal
   const modal = document.getElementById("desktopWarningModal");
   if (modal) {
