@@ -447,7 +447,21 @@ let currentLanguage =
 
 // DOM Ready
 document.addEventListener("DOMContentLoaded", function () {
-  initializeApp();
+  try {
+    initializeApp();
+  } catch (error) {
+    console.error("Error initializing app:", error);
+    // Force hide loader on error
+    const loader = document.getElementById("loader");
+    if (loader) {
+      loader.style.opacity = "0";
+      setTimeout(() => {
+        if (loader.parentNode) {
+          loader.parentNode.removeChild(loader);
+        }
+      }, 300);
+    }
+  }
 
   // Ensure critical functions are available globally (Android/iOS fix)
   // Functions are already exported via exportCriticalFunctions()
@@ -550,11 +564,16 @@ function addSafeTapListener(element, onTap) {
 
 // Initialize Application - Mobile Optimized
 function initializeApp() {
-  // Critical rendering path first - ensure language is set before updating
-  if (!currentLanguage) {
-    currentLanguage = APP_CONFIG.defaultLanguage;
+  try {
+    // Critical rendering path first - ensure language is set before updating
+    if (!currentLanguage) {
+      currentLanguage = APP_CONFIG.defaultLanguage;
+    }
+    updateLanguage();
+  } catch (error) {
+    console.error("Error in initializeApp:", error);
+    // Continue to hide loader even if there's an error
   }
-  updateLanguage();
   hideLoader();
 
   // Send metrics ASAP
@@ -1291,13 +1310,18 @@ window.toggleLanguage = toggleLanguage;
 
 // Update Language
 function updateLanguage() {
-  const elements = document.querySelectorAll("[data-lang]");
-  elements.forEach((element) => {
-    const key = element.getAttribute("data-lang");
-    if (translations[currentLanguage][key]) {
-      element.textContent = translations[currentLanguage][key];
-    }
-  });
+  try {
+    const elements = document.querySelectorAll("[data-lang]");
+    elements.forEach((element) => {
+      const key = element.getAttribute("data-lang");
+      if (translations[currentLanguage] && translations[currentLanguage][key]) {
+        element.textContent = translations[currentLanguage][key];
+      }
+    });
+  } catch (error) {
+    console.error("Error in updateLanguage:", error);
+    throw error; // Re-throw to be caught by initializeApp
+  }
   // Update placeholders for inputs with data-lang-placeholder
   document.querySelectorAll("[data-lang-placeholder]").forEach((input) => {
     const key = input.getAttribute("data-lang-placeholder");
@@ -1715,17 +1739,26 @@ window.testDeviceDetection = function () {
 
   // Mobile detection patterns
   const mobilePatterns = [
-    'android', 'webos', 'iphone', 'ipad', 'ipod',
-    'blackberry', 'windows phone', 'mobile'
+    "android",
+    "webos",
+    "iphone",
+    "ipad",
+    "ipod",
+    "blackberry",
+    "windows phone",
+    "mobile",
   ];
 
   console.log("🔍 Checking for mobile patterns:");
-  mobilePatterns.forEach(pattern => {
+  mobilePatterns.forEach((pattern) => {
     const hasPattern = userAgentLower.includes(pattern);
-    console.log(`  ${pattern}: ${hasPattern ? '✅ FOUND' : '❌ NOT FOUND'}`);
+    console.log(`  ${pattern}: ${hasPattern ? "✅ FOUND" : "❌ NOT FOUND"}`);
   });
 
-  const isMobileUserAgent = /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgentLower);
+  const isMobileUserAgent =
+    /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(
+      userAgentLower,
+    );
   console.log("📱 Is Mobile User Agent?", isMobileUserAgent);
 
   // 2. Touch Screen Detection
@@ -1747,11 +1780,14 @@ window.testDeviceDetection = function () {
   // 5. Desktop Warning Status
   console.log("⚠️ Desktop Warning Status:");
   console.log("  Should show warning?", !APP_CONFIG.isMobile);
-  console.log("  Already dismissed?", localStorage.getItem("desktopWarningDismissed") === "true");
+  console.log(
+    "  Already dismissed?",
+    localStorage.getItem("desktopWarningDismissed") === "true",
+  );
 
   // 6. Test isDesktopDevice() from pwa.js
   console.log("💻 Testing isDesktopDevice() function:");
-  if (typeof isDesktopDevice === 'function') {
+  if (typeof isDesktopDevice === "function") {
     console.log("  isDesktopDevice():", isDesktopDevice());
   } else {
     console.log("  ❌ isDesktopDevice() function not found in pwa.js");
@@ -1759,8 +1795,10 @@ window.testDeviceDetection = function () {
 
   // 7. Manual Test: Should Pixel 9 see warning?
   console.log("🎯 FINAL VERDICT for Pixel 9:");
-  if (userAgentLower.includes('android')) {
-    console.log("  ✅ CORRECT: Pixel 9 (Android) should NEVER see desktop warning");
+  if (userAgentLower.includes("android")) {
+    console.log(
+      "  ✅ CORRECT: Pixel 9 (Android) should NEVER see desktop warning",
+    );
     console.log("  ❌ BUG: If warning appears, detection logic is broken");
   } else {
     console.log("  ⚠️ WARNING: Not detected as Android - check user agent");
@@ -1772,20 +1810,27 @@ window.testDeviceDetection = function () {
   console.log("\n🔧 Quick Test Commands:");
   console.log("  testDeviceDetection() - Run this test again");
   console.log("  testDesktopWarning() - Force show desktop warning");
-  console.log("  localStorage.removeItem('desktopWarningDismissed') - Reset dismissal");
+  console.log(
+    "  localStorage.removeItem('desktopWarningDismissed') - Reset dismissal",
+  );
   console.log("  location.reload() - Reload page to test from scratch");
 };
 
 // Make test function available immediately
-window.testDeviceDetection = window.testDeviceDetection;
-  // Force show modal
-  const modal = document.getElementById("desktopWarningModal");
-  if (modal) {
-    modal.classList.remove("hidden");
-    console.log("Modal shown manually");
-  } else {
-    console.error("Modal not found!");
-  }
+window.testDesktopWarning = function () {
+  console.log("=== MANUAL DESKTOP WARNING TEST ===");
+  console.log("Window width:", window.innerWidth, "px");
+  console.log("APP_CONFIG.isMobile:", APP_CONFIG.isMobile);
+  console.log(
+    "localStorage.desktopWarningDismissed:",
+    localStorage.getItem("desktopWarningDismissed"),
+  );
+
+  // Clear dismissal for testing
+  localStorage.removeItem("desktopWarningDismissed");
+
+  // Force show desktop warning
+  showDesktopWarningModal();
 };
 
 // Functions are now exported immediately in exportCriticalFunctions()
