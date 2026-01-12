@@ -2,6 +2,16 @@
 <html lang="fr">
     <head>
         <script>
+            // Define closeDesktopWarningModal globally IMMEDIATELY so onclick handlers work
+            window.closeDesktopWarningModal = function () {
+                var modal = document.getElementById("desktopWarningModal");
+                if (modal) {
+                    modal.classList.add("hidden");
+                    localStorage.setItem("desktopWarningDismissed", "true");
+                    console.log("Desktop warning modal closed and dismissed");
+                }
+            };
+
             // IMMEDIATE DESKTOP DETECTION - SHOW WARNING ON LOAD
             (function () {
                 // BETTER DESKTOP DETECTION - NEVER SHOW ON MOBILE
