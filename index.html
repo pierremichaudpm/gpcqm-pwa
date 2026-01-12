@@ -4,13 +4,57 @@
         <script>
             // Define closeDesktopWarningModal globally IMMEDIATELY so onclick handlers work
             window.closeDesktopWarningModal = function () {
+                console.log("closeDesktopWarningModal called!");
                 var modal = document.getElementById("desktopWarningModal");
+                console.log("Modal element:", modal);
                 if (modal) {
                     modal.classList.add("hidden");
+                    modal.style.display = "none";
                     localStorage.setItem("desktopWarningDismissed", "true");
                     console.log("Desktop warning modal closed and dismissed");
                 }
             };
+
+            // Attach event listeners after DOM is ready
+            document.addEventListener("DOMContentLoaded", function () {
+                // Attach close handlers to all desktop warning modal buttons
+                var closeBtn = document.querySelector(
+                    "#desktopWarningModal .modal-close",
+                );
+                var continueBtn = document.querySelector(
+                    "#desktopWarningModal .action-btn",
+                );
+                var overlay = document.querySelector(
+                    "#desktopWarningModal .modal-overlay",
+                );
+
+                if (closeBtn) {
+                    closeBtn.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.closeDesktopWarningModal();
+                    });
+                    console.log("✅ Close button listener attached");
+                }
+
+                if (continueBtn) {
+                    continueBtn.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.closeDesktopWarningModal();
+                    });
+                    console.log("✅ Continue button listener attached");
+                }
+
+                if (overlay) {
+                    overlay.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.closeDesktopWarningModal();
+                    });
+                    console.log("✅ Overlay listener attached");
+                }
+            });
 
             // IMMEDIATE DESKTOP DETECTION - SHOW WARNING ON LOAD
             (function () {
