@@ -892,15 +892,35 @@ function smoothScrollToSection(e, sectionId) {
 function hideLoaderFallback() {
   const loader = document.getElementById("loader");
   if (loader) {
+    loader.style.opacity = "0";
     loader.classList.add("hidden");
-    setTimeout(() => loader.remove && loader.remove(), 350);
+    setTimeout(() => {
+      if (loader.parentNode) {
+        loader.parentNode.removeChild(loader);
+      }
+    }, 350);
   }
 }
 
 // Si tout s'est bien passé, initializeApp masque déjà le loader.
 // Sinon, on force un fallback après le chargement de la page.
 window.addEventListener("load", () => {
-  setTimeout(hideLoaderFallback, 2500);
+  // Faster fallback - 1 second should be enough
+  setTimeout(hideLoaderFallback, 1000);
+});
+
+// Global error handler to ensure loader is hidden even on JS errors
+window.onerror = function (message, source, lineno, colno, error) {
+  console.error("Global JS error:", message, source, lineno, colno, error);
+  // Immediately hide loader on any JS error
+  hideLoaderFallback();
+  return false; // Let the error propagate
+};
+
+// Also handle unhandled promise rejections
+window.addEventListener("unhandledrejection", function (event) {
+  console.error("Unhandled promise rejection:", event.reason);
+  hideLoaderFallback();
 });
 
 // Riders modal controls
