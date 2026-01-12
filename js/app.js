@@ -15,17 +15,9 @@ const APP_CONFIG = {
       return true;
     }
 
-    // Check for touch capability - mobile/tablets have touch
-    const hasTouchScreen = navigator.maxTouchPoints > 0;
-
-    // For devices with touch screens, check if it's a tablet
-    // Tablets might have width > 768 but are still mobile devices
-    if (hasTouchScreen) {
-      // Likely a tablet or touch laptop - treat as mobile
-      return true;
-    }
-
-    // For non-mobile user agents without touch, check screen width
+    // For non-mobile user agents, check screen width
+    // Note: We no longer treat touchscreen desktops as mobile
+    // Many modern laptops have touchscreens but should still see desktop warning
     return window.innerWidth <= 768;
   })(),
 };
@@ -1681,8 +1673,20 @@ function showDesktopWarningModal() {
   // Force check current window width (not just initial load)
   const isDesktopNow = window.innerWidth > 768;
 
-  if (!isDesktopNow) {
-    return; // Don't show on mobile
+  // Also check user agent - never show on actual mobile devices
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isMobileUserAgent =
+    /android|webos|iphone|ipad|ipod|blackberry|windows phone/.test(userAgent);
+
+  console.log("showDesktopWarningModal called:", {
+    isDesktopNow,
+    isMobileUserAgent,
+    windowWidth: window.innerWidth,
+  });
+
+  if (!isDesktopNow || isMobileUserAgent) {
+    console.log("Not showing desktop warning - mobile or narrow screen");
+    return; // Don't show on mobile or narrow screens
   }
 
   const modal = document.getElementById("desktopWarningModal");
@@ -1694,6 +1698,7 @@ function showDesktopWarningModal() {
   // Check if user has already dismissed the warning
   const warningDismissed = localStorage.getItem("desktopWarningDismissed");
   if (warningDismissed) {
+    console.log("Desktop warning already dismissed by user");
     return; // Already dismissed
   }
 

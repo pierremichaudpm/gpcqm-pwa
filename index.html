@@ -32,24 +32,9 @@
                         return false;
                     }
 
-                    // Check for touch capability - mobile/tablets have touch
-                    const hasTouchScreen = navigator.maxTouchPoints > 0;
-                    console.log("maxTouchPoints:", navigator.maxTouchPoints);
-                    console.log("Has touch screen?", hasTouchScreen);
-
-                    // For devices with touch screens, check if it's a tablet
-                    // Tablets might have width > 768 but are still mobile devices
-                    if (hasTouchScreen) {
-                        console.log(
-                            "❌ TOUCH SCREEN DETECTED: Likely tablet/mobile",
-                        );
-                        console.log("=== END DEBUG ===");
-                        // Likely a tablet or touch laptop - treat as mobile
-                        return false;
-                    }
-
-                    // For non-mobile user agents without touch, check screen width
-                    // Only show on actual desktop/laptop screens
+                    // For non-mobile user agents, check screen width
+                    // Note: We no longer treat touchscreen desktops as mobile
+                    // Many modern laptops have touchscreens but should still see desktop warning
                     const windowWidth = window.innerWidth;
                     const isDesktopWidth = windowWidth > 768;
 
